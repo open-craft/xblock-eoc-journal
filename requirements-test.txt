@@ -1,0 +1,25 @@
+Django>=1.8, <1.9
+
+-r requirements.txt
+-e git+https://github.com/edx/xblock-sdk.git@c40b5dc3e9a2ded54119e922edf486d3ccec6c35#egg=xblock-sdk
+
+-e git+https://github.com/edx/django-pyfs.git@1.0.3#egg=django-pyfs==1.0.3
+bok-choy==0.7.1
+django_nose==1.4.1
+selenium==2.53.6
+setuptools==34.1.1
+
+fs
+lxml
+mako
+markupsafe
+pep8
+pylint
+python-dateutil
+pytz
+pyyaml
+simplejson
+six
+web-fragments
+webob
+XBlock

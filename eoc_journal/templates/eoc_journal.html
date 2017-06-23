@@ -1,0 +1,13 @@
+{% load i18n %}
+<div class="eoc-journal-block">
+  <p>
+    {% if key_takeaways_pdf_url %}
+    <a class="key-takeaways-link" target="_blank" href="{{ key_takeaways_pdf_url }}">
+      <span class="fa fa-file-text-o" aria-hidden="true"></span>
+      {% trans "Key Takeaways" %}
+    </a>
+    {% else %}
+      {% trans "Key Takeaways PDF not available at this time." %}
+    {% endif %}
+  </p>
+</div>
