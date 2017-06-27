@@ -1,0 +1,13 @@
+machine:
+  python:
+    version: 2.7.10
+dependencies:
+  override:
+    - "pip install -U pip wheel"
+    - "pip install -r requirements-test.txt"
+    - "mkdir var"
+test:
+  override:
+    - "pep8 eoc_journal --max-line-length=120"
+    - "pylint eoc_journal"
+    - "python run_tests.py"
