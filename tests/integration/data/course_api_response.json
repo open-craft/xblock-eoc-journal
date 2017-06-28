@@ -1,0 +1,147 @@
+{
+    "root": "i4x://Org/Course/course/Run",
+    "blocks": {
+        "i4x://Org/Course/vertical/bafcde95db094da586f672794650bfd8": {
+            "display_name": "Unit 4",
+            "block_id": "bafcde95db094da586f672794650bfd8",
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/vertical/bafcde95db094da586f672794650bfd8",
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/vertical/bafcde95db094da586f672794650bfd8",
+            "type": "vertical",
+            "id": "i4x://Org/Course/vertical/bafcde95db094da586f672794650bfd8"
+        },
+        "i4x://Org/Course/pb-answer/b86edf60454b47dbb8f2e1b4e2d48d6a": {
+            "display_name": "",
+            "block_id": "b86edf60454b47dbb8f2e1b4e2d48d6a",
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/pb-answer/b86edf60454b47dbb8f2e1b4e2d48d6a",
+            "student_view_data": {
+                "question": "",
+                "name": "23761f7"
+            },
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/pb-answer/b86edf60454b47dbb8f2e1b4e2d48d6a",
+            "type": "pb-answer",
+            "id": "i4x://Org/Course/pb-answer/b86edf60454b47dbb8f2e1b4e2d48d6a"
+        },
+        "i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233": {
+            "display_name": "More Info",
+            "block_id": "a0b04a13d3074229b6be33fbc31de233",
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233",
+            "student_view_data": {
+                "question": "Tell us more about yourself.",
+                "name": "efac891"
+            },
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233",
+            "type": "pb-answer",
+            "id": "i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233"
+        },
+        "i4x://Org/Course/sequential/d57c4812c7ac48f1b799e7e19422eff9": {
+            "display_name": "Subsection 1",
+            "block_id": "d57c4812c7ac48f1b799e7e19422eff9",
+            "children": [
+                "i4x://Org/Course/vertical/e428dc5a13ce431583df0cefc4addd7c",
+                "i4x://Org/Course/vertical/6d845e8f56a04bde88f11aec6c885bbe",
+                "i4x://Org/Course/vertical/e87577535d0e4c68a2ac9d760d003c92",
+                "i4x://Org/Course/vertical/bafcde95db094da586f672794650bfd8"
+            ],
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/sequential/d57c4812c7ac48f1b799e7e19422eff9",
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/sequential/d57c4812c7ac48f1b799e7e19422eff9",
+            "type": "sequential",
+            "id": "i4x://Org/Course/sequential/d57c4812c7ac48f1b799e7e19422eff9"
+        },
+        "i4x://Org/Course/course/Run": {
+            "display_name": "Test Course",
+            "block_id": "Run",
+            "children": [
+                "i4x://Org/Course/chapter/e31d7ee0bf5a4cc2ad38fab460589c90",
+                "i4x://Org/Course/chapter/c154bd7716654193969e20d6e2fd994a"
+            ],
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/course/Run",
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/course/Run",
+            "type": "course",
+            "id": "i4x://Org/Course/course/Run"
+        },
+        "i4x://Org/Course/chapter/e31d7ee0bf5a4cc2ad38fab460589c90": {
+            "display_name": "First Section",
+            "block_id": "e31d7ee0bf5a4cc2ad38fab460589c90",
+            "children": [
+                "i4x://Org/Course/sequential/d57c4812c7ac48f1b799e7e19422eff9"
+            ],
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/chapter/e31d7ee0bf5a4cc2ad38fab460589c90",
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/chapter/e31d7ee0bf5a4cc2ad38fab460589c90",
+            "type": "chapter",
+            "id": "i4x://Org/Course/chapter/e31d7ee0bf5a4cc2ad38fab460589c90"
+        },
+        "i4x://Org/Course/vertical/e428dc5a13ce431583df0cefc4addd7c": {
+            "display_name": "Unit 1",
+            "block_id": "e428dc5a13ce431583df0cefc4addd7c",
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/vertical/e428dc5a13ce431583df0cefc4addd7c",
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/vertical/e428dc5a13ce431583df0cefc4addd7c",
+            "type": "vertical",
+            "id": "i4x://Org/Course/vertical/e428dc5a13ce431583df0cefc4addd7c"
+        },
+        "i4x://Org/Course/vertical/6d845e8f56a04bde88f11aec6c885bbe": {
+            "display_name": "Unit 2",
+            "block_id": "6d845e8f56a04bde88f11aec6c885bbe",
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/vertical/6d845e8f56a04bde88f11aec6c885bbe",
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/vertical/6d845e8f56a04bde88f11aec6c885bbe",
+            "type": "vertical",
+            "id": "i4x://Org/Course/vertical/6d845e8f56a04bde88f11aec6c885bbe"
+        },
+        "i4x://Org/Course/vertical/e87577535d0e4c68a2ac9d760d003c92": {
+            "display_name": "Unit 3",
+            "block_id": "e87577535d0e4c68a2ac9d760d003c92",
+            "children": [
+                "i4x://Org/Course/pb-answer/b86edf60454b47dbb8f2e1b4e2d48d6a"
+            ],
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/vertical/e87577535d0e4c68a2ac9d760d003c92",
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/vertical/e87577535d0e4c68a2ac9d760d003c92",
+            "type": "vertical",
+            "id": "i4x://Org/Course/vertical/e87577535d0e4c68a2ac9d760d003c92"
+        },
+        "i4x://Org/Course/chapter/c154bd7716654193969e20d6e2fd994a": {
+            "display_name": "Second Section",
+            "block_id": "c154bd7716654193969e20d6e2fd994a",
+            "children": [
+                "i4x://Org/Course/sequential/4309902bea4d4228ba1895df438c27dc"
+            ],
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/chapter/c154bd7716654193969e20d6e2fd994a",
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/chapter/c154bd7716654193969e20d6e2fd994a",
+            "type": "chapter",
+            "id": "i4x://Org/Course/chapter/c154bd7716654193969e20d6e2fd994a"
+        },
+        "i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c": {
+            "display_name": "Introductions",
+            "block_id": "6f070c350e39429cbccfd3185a33621c",
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c",
+            "student_view_data": {
+                "question": "Hello, who are you?",
+                "name": "bf9c37a"
+            },
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c",
+            "type": "pb-answer",
+            "id": "i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c"
+        },
+        "i4x://Org/Course/vertical/8f995fb218664104bb3f898f10744511": {
+            "display_name": "Unit 1",
+            "block_id": "8f995fb218664104bb3f898f10744511",
+            "children": [
+                "i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c",
+                "i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233"
+            ],
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/vertical/8f995fb218664104bb3f898f10744511",
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/vertical/8f995fb218664104bb3f898f10744511",
+            "type": "vertical",
+            "id": "i4x://Org/Course/vertical/8f995fb218664104bb3f898f10744511"
+        },
+        "i4x://Org/Course/sequential/4309902bea4d4228ba1895df438c27dc": {
+            "display_name": "Subsection 2",
+            "block_id": "4309902bea4d4228ba1895df438c27dc",
+            "children": [
+                "i4x://Org/Course/vertical/8f995fb218664104bb3f898f10744511"
+            ],
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/sequential/4309902bea4d4228ba1895df438c27dc",
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/sequential/4309902bea4d4228ba1895df438c27dc",
+            "type": "sequential",
+            "id": "i4x://Org/Course/sequential/4309902bea4d4228ba1895df438c27dc"
+        }
+    }
+}

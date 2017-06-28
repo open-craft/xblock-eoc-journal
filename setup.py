@@ -30,6 +30,7 @@ setup(
     install_requires=[
         'XBlock',
         'xblock-utils',
+        'edx-rest-api-client',
     ],
     entry_points={
         'xblock.v1': [
