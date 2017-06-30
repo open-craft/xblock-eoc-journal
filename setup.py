@@ -31,6 +31,7 @@ setup(
         'XBlock',
         'xblock-utils',
         'edx-rest-api-client',
+        'xblock-problem-builder',
     ],
     entry_points={
         'xblock.v1': [

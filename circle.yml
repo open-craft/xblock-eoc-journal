@@ -5,6 +5,8 @@ dependencies:
   override:
     - "pip install -U pip wheel"
     - "pip install -r requirements-test.txt"
+    - "pip install -r $VIRTUAL_ENV/src/xblock-sdk/requirements/base.txt"
+    - "pip install -r $VIRTUAL_ENV/src/xblock-sdk/requirements/test.txt"
     - "mkdir var"
 test:
   override:
