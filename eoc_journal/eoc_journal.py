@@ -2,6 +2,12 @@
 An XBlock that allows learners to download their activity after they finish their course.
 """
 
+from collections import defaultdict
+
+from opaque_keys.edx.keys import CourseKey
+from problem_builder.models import Answer
+from problem_builder.step import _normalize_id
+from student.models import anonymous_id_for_user
 from xblock.core import XBlock
 from xblock.fields import Scope, String, List
 from xblock.fragment import Fragment
@@ -84,6 +90,13 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         """
         context = context.copy() if context else {}
 
+        user = self._get_current_user()
+        course_id = getattr(self.runtime, 'course_id', 'course_id')
+        course_id = unicode(_normalize_id(course_id))
+        anonymous_user_id = anonymous_id_for_user(user, course_id, save=False)
+
+        context['answer_sections'] = self.list_user_pb_answers_by_section(anonymous_user_id, course_id)
+
         key_takeaways_handle = self.key_takeaways_pdf.strip()
         if key_takeaways_handle:
             context["key_takeaways_pdf_url"] = self._expand_static_url(self.key_takeaways_pdf)
@@ -96,6 +109,44 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             self.runtime.local_resource_url(self, "public/css/eoc_journal.css")
         )
         return fragment
+
+    def list_user_pb_answers_by_section(self, user_id, course_id):
+        """
+        Returns a list of dicts with pb-answers grouped by section.
+        """
+        # Get the selected blocks and their answers
+        blocks = self.list_pb_answers()
+        answers_names = [block['name'] for block in blocks]
+        course_key = CourseKey.from_string(course_id)
+        answers = Answer.objects.filter(
+            course_key=course_key,
+            student_id=user_id,
+            name__in=answers_names
+        )
+
+        if answers.count() > 0:
+            # Map answer names to student inputs
+            students_inputs = {a.name: a.student_input for a in answers}
+
+            # Group answers by section
+            answers = defaultdict(list)
+
+            for block in blocks:
+                name = block['name']
+                section = block['section']
+
+                answers[section].append({
+                    'answer': students_inputs[name],
+                    'question': block['question'],
+                })
+
+            # Make list of sections-answers
+            return [
+                {'name': key, 'questions': value}
+                for key, value in answers.items()
+            ]
+        else:
+            return None
 
     def list_pb_answers(self, all_blocks=False):
         """
@@ -122,6 +173,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
                             'unit': unit_block['display_name'],
                             'id': pb_answer_block['id'],
                             'name': pb_answer_block['student_view_data']['name'],
+                            'question': pb_answer_block['student_view_data']['question'],
                             'display_name': pb_answer_block['display_name'],
                         })
         return result
@@ -145,7 +197,9 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         Only staff users can request `all_blocks`.
         """
         user = self._get_current_user()
-        course_id = unicode(getattr(self.runtime, 'course_id', 'course_id'))
+        course_id = getattr(self.runtime, 'course_id', 'course_id')
+        course_id = unicode(_normalize_id(course_id))
+
         client = CourseBlocksApiClient(user, course_id)
         response = client.get_blocks(
             all_blocks=all_blocks,
