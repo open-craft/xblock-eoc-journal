@@ -33,6 +33,8 @@ Inside a fresh virtualenv, `cd` into the root folder of this repository (`xblock
 ```bash
 $ pip install -U pip wheel
 $ pip install -r requirements-test.txt
+$ pip install -r $VENV/src/xblock-sdk/requirements/base.txt
+$ pip install -r $VENV/src/xblock-sdk/requirements/test.txt
 ```
 
 You can then run the entire test suite via
