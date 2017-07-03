@@ -1,0 +1,39 @@
+{% load i18n %}
+<div class="eoc-journal-block-edit editor-with-buttons">
+  <div class="wrapper-comp-settings is-active editor-with-buttons" id="settings-tab">
+    <ul class="list-input settings-list">
+      {% for field in fields %}
+        <li class="field comp-setting-entry metadata_entry field-{{ field.name }}">
+          <div class="wrapper-comp-setting">
+            <label class="label setting-label" for="xb-field-edit-{{ field.name }}">
+              {{ field.display_name }}
+            </label>
+            {% if field.name == 'selected_pb_answer_blocks' %}
+              <span class="fa fa-spinner fa-spin"></span>
+            {% else %}
+              <input
+                class="field-data-control"
+                type="text"
+                name="{{ field.name }}"
+                id="xb-field-edit-{{ field.name }}"
+                value="{{ field.value | default_if_none:'' }}"
+              >
+            {% endif %}
+          </div>
+          <span class="tip setting-help"> {{ field.help | safe }} </span>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="xblock-actions">
+    <ul>
+      <li class="action-item">
+        <a href="#" class="button action-primary save-button">{% trans "Save" %}</a>
+      </li>
+
+      <li class="action-item">
+        <a href="#" class="button cancel-button">{% trans "Cancel" %}</a>
+      </li>
+    </ul>
+  </div>
+</div>
