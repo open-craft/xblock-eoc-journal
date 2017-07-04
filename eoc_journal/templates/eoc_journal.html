@@ -1,5 +1,9 @@
 {% load i18n %}
 <div class="eoc-journal-block">
+  <div class="title">
+    <h3>{{ display_name }}</h3>
+  </div>
+
   <p>
     {% if key_takeaways_pdf_url %}
     <a class="key-takeaways-link" target="_blank" href="{{ key_takeaways_pdf_url }}">

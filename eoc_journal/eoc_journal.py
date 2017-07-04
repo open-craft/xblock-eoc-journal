@@ -84,6 +84,8 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         """
         context = context.copy() if context else {}
 
+        context['display_name'] = self.display_name
+
         key_takeaways_handle = self.key_takeaways_pdf.strip()
         if key_takeaways_handle:
             context["key_takeaways_pdf_url"] = self._expand_static_url(self.key_takeaways_pdf)
