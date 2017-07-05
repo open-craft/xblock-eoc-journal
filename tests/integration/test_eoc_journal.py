@@ -61,11 +61,15 @@ class TestEOCJournal(StudioEditableBaseTest):
         )
         return field
 
-    def configure_block(self, key_takeaways_pdf=None, selected_pb_answer_blocks=[]):
+    def configure_block(self, display_name=None, key_takeaways_pdf=None, selected_pb_answer_blocks=[]):
         self.set_standard_scenario()
         self.go_to_view('studio_view')
         self.fix_js_environment()
 
+        if display_name is not None:
+            control = self.get_element_for_field('display_name')
+            control.clear()
+            control.send_keys(display_name)
         if key_takeaways_pdf is not None:
             control = self.get_element_for_field('key_takeaways_pdf')
             control.clear()
@@ -126,14 +130,25 @@ class TestEOCJournal(StudioEditableBaseTest):
             checkbox_value(selected_block_id)
         )
 
+    def test_display_name(self):
+        self.configure_block()
+        title = self.element.find_element_by_css_selector('.title h3')
+        # The default title is 'End of Course Journal'.
+        default_title = 'End of Course Journal'
+        self.assertEqual(title.text, default_title)
+        custom_title = 'My Custom Yournal'
+        self.configure_block(display_name=custom_title)
+        title = self.element.find_element_by_css_selector('.title h3')
+        self.assertEqual(title.text, custom_title)
+
     def test_no_takeaways_pdf_configured(self):
         self.configure_block()
         links = self.element.find_elements_by_css_selector('a.key-takeaways-link')
         self.assertEqual(len(links), 0)
-        self.assertIn(self.element.text, 'Key Takeaways PDF not available at this time.')
+        self.assertIn('Key Takeaways PDF not available at this time.', self.element.text)
 
     def test_takeaways_pdf_configured(self):
         self.configure_block(key_takeaways_pdf='/static/my.pdf')
         link = self.element.find_element_by_css_selector('a.key-takeaways-link')
-        self.assertIn(link.text, 'Key Takeaways')
+        self.assertIn('Key Takeaways', link.text)
         self.assertEqual(link.get_attribute('target'), '_blank')
