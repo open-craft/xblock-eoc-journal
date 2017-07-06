@@ -11,6 +11,7 @@ from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 
+from .api_client import ApiClient, calculate_engagement_score
 from .course_blocks_api import CourseBlocksApiClient
 from .utils import _, normalize_id
 
@@ -81,10 +82,6 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         'selected_pb_answer_blocks',
     )
 
-    def _get_course_id(self):
-        """ Get a course ID if available """
-        return getattr(self.runtime, 'course_id', 'all')
-
     def student_view(self, context=None):
         """
         View shown to students.
@@ -93,6 +90,9 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
 
         context['display_name'] = self.display_name
         context["answer_sections"] = self.list_user_pb_answers_by_section()
+
+        context["progress"] = self.get_progress_metrics()
+        context["engagement"] = self.get_engagement_metrics()
 
         key_takeaways_handle = self.key_takeaways_pdf.strip()
         if key_takeaways_handle:
@@ -181,6 +181,14 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
                         })
         return result
 
+    def _get_course_id(self):
+        """
+        Returns the course id (string) corresponding to the current course.
+        """
+        course_id = getattr(self.runtime, 'course_id', 'course_id')
+        course_id = unicode(normalize_id(course_id))
+        return course_id
+
     def _get_current_user(self):
         """
         Returns django.contrib.auth.models.User instance corresponding to the current user.
@@ -195,6 +203,64 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         Returns anonymous id (string) corresponding to the current user.
         """
         return self.runtime.anonymous_student_id
+
+    def get_progress_metrics(self):
+        """
+        Fetches and returns dict with progress metrics for the current user
+        in the course.
+        """
+        user = self._get_current_user()
+        course_id = self._get_course_id()
+        client = ApiClient(user, course_id)
+
+        user_progress = client.get_user_progress()
+        cohort_average = client.get_cohort_average_progress()
+
+        if user_progress is None or cohort_average is None:
+            return None
+
+        return {
+            'user': round(user_progress),
+            'cohort_average': round(cohort_average),
+        }
+
+    def get_engagement_metrics(self):
+        """
+        Fetches and returns dict with engagement metrics for the current user
+        and course.
+        """
+        user = self._get_current_user()
+        course_id = self._get_course_id()
+        client = ApiClient(user, course_id)
+
+        user_engagement = client.get_user_engagement_metrics()
+        course_engagement = client.get_cohort_engagement_metrics()
+
+        if not course_engagement:
+            return None
+        else:
+            course_point_sum = [
+                calculate_engagement_score(metrics)
+                for metrics in course_engagement['users'].itervalues()
+            ]
+            course_point_sum = sum(course_point_sum)
+
+            enrollments = course_engagement['total_enrollments']
+
+            if enrollments > 0:
+                cohort_score = float(course_point_sum) / enrollments
+            else:
+                cohort_score = 0
+
+            return {
+                'user_score': round(calculate_engagement_score(user_engagement)),
+                'cohort_score': round(cohort_score),
+                'new_posts': user_engagement.get('num_threads', 0),
+                'replies': user_engagement.get('num_replies', 0),
+                'upvotes': user_engagement.get('num_upvotes', 0),
+                'comments_generated': user_engagement.get('num_comments_generated', 0),
+                'posts_followed': user_engagement.get('num_thread_followers', 0),
+            }
 
     def _fetch_pb_answer_blocks(self, all_blocks=False):
         """
