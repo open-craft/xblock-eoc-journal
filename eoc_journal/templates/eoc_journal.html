@@ -4,6 +4,22 @@
     <h3>{{ display_name }}</h3>
   </div>
 
+  {% if answer_sections %}
+  <div class="eoc-selected-answers">
+    {% for section in answer_sections %}
+      <section class="eoc-selected-answers-section">
+        <h2>{{ section.name }}</h2>
+        {% for q in section.questions %}
+          <div class="eoc-selected-answer">
+            <h3>{{ q.question }}</h3>
+            <p>{{ q.answer }}</p>
+          </div>
+        {% endfor %}
+      </section>
+      {% endfor %}
+  </div>
+  {% endif %}
+
   <p>
     {% if key_takeaways_pdf_url %}
     <a class="key-takeaways-link" target="_blank" href="{{ key_takeaways_pdf_url }}">

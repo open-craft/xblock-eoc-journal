@@ -2,6 +2,9 @@
 An XBlock that allows learners to download their activity after they finish their course.
 """
 
+from collections import OrderedDict
+
+from problem_builder.models import Answer
 from xblock.core import XBlock
 from xblock.fields import Scope, String, List
 from xblock.fragment import Fragment
@@ -9,12 +12,12 @@ from xblockutils.resources import ResourceLoader
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 
 from .course_blocks_api import CourseBlocksApiClient
-from .utils import _
+from .utils import _, normalize_id
 
 try:
     from django.contrib.auth.models import User
 except ImportError:
-    User = None
+    User = None  # pylint: disable=C0103
 
 
 loader = ResourceLoader(__name__)
@@ -78,6 +81,10 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         'selected_pb_answer_blocks',
     )
 
+    def _get_course_id(self):
+        """ Get a course ID if available """
+        return getattr(self.runtime, 'course_id', 'all')
+
     def student_view(self, context=None):
         """
         View shown to students.
@@ -85,6 +92,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         context = context.copy() if context else {}
 
         context['display_name'] = self.display_name
+        context["answer_sections"] = self.list_user_pb_answers_by_section()
 
         key_takeaways_handle = self.key_takeaways_pdf.strip()
         if key_takeaways_handle:
@@ -98,6 +106,50 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             self.runtime.local_resource_url(self, "public/css/eoc_journal.css")
         )
         return fragment
+
+    def list_user_pb_answers_by_section(self):
+        """
+        Returns a list of dicts with pb-answers grouped by section.
+        """
+        # Get the selected blocks and their answers
+        blocks = self.list_pb_answers()
+        blocks = [b for b in blocks if b['id'] in self.selected_pb_answer_blocks]
+        course_id = self._get_course_id()
+        user_id = self._get_current_anonymous_user_id()
+        answers_names = [block['name'] for block in blocks]
+
+        answers = Answer.objects.filter(  # pylint: disable=no-member
+            course_key=course_id,
+            student_id=user_id,
+            name__in=answers_names
+        )
+
+        if answers.count() > 0:
+            # Map answer names to student inputs
+            students_inputs = {a.name: a.student_input for a in answers}
+
+            # Group answers by section
+            answers = OrderedDict()
+
+            for block in blocks:
+                name = block['name']
+                section = block['section']
+
+                if section not in answers:
+                    answers[section] = []
+
+                answers[section].append({
+                    'answer': students_inputs.get(name, _('Not answered yet.')),
+                    'question': block['question'],
+                })
+
+            # Make list of sections-answers
+            return [
+                {'name': key, 'questions': value}
+                for key, value in answers.items()
+            ]
+        else:
+            return None
 
     def list_pb_answers(self, all_blocks=False):
         """
@@ -124,6 +176,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
                             'unit': unit_block['display_name'],
                             'id': pb_answer_block['id'],
                             'name': pb_answer_block['student_view_data']['name'],
+                            'question': pb_answer_block['student_view_data']['question'],
                             'display_name': pb_answer_block['display_name'],
                         })
         return result
@@ -134,8 +187,14 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         """
         xblock_user = self.runtime.service(self, 'user').get_current_user()
         user_id = xblock_user.opt_attrs['edx-platform.user_id']
-        user = User.objects.get(pk=user_id)
+        user = User.objects.get(pk=user_id)  # pylint: disable=no-member
         return user
+
+    def _get_current_anonymous_user_id(self):
+        """
+        Returns anonymous id (string) corresponding to the current user.
+        """
+        return self.runtime.anonymous_student_id
 
     def _fetch_pb_answer_blocks(self, all_blocks=False):
         """
@@ -147,7 +206,9 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         Only staff users can request `all_blocks`.
         """
         user = self._get_current_user()
-        course_id = unicode(getattr(self.runtime, 'course_id', 'course_id'))
+        course_id = getattr(self.runtime, 'course_id', 'course_id')
+        course_id = unicode(normalize_id(course_id))
+
         client = CourseBlocksApiClient(user, course_id)
         response = client.get_blocks(
             all_blocks=all_blocks,

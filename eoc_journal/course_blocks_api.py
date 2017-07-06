@@ -6,9 +6,9 @@ from django.conf import settings
 from edx_rest_api_client.client import EdxRestApiClient
 
 try:
-    from openedx.core.lib.token_utils import JwtBuilder
+    from openedx.core.lib.token_utils import JwtBuilder  # pylint: disable=F0401
 except ImportError:
-    JwtBuilder = None
+    JwtBuilder = None  # pylint: disable=C0103
 
 
 class CourseBlocksApiClient(object):

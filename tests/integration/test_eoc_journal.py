@@ -3,7 +3,8 @@ Basic integration tests for the EOC Journal XBlock.
 """
 
 import json
-from mock import Mock, patch
+from mock import MagicMock, Mock, patch
+from selenium.common.exceptions import NoSuchElementException
 
 from xblock.reference.user_service import XBlockUser
 from xblockutils.studio_editable_test import StudioEditableBaseTest
@@ -12,12 +13,6 @@ from xblockutils.resources import ResourceLoader
 
 loader = ResourceLoader(__name__)
 
-
-default_pb_answer_block_ids = [
-    'i4x://Org/Course/pb-answer/b86edf60454b47dbb8f2e1b4e2d48d6a',
-    'i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c',
-    'i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233',
-]
 
 def checkbox_value(block_id):
     """
@@ -29,6 +24,37 @@ def checkbox_value(block_id):
     return '"{}"'.format(block_id)
 
 
+class FakeQuerySet(object):
+    def __init__(self, objs):
+        self.objects = objs
+
+    def __iter__(self):
+        for o in self.objects:
+            yield o
+
+    def count(self):
+        return len(self.objects)
+
+
+class FakeAnswer(object):
+    def __init__(self, name, student_input, question):
+        self.name = name
+        self.student_input = student_input
+        self.question = question
+
+
+default_pb_answer_block_ids = [
+    'i4x://Org/Course/pb-answer/b86edf60454b47dbb8f2e1b4e2d48d6a',
+    'i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c',
+    'i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233',
+]
+
+
+default_answers_data = [
+    FakeAnswer("efac891", 'student input', 'Tell us more about yourself.'),
+]
+
+
 class TestEOCJournal(StudioEditableBaseTest):
     default_css_selector = 'div.oec-journal-block'
     module_name = __name__
@@ -36,10 +62,21 @@ class TestEOCJournal(StudioEditableBaseTest):
 
     def setUp(self):
         super(TestEOCJournal, self).setUp()
+
+        def mock_answers_filter(**kwargs):
+            return FakeQuerySet(default_answers_data)
+        answer_mock = MagicMock()
+        answer_mock.objects.filter = mock_answers_filter
+        self.patch('eoc_journal.eoc_journal.Answer', answer_mock)
+
         # Patch _get_current_user method.
         mock_user = Mock()
         mock_user.username = 'some-user'
         self.patch('eoc_journal.eoc_journal.EOCJournalXBlock._get_current_user', mock_user)
+        self.patch(
+            'eoc_journal.eoc_journal.EOCJournalXBlock._get_current_anonymous_user_id',
+            lambda self: 'anonymous_user_id',
+        )
         # Patch CourseBlocksApiClient.
         self.patch('eoc_journal.eoc_journal.CourseBlocksApiClient.connect', Mock())
         def mock_get_blocks(self, **kwargs):
@@ -60,6 +97,12 @@ class TestEOCJournal(StudioEditableBaseTest):
             'li.field[data-field-name=selected_pb_answer_blocks]'
         )
         return field
+
+    def get_element_for_selected_pb_answers(self):
+        element = self.browser.find_element_by_css_selector(
+            'div.eoc-selected-answers'
+        )
+        return element
 
     def configure_block(self, display_name=None, key_takeaways_pdf=None, selected_pb_answer_blocks=[]):
         self.set_standard_scenario()
@@ -114,6 +157,44 @@ class TestEOCJournal(StudioEditableBaseTest):
             self.assertEqual(checkbox.get_attribute('value'), checkbox_value(value))
             label = item.find_element_by_css_selector('label')
             self.assertEqual(label.text, title)
+
+    def test_pb_answers_listed_in_student_view(self):
+        selected_block_ids = default_pb_answer_block_ids[1:]
+        self.configure_block(selected_pb_answer_blocks=selected_block_ids)
+
+        element = self.get_element_for_selected_pb_answers()
+
+        items = element.find_elements_by_css_selector('.eoc-selected-answers-section')
+        self.assertEqual(len(items), 1)
+        
+        section_name = items[0].find_element_by_css_selector('h2')
+        self.assertEqual(section_name.text, 'Second Section')
+
+        answers_in_section = items[0].find_elements_by_css_selector('.eoc-selected-answer')
+        self.assertEqual(len(answers_in_section), 2)
+      
+        expected_answers_data = [
+            FakeAnswer(None, 'Not answered yet.', 'Hello, who are you?')
+        ]
+
+        expected_answers_data += default_answers_data
+
+        for element, expected in zip(answers_in_section, expected_answers_data):
+            question = element.find_element_by_css_selector('h3')
+            answer = element.find_element_by_css_selector('p')
+
+            self.assertEqual(question.text, expected.question)
+            self.assertEqual(answer.text, expected.student_input)
+
+    def test_pb_answers_not_listed_when_none_available_in_student_view(self):
+        self.set_standard_scenario()
+        self.go_to_view('student_view')
+        self.fix_js_environment()
+
+        self.assertRaises(
+            NoSuchElementException,
+            self.get_element_for_selected_pb_answers
+        )
 
     def test_pb_answer_blocks_selection_preserved_in_edit_view(self):
         selected_block_id = default_pb_answer_block_ids[1]
