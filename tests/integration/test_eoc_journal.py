@@ -55,6 +55,30 @@ default_answers_data = [
 ]
 
 
+default_social_metrics_points = {
+    'num_threads': 1,
+    'num_replies': 1,
+    'num_upvotes': 1,
+    'num_comments_generated': 1,
+    'num_thread_followers': 1,
+}
+
+
+default_engagement_metrics = {
+    'user_score': 5,
+    'cohort_score': 9,
+    'new_posts': 1,
+    'replies': 1,
+    'upvotes': 1,
+    'comments_generated': 1,
+    'posts_followed': 1,
+}
+
+
+default_user_progress = 4
+default_cohort_average_progress = 30
+
+
 class TestEOCJournal(StudioEditableBaseTest):
     default_css_selector = 'div.oec-journal-block'
     module_name = __name__
@@ -83,6 +107,51 @@ class TestEOCJournal(StudioEditableBaseTest):
             return json.loads(loader.load_unicode('data/course_api_response.json'))
         self.patch('eoc_journal.eoc_journal.CourseBlocksApiClient.get_blocks', mock_get_blocks)
 
+        # Patch UserMetricsClient.
+        def mock_get_user_engagement_metrics(self):
+            return json.loads(loader.load_unicode('data/user_engagement_metrics_response.json'))
+        self.patch(
+            'eoc_journal.api_client.ApiClient.get_user_engagement_metrics',
+            mock_get_user_engagement_metrics
+        )
+
+        def mock_get_cohort_engagement_metrics(self):
+            return json.loads(loader.load_unicode('data/cohort_engagement_metrics_response.json'))
+        self.patch(
+            'eoc_journal.api_client.ApiClient.get_cohort_engagement_metrics',
+            mock_get_cohort_engagement_metrics
+        )
+
+        def mock_get_course_completions(self):
+            return json.loads(loader.load_unicode('data/course_completions_response.json'))
+
+        self.patch(
+            'eoc_journal.api_client.ApiClient._get_course_completions',
+            mock_get_course_completions
+        )
+
+        def mock_get_course(self):
+            return json.loads(loader.load_unicode('data/course_response.json'))
+
+        self.patch(
+            'eoc_journal.api_client.ApiClient._get_course',
+            mock_get_course
+        )
+
+        def mock_get_cohort_average_progress(self):
+            return default_cohort_average_progress
+
+        self.patch(
+            'eoc_journal.api_client.ApiClient.get_cohort_average_progress',
+            mock_get_cohort_average_progress
+        )
+
+        self.patch(
+            'eoc_journal.api_client.SOCIAL_METRICS_POINTS',
+            default_social_metrics_points
+        )
+
+
     def patch(self, item, return_value):
         patcher = patch(item, return_value)
         patcher.start()
@@ -101,6 +170,18 @@ class TestEOCJournal(StudioEditableBaseTest):
     def get_element_for_selected_pb_answers(self):
         element = self.browser.find_element_by_css_selector(
             'div.eoc-selected-answers'
+        )
+        return element
+
+    def get_element_for_course_progress(self):
+        element = self.browser.find_element_by_css_selector(
+            'div.progress-metrics'
+        )
+        return element
+
+    def get_element_for_course_engagement(self):
+        element = self.browser.find_element_by_css_selector(
+            'div.engagement-metrics'
         )
         return element
 
@@ -126,6 +207,27 @@ class TestEOCJournal(StudioEditableBaseTest):
         self.click_save()
 
         self.element = self.go_to_view('student_view')
+
+    def test_block_loads_when_apis_not_available(self):
+        # Patch all engagement/progress/completion API related methods to return None.
+        # These API related methods return None if the APIs are not available for some reason.
+        # They are not available in the Studio, for example.
+        api_client_methods = [
+            'get_user_engagement_metrics',
+            'get_cohort_engagement_metrics',
+            'get_cohort_average_progress',
+            '_get_course_completions',
+            '_get_course',
+        ]
+        for method in api_client_methods:
+            method_path = 'eoc_journal.api_client.ApiClient.{}'.format(method)
+            self.patch(method_path, lambda self: None)
+
+        self.set_standard_scenario()
+        # Verify the student view does not break.
+        element = self.go_to_view('student_view')
+        self.assertIn('Progress data is not available.', element.text)
+        self.assertIn('Engagement data is not available.', element.text)
 
     def test_pb_answer_blocks_listed_in_edit_view(self):
         self.set_standard_scenario()
@@ -166,13 +268,13 @@ class TestEOCJournal(StudioEditableBaseTest):
 
         items = element.find_elements_by_css_selector('.eoc-selected-answers-section')
         self.assertEqual(len(items), 1)
-        
-        section_name = items[0].find_element_by_css_selector('h2')
+
+        section_name = items[0].find_element_by_css_selector('h4')
         self.assertEqual(section_name.text, 'Second Section')
 
         answers_in_section = items[0].find_elements_by_css_selector('.eoc-selected-answer')
         self.assertEqual(len(answers_in_section), 2)
-      
+
         expected_answers_data = [
             FakeAnswer(None, 'Not answered yet.', 'Hello, who are you?')
         ]
@@ -180,7 +282,7 @@ class TestEOCJournal(StudioEditableBaseTest):
         expected_answers_data += default_answers_data
 
         for element, expected in zip(answers_in_section, expected_answers_data):
-            question = element.find_element_by_css_selector('h3')
+            question = element.find_element_by_css_selector('h5')
             answer = element.find_element_by_css_selector('p')
 
             self.assertEqual(question.text, expected.question)
@@ -195,6 +297,36 @@ class TestEOCJournal(StudioEditableBaseTest):
             NoSuchElementException,
             self.get_element_for_selected_pb_answers
         )
+
+    def test_progress_metrics_listed_in_student_view(self):
+        self.set_standard_scenario()
+        self.go_to_view('student_view')
+        self.fix_js_environment()
+
+        element = self.get_element_for_course_progress()
+        user_score = element.find_element_by_css_selector('span[data-progress-name="user"]')
+        self.assertEqual(float(user_score.text), default_user_progress)
+
+        cohort_score = element.find_element_by_css_selector('span[data-progress-name="cohort"]')
+        self.assertEqual(float(cohort_score.text), default_cohort_average_progress)
+
+    def test_engagement_metrics_listed_in_student_view(self):
+        self.set_standard_scenario()
+        self.go_to_view('student_view')
+        self.fix_js_environment()
+
+        element = self.get_element_for_course_engagement()
+
+        for key, value in default_engagement_metrics.iteritems():
+            if key == 'user_score':
+                tag = 'span[data-engagement-name="user"]'
+            elif key == 'cohort_score':
+                tag = 'span[data-engagement-name="cohort"]'
+            else:
+                tag = 'td[data-point-name="{}"]'.format(key)
+
+            entry = element.find_element_by_css_selector(tag)
+            self.assertEqual(float(entry.text), value)
 
     def test_pb_answer_blocks_selection_preserved_in_edit_view(self):
         selected_block_id = default_pb_answer_block_ids[1]
