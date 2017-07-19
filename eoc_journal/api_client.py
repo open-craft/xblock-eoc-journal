@@ -177,6 +177,22 @@ class ApiClient(object):
 
         return get(url, params=params)
 
+    def _get_completion_leader_metrics(self):
+        """
+        Fetches and returns user completion metrics.
+        """
+        params = {
+            'skipleaders': True,
+            'user_id': self.user.id,
+        }
+
+        url = '{base_url}/courses/{course_id}/metrics/completions/leaders/'.format(
+            base_url=self.API_BASE_URL,
+            course_id=self.course_id,
+        )
+
+        return get(url, params=params)
+
     def get_user_progress(self):
         """
         Calculates the progress percentage for the current user.
@@ -216,18 +232,8 @@ class ApiClient(object):
         """
         Fetches and returns cohort average progress.
         """
-        params = {
-            'skipleaders': True,
-            'user_id': self.user.id,
-        }
-
-        url = '{base_url}/courses/{course_id}/metrics/completions/leaders/'.format(
-            base_url=self.API_BASE_URL,
-            course_id=self.course_id,
-        )
-
-        data = get(url, params=params)
+        data = self._get_completion_leader_metrics()
 
         if data:
-            return data.get('cohort_avg', None)
+            return data.get('course_avg', None)
         return None

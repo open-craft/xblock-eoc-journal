@@ -220,8 +220,8 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             return None
 
         return {
-            'user': round(user_progress),
-            'cohort_average': round(cohort_average),
+            'user': int(round(user_progress)),
+            'cohort_average': int(round(cohort_average)),
         }
 
     def get_engagement_metrics(self):
@@ -253,8 +253,8 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
                 cohort_score = 0
 
             return {
-                'user_score': round(calculate_engagement_score(user_engagement)),
-                'cohort_score': round(cohort_score),
+                'user_score': int(round(calculate_engagement_score(user_engagement))),
+                'cohort_score': int(round(cohort_score)),
                 'new_posts': user_engagement.get('num_threads', 0),
                 'replies': user_engagement.get('num_replies', 0),
                 'upvotes': user_engagement.get('num_upvotes', 0),

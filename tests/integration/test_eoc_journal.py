@@ -74,9 +74,15 @@ default_engagement_metrics = {
     'posts_followed': 1,
 }
 
+default_completion_leader_metrics = {
+    'position': 1,
+    'course_avg': 17.5,
+    'completions': 33.33,
+}
+
 
 default_user_progress = 4
-default_cohort_average_progress = 30
+default_cohort_average_progress = int(round(default_completion_leader_metrics['course_avg']))
 
 
 class TestEOCJournal(StudioEditableBaseTest):
@@ -103,13 +109,16 @@ class TestEOCJournal(StudioEditableBaseTest):
         )
         # Patch CourseBlocksApiClient.
         self.patch('eoc_journal.eoc_journal.CourseBlocksApiClient.connect', Mock())
+
         def mock_get_blocks(self, **kwargs):
             return json.loads(loader.load_unicode('data/course_api_response.json'))
+
         self.patch('eoc_journal.eoc_journal.CourseBlocksApiClient.get_blocks', mock_get_blocks)
 
         # Patch UserMetricsClient.
         def mock_get_user_engagement_metrics(self):
             return json.loads(loader.load_unicode('data/user_engagement_metrics_response.json'))
+
         self.patch(
             'eoc_journal.api_client.ApiClient.get_user_engagement_metrics',
             mock_get_user_engagement_metrics
@@ -117,6 +126,7 @@ class TestEOCJournal(StudioEditableBaseTest):
 
         def mock_get_cohort_engagement_metrics(self):
             return json.loads(loader.load_unicode('data/cohort_engagement_metrics_response.json'))
+
         self.patch(
             'eoc_journal.api_client.ApiClient.get_cohort_engagement_metrics',
             mock_get_cohort_engagement_metrics
@@ -138,12 +148,12 @@ class TestEOCJournal(StudioEditableBaseTest):
             mock_get_course
         )
 
-        def mock_get_cohort_average_progress(self):
-            return default_cohort_average_progress
+        def mock_get_completion_leader_metrics(self):
+            return default_completion_leader_metrics
 
         self.patch(
-            'eoc_journal.api_client.ApiClient.get_cohort_average_progress',
-            mock_get_cohort_average_progress
+            'eoc_journal.api_client.ApiClient._get_completion_leader_metrics',
+            mock_get_completion_leader_metrics
         )
 
         self.patch(
