@@ -193,6 +193,17 @@ class ApiClient(object):
 
         return get(url, params=params)
 
+    def _get_grades_leader_metrics(self):
+        """
+        Fetches the user grades metrics.
+        """
+        params = {'user_id': self.user.id}
+        url = '{base_url}/courses/{course_id}/metrics/grades/leaders/'.format(
+            base_url=self.API_BASE_URL,
+            course_id=self.course_id,
+        )
+        return get(url, params=params)
+
     def get_user_progress(self):
         """
         Calculates the progress percentage for the current user.
@@ -237,3 +248,20 @@ class ApiClient(object):
         if data:
             return data.get('course_avg', None)
         return None
+
+    def get_user_proficiency(self):
+        """
+        Fetches and returns the user's and average course proficiency scores.
+        """
+        data = self._get_grades_leader_metrics()
+        if data is None:
+            return None
+
+        user_grade = data.get('user_grade')
+        course_avg = data.get('course_avg')
+        if user_grade is None or course_avg is None:
+            return None
+
+        user_grade = int(round(user_grade * 100.0))
+        course_avg = int(round(course_avg * 100.0))
+        return dict(user=user_grade, cohort_average=course_avg)

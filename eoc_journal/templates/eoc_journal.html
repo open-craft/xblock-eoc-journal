@@ -27,6 +27,29 @@
     </div>
   </div>
 
+  <div class="proficiency-metrics">
+    <div class="title">
+      <h4>{% trans "Proficiency" %}</h4>
+      <p>
+
+      {% if proficiency %}
+
+      {% blocktrans with proficiency=proficiency.user tag_start='<span data-proficiency-name="user">' tag_end='</span>' %}
+      Your current proficiency score is {{ tag_start }}{{ proficiency }}{{ tag_end }}% following completion of graded
+      items in this course.
+      {% endblocktrans %}
+
+      {% blocktrans with proficiency=proficiency.cohort_average tag_start='<span data-proficiency-name="cohort">' tag_end='</span>' %}
+      The cohort average is {{ tag_start }}{{ proficiency }}{{ tag_end }}%.
+      {% endblocktrans %}
+
+      {% else %}
+      {% trans "Proficiency data is not available." %}
+      {% endif %}
+      </p>
+    </div>
+  </div>
+
   <div class="engagement-metrics">
     <div class="title">
       <h4>{% trans "Engagement" %}</h4>

@@ -84,6 +84,9 @@ default_completion_leader_metrics = {
 default_user_progress = 4
 default_cohort_average_progress = int(round(default_completion_leader_metrics['course_avg']))
 
+default_user_proficiency = 83
+default_cohort_average_proficiency = 44
+
 
 class TestEOCJournal(StudioEditableBaseTest):
     default_css_selector = 'div.oec-journal-block'
@@ -140,6 +143,14 @@ class TestEOCJournal(StudioEditableBaseTest):
             mock_get_course_completions
         )
 
+        def mock_get_grades_leader_metrics(self):
+            return json.loads(loader.load_unicode('data/grades_leader_metrics_response.json'))
+
+        self.patch(
+            'eoc_journal.api_client.ApiClient._get_grades_leader_metrics',
+            mock_get_grades_leader_metrics
+        )
+
         def mock_get_course(self):
             return json.loads(loader.load_unicode('data/course_response.json'))
 
@@ -189,6 +200,12 @@ class TestEOCJournal(StudioEditableBaseTest):
         )
         return element
 
+    def get_element_for_course_proficiency(self):
+        element = self.browser.find_element_by_css_selector(
+            'div.proficiency-metrics'
+        )
+        return element
+
     def get_element_for_course_engagement(self):
         element = self.browser.find_element_by_css_selector(
             'div.engagement-metrics'
@@ -227,6 +244,7 @@ class TestEOCJournal(StudioEditableBaseTest):
             'get_cohort_engagement_metrics',
             'get_cohort_average_progress',
             '_get_course_completions',
+            '_get_grades_leader_metrics',
             '_get_course',
         ]
         for method in api_client_methods:
@@ -237,6 +255,7 @@ class TestEOCJournal(StudioEditableBaseTest):
         # Verify the student view does not break.
         element = self.go_to_view('student_view')
         self.assertIn('Progress data is not available.', element.text)
+        self.assertIn('Proficiency data is not available.', element.text)
         self.assertIn('Engagement data is not available.', element.text)
 
     def test_pb_answer_blocks_listed_in_edit_view(self):
@@ -319,6 +338,18 @@ class TestEOCJournal(StudioEditableBaseTest):
 
         cohort_score = element.find_element_by_css_selector('span[data-progress-name="cohort"]')
         self.assertEqual(float(cohort_score.text), default_cohort_average_progress)
+
+    def test_proficiency_metrics_listed_in_student_view(self):
+        self.set_standard_scenario()
+        self.go_to_view('student_view')
+        self.fix_js_environment()
+
+        element = self.get_element_for_course_proficiency()
+        user_score = element.find_element_by_css_selector('span[data-proficiency-name="user"]')
+        self.assertEqual(float(user_score.text), default_user_proficiency)
+
+        cohort_score = element.find_element_by_css_selector('span[data-proficiency-name="cohort"]')
+        self.assertEqual(float(cohort_score.text), default_cohort_average_proficiency)
 
     def test_engagement_metrics_listed_in_student_view(self):
         self.set_standard_scenario()
