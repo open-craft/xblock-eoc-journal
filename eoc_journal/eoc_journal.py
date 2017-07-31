@@ -92,6 +92,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         context["answer_sections"] = self.list_user_pb_answers_by_section()
 
         context["progress"] = self.get_progress_metrics()
+        context["proficiency"] = self.get_proficiency_metrics()
         context["engagement"] = self.get_engagement_metrics()
 
         key_takeaways_handle = self.key_takeaways_pdf.strip()
@@ -222,6 +223,26 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         return {
             'user': int(round(user_progress)),
             'cohort_average': int(round(cohort_average)),
+        }
+
+    def get_proficiency_metrics(self):
+        """
+        Fetches and returns dict with proficiency (grades) metrics for the current user
+        in the course.
+        """
+        user = self._get_current_user()
+        course_id = self._get_course_id()
+        client = ApiClient(user, course_id)
+
+        proficiency = client.get_user_proficiency()
+
+        if proficiency is None:
+            return None
+
+        return {
+            'user': int(round(proficiency.get('user', 0))),
+            'cohort_average': int(round(proficiency.get('cohort_average', 0))),
+            'graded_items': proficiency.get('graded_items', []),
         }
 
     def get_engagement_metrics(self):

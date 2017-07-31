@@ -2,9 +2,10 @@ End of Course Journal XBlock
 ============================
 
 The "End of Course" Journal XBlock provides ability for a participant to download his/her activity once he/she completes
-the course.
+the course.  Currently only [problem-builder](https://github.com/open-craft/problem-builder) freeform answers are supported.
 
-Currently only [problem-builder](https://github.com/open-craft/problem-builder) freeform answers are supported.
+This XBlock also displays a summary of the learner's participation, proficiency, and engagement in the course compared
+with the course averages.
 
 Installation
 ------------
