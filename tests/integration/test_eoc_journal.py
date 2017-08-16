@@ -57,6 +57,7 @@ default_answers_data = [
 
 default_social_metrics_points = {
     'num_threads': 1,
+    'num_comments': 1,
     'num_replies': 1,
     'num_upvotes': 1,
     'num_comments_generated': 1,
@@ -65,10 +66,10 @@ default_social_metrics_points = {
 
 
 default_engagement_metrics = {
-    'user_score': 5,
+    'user_score': 6,
     'cohort_score': 9,
     'new_posts': 1,
-    'replies': 1,
+    'total_replies': 2,
     'upvotes': 1,
     'comments_generated': 1,
     'posts_followed': 1,

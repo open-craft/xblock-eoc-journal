@@ -277,7 +277,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
                 'user_score': int(round(calculate_engagement_score(user_engagement))),
                 'cohort_score': int(round(cohort_score)),
                 'new_posts': user_engagement.get('num_threads', 0),
-                'replies': user_engagement.get('num_replies', 0),
+                'total_replies': user_engagement.get('num_replies', 0) + user_engagement.get('num_comments', 0),
                 'upvotes': user_engagement.get('num_upvotes', 0),
                 'comments_generated': user_engagement.get('num_comments_generated', 0),
                 'posts_followed': user_engagement.get('num_thread_followers', 0),
