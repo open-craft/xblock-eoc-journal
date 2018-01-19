@@ -1,10 +1,12 @@
 """
 A wrapper around the Edx API.
 """
+import requests
 
 from django.conf import settings
+from edx_rest_api_client.exceptions import HttpClientError
 
-import requests
+from .utils import build_jwt_edx_client
 
 
 # Points for social activities
@@ -126,6 +128,19 @@ class ApiClient(object):
         else:
             self.API_BASE_URL = None
 
+        self.expires_in = getattr(settings, 'OAUTH_ID_TOKEN_EXPIRATION', 300)
+        self.jwt_edx_client = None
+        self.connect_with_jwt()
+
+    def connect_with_jwt(self):
+        """
+        Connect to the REST API, authenticating with a JWT for the current user.
+        """
+        self.jwt_edx_client = build_jwt_edx_client(
+            self.API_BASE_URL, scopes=['profile', 'email'],
+            user=self.user, expires_in=self.expires_in, append_slash=False
+        )
+
     def get_user_engagement_metrics(self):
         """
         Fetches and returns social metrics for the current user in the
@@ -167,15 +182,12 @@ class ApiClient(object):
         Fetches and returns chapters, sequentials, and pages information about
         the current course.
         """
-        params = {'depth': 5}
+        try:
+            course = self.jwt_edx_client.courses(id=self.course_id).get(depth=5)
+        except HttpClientError:
+            return None
 
-        # IMPORTANT: This requires that no trailing / be provided.
-        url = '{base_url}/courses/{course_id}'.format(
-            base_url=self.API_BASE_URL,
-            course_id=self.course_id,
-        )
-
-        return get(url, params=params)
+        return course
 
     def _get_completion_leader_metrics(self):
         """
