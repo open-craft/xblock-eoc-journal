@@ -3,12 +3,8 @@ An XBlock that allows learners to download their activity after they finish thei
 """
 
 from django.conf import settings
-from edx_rest_api_client.client import EdxRestApiClient
 
-try:
-    from openedx.core.lib.token_utils import JwtBuilder  # pylint: disable=F0401
-except ImportError:
-    JwtBuilder = None  # pylint: disable=C0103
+from .utils import build_jwt_edx_client
 
 
 class CourseBlocksApiClient(object):
@@ -35,21 +31,15 @@ class CourseBlocksApiClient(object):
         """
         Connect to the REST API, authenticating with a JWT for the current user.
         """
-        if JwtBuilder is None:
-            raise NotConnectedToOpenEdX("This package must be installed in an OpenEdX environment.")
         scopes = ['profile', 'email']
-        jwt = JwtBuilder(self.user).build_token(scopes, self.expires_in)
-        self.client = EdxRestApiClient(self.API_BASE_URL, append_slash=True, jwt=jwt)
+
+        self.client = build_jwt_edx_client(
+            self.API_BASE_URL, scopes, self.user,
+            self.expires_in, append_slash=True
+        )
 
     def get_blocks(self, **kwargs):
         """
         Fetches and returns blocks from the Course API.
         """
         return self.client.blocks.get(course_id=self.course_id, **kwargs)
-
-
-class NotConnectedToOpenEdX(Exception):
-    """
-    Exception to raise when not connected to OpenEdX.
-    """
-    pass
