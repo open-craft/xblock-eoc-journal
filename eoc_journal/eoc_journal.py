@@ -3,6 +3,12 @@ An XBlock that allows learners to download their activity after they finish thei
 """
 
 from collections import OrderedDict
+from io import BytesIO
+import webob
+
+from reportlab.lib import pagesizes
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 
 from problem_builder.models import Answer
 from xblock.core import XBlock
@@ -99,6 +105,8 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         if key_takeaways_handle:
             context["key_takeaways_pdf_url"] = self._expand_static_url(self.key_takeaways_pdf)
 
+        context["pdf_report_url"] = self.runtime.handler_url(self, "serve_pdf")
+
         fragment = Fragment()
         fragment.add_content(
             loader.render_template("templates/eoc_journal.html", context)
@@ -107,6 +115,37 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             self.runtime.local_resource_url(self, "public/css/eoc_journal.css")
         )
         return fragment
+
+    @XBlock.handler
+    def serve_pdf(self, request, _suffix):
+        """
+        Builds and serves a PDF document containing user's freeform answers.
+        """
+        styles = getSampleStyleSheet()
+        pdf_buffer = BytesIO()
+        document = SimpleDocTemplate(pdf_buffer, pagesize=pagesizes.letter, title=_("Report"))
+        story = [
+            Paragraph(self.display_name, styles["Title"]),
+        ]
+
+        answer_sections = self.list_user_pb_answers_by_section()
+        for section in answer_sections:
+            story.append(Spacer(0, 16))
+            story.append(Paragraph(section["name"], styles["h1"]))
+            for question in section["questions"]:
+                story.append(Paragraph(question["question"], styles["h2"]))
+                story.append(Paragraph(question["answer"], styles["Normal"]))
+
+        document.build(story)
+        pdf_buffer.seek(0)
+        pdf = pdf_buffer.read()
+
+        response = webob.Response(
+            body=pdf,
+            content_type='application/pdf',
+        )
+
+        return response
 
     def list_user_pb_answers_by_section(self):
         """
