@@ -124,6 +124,18 @@
   </section>
   {% endfor %}
 </div>
+
+<div class="eoc-pdf-report">
+  <div class="title">
+    <h4>PDF Report</h4>
+  </div>
+  <p>
+    <a class="pdf-report-link" target="_blank" href="{{ pdf_report_url }}">
+      <span class="fa fa-file-text-o" aria-hidden="true"></span>
+      {% trans "Download PDF" %}
+    </a>
+  </p>
+</div>
 {% endif %}
 
 <div class="eoc-key-takeaways">

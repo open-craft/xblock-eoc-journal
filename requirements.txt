@@ -1,4 +1,5 @@
 git+https://github.com/edx/xblock-utils.git@v1.0.2#egg=xblock-utils==1.0.2
 git+https://github.com/open-craft/problem-builder@27e2f4ba5afdefcb6a4e5fd793969e1e626a0abe#egg=xblock-problem-builder
 edx-rest-api-client==1.6.0
+reportlab==3.1.44
 -e .

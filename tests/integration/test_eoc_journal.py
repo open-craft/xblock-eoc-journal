@@ -3,12 +3,15 @@ Basic integration tests for the EOC Journal XBlock.
 """
 
 import json
+from django.test.client import Client
 from mock import MagicMock, Mock, patch
 from selenium.common.exceptions import NoSuchElementException
 
 from xblock.reference.user_service import XBlockUser
 from xblockutils.studio_editable_test import StudioEditableBaseTest
 from xblockutils.resources import ResourceLoader
+
+from .utils import extract_text_from_pdf
 
 
 loader = ResourceLoader(__name__)
@@ -52,6 +55,11 @@ default_pb_answer_block_ids = [
 
 default_answers_data = [
     FakeAnswer("efac891", 'student input', 'Tell us more about yourself.'),
+]
+
+expected_answers_data = [
+    {'question': 'Hello, who are you?', 'answer': 'Not answered yet.'},
+    {'question': 'Tell us more about yourself.', 'answer': 'student input'},
 ]
 
 
@@ -121,7 +129,7 @@ class TestEOCJournal(StudioEditableBaseTest):
 
         # Patch UserMetricsClient.
         self.patch('eoc_journal.api_client.ApiClient.connect_with_jwt', Mock())
-    
+
         def mock_get_user_engagement_metrics(self):
             return json.loads(loader.load_unicode('data/user_engagement_metrics_response.json'))
 
@@ -181,6 +189,10 @@ class TestEOCJournal(StudioEditableBaseTest):
         patcher.start()
         self.addCleanup(patcher.stop)
 
+    def pdf_report_url(self):
+        block = self.load_root_xblock()
+        return block.runtime.handler_url(block, 'serve_pdf')
+
     def set_standard_scenario(self):
         scenario = '<eoc-journal url_name="defaults" />'
         self.set_scenario_xml(scenario)
@@ -194,6 +206,12 @@ class TestEOCJournal(StudioEditableBaseTest):
     def get_element_for_selected_pb_answers(self):
         element = self.browser.find_element_by_css_selector(
             'div.eoc-selected-answers'
+        )
+        return element
+
+    def get_element_for_pb_answers_pdf_report(self):
+        element = self.browser.find_element_by_css_selector(
+            'div.eoc-pdf-report'
         )
         return element
 
@@ -307,18 +325,38 @@ class TestEOCJournal(StudioEditableBaseTest):
         answers_in_section = items[0].find_elements_by_css_selector('.eoc-selected-answer')
         self.assertEqual(len(answers_in_section), 2)
 
-        expected_answers_data = [
-            FakeAnswer(None, 'Not answered yet.', 'Hello, who are you?')
-        ]
-
-        expected_answers_data += default_answers_data
-
         for element, expected in zip(answers_in_section, expected_answers_data):
             question = element.find_element_by_css_selector('h5')
             answer = element.find_element_by_css_selector('p')
 
-            self.assertEqual(question.text, expected.question)
-            self.assertEqual(answer.text, expected.student_input)
+            self.assertEqual(question.text, expected['question'])
+            self.assertEqual(answer.text, expected['answer'])
+
+    def test_link_to_pb_answers_pdf_displayed_in_student_view(self):
+        selected_block_ids = default_pb_answer_block_ids[1:]
+        self.configure_block(selected_pb_answer_blocks=selected_block_ids)
+
+        report_link_container = self.get_element_for_pb_answers_pdf_report()
+        link = report_link_container.find_element_by_css_selector('a')
+
+        self.assertTrue(link.get_attribute('href').endswith(self.pdf_report_url()))
+
+    def test_pb_answers_listed_in_pdf_report(self):
+        selected_block_ids = default_pb_answer_block_ids[1:]
+        self.configure_block(selected_pb_answer_blocks=selected_block_ids)
+
+        client = Client()
+        response = client.get(self.pdf_report_url())
+        self.assertEqual(response['Content-Type'], 'application/pdf')
+
+        pdf_text = extract_text_from_pdf(response.content)
+
+        self.assertNotIn('First Section', pdf_text)  # first section contains no pb-answers
+        self.assertIn('Second Section', pdf_text)
+
+        for data in expected_answers_data:
+            self.assertIn(data['question'], pdf_text)
+            self.assertIn(data['answer'], pdf_text)
 
     def test_pb_answers_not_listed_when_none_available_in_student_view(self):
         self.set_standard_scenario()
@@ -328,6 +366,16 @@ class TestEOCJournal(StudioEditableBaseTest):
         self.assertRaises(
             NoSuchElementException,
             self.get_element_for_selected_pb_answers
+        )
+
+    def test_link_to_pb_answers_pdf_not_displayed_when_none_available_in_student_view(self):
+        self.set_standard_scenario()
+        self.go_to_view('student_view')
+        self.fix_js_environment()
+
+        self.assertRaises(
+            NoSuchElementException,
+            self.get_element_for_pb_answers_pdf_report
         )
 
     def test_progress_metrics_listed_in_student_view(self):
