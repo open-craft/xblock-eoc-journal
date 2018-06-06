@@ -108,49 +108,48 @@
     </div>
 
   </div>
-</div>
 
-{% if answer_sections %}
-<div class="eoc-selected-answers">
-  {% for section in answer_sections %}
-  <section class="eoc-selected-answers-section">
-    <h4>{{ section.name }}</h4>
-    {% for q in section.questions %}
-    <div class="eoc-selected-answer">
-      <h5>{{ q.question }}</h5>
-      <p>{{ q.answer }}</p>
-    </div>
+  {% if answer_sections %}
+  <div class="eoc-selected-answers">
+    {% for section in answer_sections %}
+    <section class="eoc-selected-answers-section">
+      <h4>{{ section.name }}</h4>
+      {% for q in section.questions %}
+      <div class="eoc-selected-answer">
+        <h5>{{ q.question }}</h5>
+        <p>{{ q.answer }}</p>
+      </div>
+      {% endfor %}
+    </section>
     {% endfor %}
-  </section>
-  {% endfor %}
-</div>
-
-<div class="eoc-pdf-report">
-  <div class="title">
-    <h4>PDF Report</h4>
   </div>
-  <p>
-    <a class="pdf-report-link" target="_blank" href="{{ pdf_report_url }}">
-      <span class="fa fa-file-text-o" aria-hidden="true"></span>
-      {% trans "Download PDF" %}
-    </a>
-  </p>
-</div>
-{% endif %}
 
-<div class="eoc-key-takeaways">
-  <div class="title">
-    <h4>Key Takeaways</h4>
+  <div class="eoc-pdf-report">
+    <div class="title">
+      <h4>PDF Report</h4>
+    </div>
+    <p>
+      <a class="pdf-report-link" target="_blank" href="{{ pdf_report_url }}">
+        <span class="fa fa-file-text-o" aria-hidden="true"></span>
+        {% trans "Download PDF" %}
+      </a>
+    </p>
   </div>
-{% if key_takeaways_pdf_url %}
-<p>
-<a class="key-takeaways-link" target="_blank" href="{{ key_takeaways_pdf_url }}">
-  <span class="fa fa-file-text-o" aria-hidden="true"></span>
-  {% trans "Key Takeaways" %}
-</a>
-</p>
-{% else %}
-<p>{% trans "Key Takeaways PDF not available at this time." %}</p>
-{% endif %}
-</div>
+  {% endif %}
+
+  <div class="eoc-key-takeaways">
+    <div class="title">
+      <h4>Key Takeaways</h4>
+    </div>
+    {% if key_takeaways_pdf_url %}
+    <p>
+      <a class="key-takeaways-link" target="_blank" href="{{ key_takeaways_pdf_url }}">
+        <span class="fa fa-file-text-o" aria-hidden="true"></span>
+        {% trans "Key Takeaways" %}
+      </a>
+    </p>
+    {% else %}
+    <p>{% trans "Key Takeaways PDF not available at this time." %}</p>
+    {% endif %}
+  </div>
 </div>
