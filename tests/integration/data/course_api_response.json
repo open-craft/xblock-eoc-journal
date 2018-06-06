@@ -26,7 +26,7 @@
             "block_id": "a0b04a13d3074229b6be33fbc31de233",
             "student_view_url": "http://example.com/xblock/i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233",
             "student_view_data": {
-                "question": "Tell us more about yourself.",
+                "question": "<p>Tell us more about <strong>yourself</strong>.</p>",
                 "name": "efac891"
             },
             "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233",
@@ -113,7 +113,7 @@
             "block_id": "6f070c350e39429cbccfd3185a33621c",
             "student_view_url": "http://example.com/xblock/i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c",
             "student_view_data": {
-                "question": "Hello, who are you?",
+                "question": "Hello, who <em>are</em> you? What&#8217;s your name?",
                 "name": "bf9c37a"
             },
             "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c",

@@ -6,6 +6,9 @@ from collections import OrderedDict
 from io import BytesIO
 import webob
 
+from lxml import html
+from lxml.html.clean import clean_html
+
 from reportlab.lib import pagesizes
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
@@ -178,9 +181,12 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
                 if section not in answers:
                     answers[section] = []
 
+                parsed_question = html.fromstring(block['question'])
+                question = clean_html(parsed_question).text_content()
+
                 answers[section].append({
                     'answer': students_inputs.get(name, _('Not answered yet.')),
-                    'question': block['question'],
+                    'question': question,
                 })
 
             # Make list of sections-answers
