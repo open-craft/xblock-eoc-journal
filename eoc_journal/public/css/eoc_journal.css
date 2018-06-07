@@ -5,3 +5,11 @@
 .eoc-journal-block .key-takeaways-link .fa {
     padding-right: 3px;
 }
+
+.eoc-journal-block .eoc-selected-answers h4 {
+    margin-bottom: 0.5em;
+}
+
+.eoc-journal-block .eoc-selected-answers h5 {
+    margin-bottom: 0.33em;
+}

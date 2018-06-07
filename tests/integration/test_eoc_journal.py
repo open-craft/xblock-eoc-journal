@@ -54,12 +54,14 @@ default_pb_answer_block_ids = [
 
 
 default_answers_data = [
-    FakeAnswer("efac891", 'student input', 'Tell us more about yourself.'),
+    FakeAnswer("efac891", 'student input', '<p>Tell us more about <strong>yourself</strong>.</p>'),
 ]
 
+# Note that questions may originally contain HTML tags, but HTML tags should be stripped
+# when listing the questions/answers in the EOC journal.
 expected_answers_data = [
-    {'question': 'Hello, who are you?', 'answer': 'Not answered yet.'},
-    {'question': 'Tell us more about yourself.', 'answer': 'student input'},
+    {'question': u'Hello, who are you? What\u2019s your name?', 'answer': 'Not answered yet.'},
+    {'question': u'Tell us more about yourself.', 'answer': 'student input'},
 ]
 
 

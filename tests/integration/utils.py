@@ -20,7 +20,7 @@ def extract_text_from_pdf(pdf_content):
     for page in PDFPage.get_pages(input_buffer):
         interpreter.process_page(page)
 
-    text = output_buffer.getvalue()
+    text = output_buffer.getvalue().decode('utf-8')
 
     device.close()
     input_buffer.close()
