@@ -62,7 +62,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
     display_name = String(
         display_name=_("Title (display name)"),
         help=_("Title to display"),
-        default=_("End of Course Journal"),
+        default=_("Course Journal"),
         scope=Scope.content,
     )
 
@@ -85,10 +85,26 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         list_values_provider=provide_pb_answer_list,
     )
 
+    pdf_report_link_heading = String(
+        display_name=_("PDF Report Link heading"),
+        help=_("The heading text to display above the link for downloading the PDF Report."),
+        default=_("PDF Report"),
+        scope=Scope.content,
+    )
+
+    pdf_report_link_text = String(
+        display_name=_("PDF Report Link text"),
+        help=_("The text to display in the link for downloading the PDF Report."),
+        default=_("Download PDF"),
+        scope=Scope.content,
+    )
+
     editable_fields = (
         'display_name',
         'key_takeaways_pdf',
         'selected_pb_answer_blocks',
+        'pdf_report_link_heading',
+        'pdf_report_link_text',
     )
 
     def student_view(self, context=None):
@@ -109,6 +125,8 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             context["key_takeaways_pdf_url"] = self._expand_static_url(self.key_takeaways_pdf)
 
         context["pdf_report_url"] = self.runtime.handler_url(self, "serve_pdf")
+        context["pdf_report_link_heading"] = self.pdf_report_link_heading
+        context["pdf_report_link_text"] = self.pdf_report_link_text
 
         fragment = Fragment()
         fragment.add_content(

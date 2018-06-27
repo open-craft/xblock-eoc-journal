@@ -7,6 +7,8 @@ the course.  Currently only [problem-builder](https://github.com/open-craft/prob
 This XBlock also displays a summary of the learner's participation, proficiency, and engagement in the course compared
 with the course averages.
 
+NOTE: While it is called the End of Course Journal, the block can actually be added at any point during the course.
+
 Installation
 ------------
 
