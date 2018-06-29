@@ -4,10 +4,10 @@ function EOCJournalXBlock(runtime, element) {
     // Attach Google Analytics tracking to a set of events
     var ga = window[window['GoogleAnalyticsObject'] || 'ga'];
     if (typeof ga == 'function') {
-        $(element).find('a.pdf-report-link').click(function() {
+        $('a.pdf-report-link', element).click(function() {
             ga('send', 'event', 'Course Journal', 'click', 'PDF Report Download');
         });
-        $(element).find('a.key-takeaways-link').click(function() {
+        $('a.key-takeaways-link', element).click(function() {
             ga('send', 'event', 'Course Journal', 'click', 'Key Takeaways PDF Download');
         });
     }
