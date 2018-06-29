@@ -120,6 +120,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         fragment.add_javascript_url(
             self.runtime.local_resource_url(self, "public/js/eoc_journal.js")
         )
+        fragment.initialize_js('EOCJournalXBlock')
         return fragment
 
     @XBlock.handler
