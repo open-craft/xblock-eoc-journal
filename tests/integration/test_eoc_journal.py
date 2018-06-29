@@ -235,7 +235,12 @@ class TestEOCJournal(StudioEditableBaseTest):
         )
         return element
 
-    def configure_block(self, display_name=None, key_takeaways_pdf=None, selected_pb_answer_blocks=[]):
+    def configure_block(self, 
+                        display_name=None, 
+                        key_takeaways_pdf=None, 
+                        selected_pb_answer_blocks=[], 
+                        pdf_report_link_heading=None, 
+                        pdf_report_link_text=None):
         self.set_standard_scenario()
         self.go_to_view('studio_view')
         self.fix_js_environment()
@@ -254,6 +259,14 @@ class TestEOCJournal(StudioEditableBaseTest):
                 selector = "input[type=checkbox][value='{}']".format(checkbox_value(block_id))
                 control = field.find_element_by_css_selector(selector)
                 control.click()
+        if pdf_report_link_heading is not None:
+            control = self.get_element_for_field('pdf_report_link_heading')
+            control.clear()
+            control.send_keys(pdf_report_link_heading)
+        if pdf_report_link_text is not None:
+            control = self.get_element_for_field('pdf_report_link_text')
+            control.clear()
+            control.send_keys(pdf_report_link_text)
         self.click_save()
 
         self.element = self.go_to_view('student_view')
@@ -440,8 +453,8 @@ class TestEOCJournal(StudioEditableBaseTest):
     def test_display_name(self):
         self.configure_block()
         title = self.element.find_element_by_css_selector('.title h3')
-        # The default title is 'End of Course Journal'.
-        default_title = 'End of Course Journal'
+        # The default title is 'Course Journal'.
+        default_title = 'Course Journal'
         self.assertEqual(title.text, default_title)
         custom_title = 'My Custom Yournal'
         self.configure_block(display_name=custom_title)
@@ -459,3 +472,30 @@ class TestEOCJournal(StudioEditableBaseTest):
         link = self.element.find_element_by_css_selector('a.key-takeaways-link')
         self.assertIn('Key Takeaways', link.text)
         self.assertEqual(link.get_attribute('target'), '_blank')
+
+    def test_no_pdf_report_link_heading_configured(self):
+        selected_block_ids = default_pb_answer_block_ids[1:]
+        self.configure_block(selected_pb_answer_blocks=selected_block_ids)
+        heading = self.element.find_element_by_css_selector('.eoc-pdf-report .title')
+        self.assertEqual('PDF Report', heading.text)
+
+    def test_pdf_report_link_heading_configured(self):
+        selected_block_ids = default_pb_answer_block_ids[1:]
+        self.configure_block(selected_pb_answer_blocks=selected_block_ids, 
+                             pdf_report_link_heading='My Report')
+        heading = self.element.find_element_by_css_selector('.eoc-pdf-report .title')
+        self.assertEqual('My Report', heading.text)
+    
+    def test_no_pdf_report_link_text_configured(self):
+        selected_block_ids = default_pb_answer_block_ids[1:]
+        self.configure_block(selected_pb_answer_blocks=selected_block_ids)
+        link = self.element.find_element_by_css_selector('a.pdf-report-link')
+        self.assertEqual('Download PDF', link.text)
+
+    def test_pdf_report_link_text_configured(self):
+        selected_block_ids = default_pb_answer_block_ids[1:]
+        self.configure_block(selected_pb_answer_blocks=selected_block_ids, 
+                             pdf_report_link_text='Download Report')
+        link = self.element.find_element_by_css_selector('a.pdf-report-link')
+        self.assertEqual('Download Report', link.text)
+
