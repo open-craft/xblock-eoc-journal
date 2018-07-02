@@ -135,6 +135,10 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         fragment.add_css_url(
             self.runtime.local_resource_url(self, "public/css/eoc_journal.css")
         )
+        fragment.add_javascript_url(
+            self.runtime.local_resource_url(self, "public/js/eoc_journal.js")
+        )
+        fragment.initialize_js('EOCJournalXBlock')
         return fragment
 
     @XBlock.handler
