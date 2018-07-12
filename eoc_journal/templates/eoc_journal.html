@@ -4,6 +4,7 @@
     <h3>{{ display_name }}</h3>
   </div>
 
+  {% if display_user_metrics %}
   <div class="progress-metrics">
     <div class="title">
       <h4>{% trans "Progress" %}</h4>
@@ -108,8 +109,11 @@
     </div>
 
   </div>
+  {% endif %}
 
   {% if answer_sections %}
+
+  {% if display_answers %}
   <div class="eoc-selected-answers">
     {% for section in answer_sections %}
     <section class="eoc-selected-answers-section">
@@ -123,6 +127,7 @@
     </section>
     {% endfor %}
   </div>
+  {% endif %}
 
   <div class="eoc-pdf-report">
     <div class="title">
@@ -137,6 +142,7 @@
   </div>
   {% endif %}
 
+  {% if display_keytakeaways %}
   <div class="eoc-key-takeaways">
     <div class="title">
       <h4>Key Takeaways</h4>
@@ -152,4 +158,5 @@
     <p>{% trans "Key Takeaways PDF not available at this time." %}</p>
     {% endif %}
   </div>
+  {% endif %}
 </div>
