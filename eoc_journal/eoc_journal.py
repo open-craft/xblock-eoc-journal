@@ -15,7 +15,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 
 from problem_builder.models import Answer
 from xblock.core import XBlock
-from xblock.fields import Scope, String, List
+from xblock.fields import Boolean, Scope, String, List
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.studio_editable import StudioEditableXBlockMixin
@@ -99,12 +99,36 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         scope=Scope.content,
     )
 
+    display_metrics_section = Boolean(
+        display_name=_("Display User Metrics"),
+        help=_("Would you like to display progress, proficiency and engagement metrics in the XBlock view in LMS?"),
+        default=False,
+        scope=Scope.content,
+    )
+
+    display_key_takeaways_section = Boolean(
+        display_name=_("Display Key Takeaways section"),
+        help=_("Would you like to display Key Takeaways section in the XBlock view in LMS?"),
+        default=False,
+        scope=Scope.content,
+    )
+
+    display_answers = Boolean(
+        display_name=_("Display answers"),
+        help=_("Would you like to display free text answers in the XBlock view in LMS?"),
+        default=False,
+        scope=Scope.content,
+    )
+
     editable_fields = (
         'display_name',
         'key_takeaways_pdf',
         'selected_pb_answer_blocks',
         'pdf_report_link_heading',
         'pdf_report_link_text',
+        'display_metrics_section',
+        'display_key_takeaways_section',
+        'display_answers',
     )
 
     def student_view(self, context=None):
@@ -113,16 +137,21 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         """
         context = context.copy() if context else {}
 
-        context['display_name'] = self.display_name
+        context["display_name"] = self.display_name
         context["answer_sections"] = self.list_user_pb_answers_by_section()
+        context["display_answers"] = self.display_answers
 
-        context["progress"] = self.get_progress_metrics()
-        context["proficiency"] = self.get_proficiency_metrics()
-        context["engagement"] = self.get_engagement_metrics()
+        context["display_user_metrics"] = self.display_metrics_section
+        if self.display_metrics_section:
+            context["progress"] = self.get_progress_metrics()
+            context["proficiency"] = self.get_proficiency_metrics()
+            context["engagement"] = self.get_engagement_metrics()
 
-        key_takeaways_handle = self.key_takeaways_pdf.strip()
-        if key_takeaways_handle:
-            context["key_takeaways_pdf_url"] = self._expand_static_url(self.key_takeaways_pdf)
+        context["display_keytakeaways"] = self.display_key_takeaways_section
+        if self.display_key_takeaways_section:
+            key_takeaways_handle = self.key_takeaways_pdf.strip()
+            if key_takeaways_handle:
+                context["key_takeaways_pdf_url"] = self._expand_static_url(self.key_takeaways_pdf)
 
         context["pdf_report_url"] = self.runtime.handler_url(self, "serve_pdf")
         context["pdf_report_link_heading"] = self.pdf_report_link_heading
@@ -138,7 +167,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         fragment.add_javascript_url(
             self.runtime.local_resource_url(self, "public/js/eoc_journal.js")
         )
-        fragment.initialize_js('EOCJournalXBlock')
+        fragment.initialize_js("EOCJournalXBlock")
         return fragment
 
     @XBlock.handler

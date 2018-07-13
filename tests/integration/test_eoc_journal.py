@@ -6,6 +6,7 @@ import json
 from django.test.client import Client
 from mock import MagicMock, Mock, patch
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import Select
 
 from xblock.reference.user_service import XBlockUser
 from xblockutils.studio_editable_test import StudioEditableBaseTest
@@ -235,12 +236,22 @@ class TestEOCJournal(StudioEditableBaseTest):
         )
         return element
 
-    def configure_block(self, 
-                        display_name=None, 
-                        key_takeaways_pdf=None, 
-                        selected_pb_answer_blocks=[], 
-                        pdf_report_link_heading=None, 
-                        pdf_report_link_text=None):
+    def select_option_in_boolean_field(self, field_name, value=True):
+        control = self.get_element_for_field(field_name)
+        select = Select(control.find_element_by_id("xb-field-edit-{}".format(field_name)))
+        selected_value = "1" if value else "0"
+        select.select_by_value(selected_value)
+
+    def configure_block(self,
+                        display_name=None,
+                        key_takeaways_pdf=None,
+                        selected_pb_answer_blocks=None,
+                        pdf_report_link_heading=None,
+                        pdf_report_link_text=None,
+                        display_metrics_section=None,
+                        display_key_takeaways_section=None,
+                        display_answers=None
+                        ):
         self.set_standard_scenario()
         self.go_to_view('studio_view')
         self.fix_js_environment()
@@ -267,6 +278,25 @@ class TestEOCJournal(StudioEditableBaseTest):
             control = self.get_element_for_field('pdf_report_link_text')
             control.clear()
             control.send_keys(pdf_report_link_text)
+
+        if display_metrics_section is not None:
+            self.select_option_in_boolean_field(
+                'display_metrics_section',
+                display_metrics_section
+            )
+
+        if display_key_takeaways_section is not None:
+            self.select_option_in_boolean_field(
+                'display_key_takeaways_section',
+                display_key_takeaways_section
+            )
+
+        if display_answers is not None:
+            self.select_option_in_boolean_field(
+                'display_answers',
+                display_answers
+            )
+
         self.click_save()
 
         self.element = self.go_to_view('student_view')
@@ -287,12 +317,14 @@ class TestEOCJournal(StudioEditableBaseTest):
             method_path = 'eoc_journal.api_client.ApiClient.{}'.format(method)
             self.patch(method_path, lambda self: None)
 
-        self.set_standard_scenario()
+        self.configure_block(
+            display_metrics_section=True
+        )
+
         # Verify the student view does not break.
-        element = self.go_to_view('student_view')
-        self.assertIn('Progress data is not available.', element.text)
-        self.assertIn('Proficiency data is not available.', element.text)
-        self.assertIn('Engagement data is not available.', element.text)
+        self.assertIn('Progress data is not available.', self.element.text)
+        self.assertIn('Proficiency data is not available.', self.element.text)
+        self.assertIn('Engagement data is not available.', self.element.text)
 
     def test_pb_answer_blocks_listed_in_edit_view(self):
         self.set_standard_scenario()
@@ -325,9 +357,21 @@ class TestEOCJournal(StudioEditableBaseTest):
             label = item.find_element_by_css_selector('label')
             self.assertEqual(label.text, title)
 
-    def test_pb_answers_listed_in_student_view(self):
+    def test_pb_answers_hidden_in_student_view_by_default(self):
         selected_block_ids = default_pb_answer_block_ids[1:]
         self.configure_block(selected_pb_answer_blocks=selected_block_ids)
+
+        self.assertRaises(
+            NoSuchElementException,
+            self.get_element_for_selected_pb_answers
+        )
+
+    def test_pb_answers_listed_in_student_view_when_enabled(self):
+        selected_block_ids = default_pb_answer_block_ids[1:]
+        self.configure_block(
+            selected_pb_answer_blocks=selected_block_ids,
+            display_answers=True
+        )
 
         element = self.get_element_for_selected_pb_answers()
 
@@ -393,10 +437,23 @@ class TestEOCJournal(StudioEditableBaseTest):
             self.get_element_for_pb_answers_pdf_report
         )
 
-    def test_progress_metrics_listed_in_student_view(self):
-        self.set_standard_scenario()
-        self.go_to_view('student_view')
-        self.fix_js_environment()
+    def test_all_metrics_hidden_by_default(self):
+        self.configure_block()
+        self.assertRaises(
+            NoSuchElementException,
+            self.get_element_for_course_progress
+        )
+        self.assertRaises(
+            NoSuchElementException,
+            self.get_element_for_course_proficiency
+        )
+        self.assertRaises(
+            NoSuchElementException,
+            self.get_element_for_course_engagement
+        )
+
+    def test_progress_metrics_listed_in_student_view_when_enabled(self):
+        self.configure_block(display_metrics_section=True)
 
         element = self.get_element_for_course_progress()
         user_score = element.find_element_by_css_selector('span[data-progress-name="user"]')
@@ -405,10 +462,8 @@ class TestEOCJournal(StudioEditableBaseTest):
         cohort_score = element.find_element_by_css_selector('span[data-progress-name="cohort"]')
         self.assertEqual(float(cohort_score.text), default_cohort_average_progress)
 
-    def test_proficiency_metrics_listed_in_student_view(self):
-        self.set_standard_scenario()
-        self.go_to_view('student_view')
-        self.fix_js_environment()
+    def test_proficiency_metrics_listed_in_student_view_when_enabled(self):
+        self.configure_block(display_metrics_section=True)
 
         element = self.get_element_for_course_proficiency()
         user_score = element.find_element_by_css_selector('span[data-proficiency-name="user"]')
@@ -417,10 +472,8 @@ class TestEOCJournal(StudioEditableBaseTest):
         cohort_score = element.find_element_by_css_selector('span[data-proficiency-name="cohort"]')
         self.assertEqual(float(cohort_score.text), default_cohort_average_proficiency)
 
-    def test_engagement_metrics_listed_in_student_view(self):
-        self.set_standard_scenario()
-        self.go_to_view('student_view')
-        self.fix_js_environment()
+    def test_engagement_metrics_listed_in_student_view_when_enabled(self):
+        self.configure_block(display_metrics_section=True)
 
         element = self.get_element_for_course_engagement()
 
@@ -461,14 +514,27 @@ class TestEOCJournal(StudioEditableBaseTest):
         title = self.element.find_element_by_css_selector('.title h3')
         self.assertEqual(title.text, custom_title)
 
-    def test_no_takeaways_pdf_configured(self):
+    def test_no_takeaways_pdf_section_hidden_by_default(self):
         self.configure_block()
+
+        self.assertRaises(
+            NoSuchElementException,
+            self.element.find_element_by_css_selector,
+            '.eoc-key-takeaways'
+        )
+        self.assertNotIn('Takeaways PDF', self.element.text)
+
+    def test_takeaways_pdf_enabled_but_not_configured(self):
+        self.configure_block(display_key_takeaways_section=True)
         links = self.element.find_elements_by_css_selector('a.key-takeaways-link')
         self.assertEqual(len(links), 0)
         self.assertIn('Key Takeaways PDF not available at this time.', self.element.text)
 
-    def test_takeaways_pdf_configured(self):
-        self.configure_block(key_takeaways_pdf='/static/my.pdf')
+    def test_takeaways_pdf_enabled_and_configured(self):
+        self.configure_block(
+            key_takeaways_pdf='/static/my.pdf',
+            display_key_takeaways_section=True
+        )
         link = self.element.find_element_by_css_selector('a.key-takeaways-link')
         self.assertIn('Key Takeaways', link.text)
         self.assertEqual(link.get_attribute('target'), '_blank')
@@ -481,11 +547,11 @@ class TestEOCJournal(StudioEditableBaseTest):
 
     def test_pdf_report_link_heading_configured(self):
         selected_block_ids = default_pb_answer_block_ids[1:]
-        self.configure_block(selected_pb_answer_blocks=selected_block_ids, 
+        self.configure_block(selected_pb_answer_blocks=selected_block_ids,
                              pdf_report_link_heading='My Report')
         heading = self.element.find_element_by_css_selector('.eoc-pdf-report .title')
         self.assertEqual('My Report', heading.text)
-    
+
     def test_no_pdf_report_link_text_configured(self):
         selected_block_ids = default_pb_answer_block_ids[1:]
         self.configure_block(selected_pb_answer_blocks=selected_block_ids)
@@ -494,8 +560,7 @@ class TestEOCJournal(StudioEditableBaseTest):
 
     def test_pdf_report_link_text_configured(self):
         selected_block_ids = default_pb_answer_block_ids[1:]
-        self.configure_block(selected_pb_answer_blocks=selected_block_ids, 
+        self.configure_block(selected_pb_answer_blocks=selected_block_ids,
                              pdf_report_link_text='Download Report')
         link = self.element.find_element_by_css_selector('a.pdf-report-link')
         self.assertEqual('Download Report', link.text)
-
