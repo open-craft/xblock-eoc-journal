@@ -10,10 +10,12 @@ from lxml import html
 from lxml.html.clean import clean_html
 
 from reportlab.lib import pagesizes
+from reportlab.lib.colors import Color
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 
 from problem_builder.models import Answer
+from reportlab.platypus.flowables import HRFlowable
 from xblock.core import XBlock
 from xblock.fields import Boolean, Scope, String, List
 from xblock.fragment import Fragment
@@ -189,6 +191,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             for question in section["questions"]:
                 story.append(Paragraph(question["question"], styles["h2"]))
                 story.append(Paragraph(question["answer"], styles["Normal"]))
+                story.append(HRFlowable(color=Color(0, 0, 0, 0.1), width='100%', spaceBefore=5, spaceAfter=10))
 
         document.build(story)
         pdf_buffer.seek(0)
