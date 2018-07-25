@@ -4,14 +4,16 @@ An XBlock that allows learners to download their activity after they finish thei
 
 from collections import OrderedDict
 from io import BytesIO
+from urlparse import urljoin
+
 import webob
+from django.conf import settings
 
 from lxml import html
 from lxml.html.clean import clean_html
 
 from reportlab.lib import pagesizes
 from reportlab.lib.colors import Color
-from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 
 from problem_builder.models import Answer
@@ -24,6 +26,7 @@ from xblockutils.studio_editable import StudioEditableXBlockMixin
 
 from .api_client import ApiClient, calculate_engagement_score
 from .course_blocks_api import CourseBlocksApiClient
+from .pdf_generator import get_style_sheet
 from .utils import _, normalize_id
 
 try:
@@ -63,8 +66,8 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
 
     display_name = String(
         display_name=_("Title (display name)"),
-        help=_("Title to display. Leave blank to use the course title."),
-        default=None,
+        help=_("Title to display"),
+        default=_("Course Journal"),
         scope=Scope.content,
     )
 
@@ -85,6 +88,13 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         scope=Scope.content,
         list_style='set',
         list_values_provider=provide_pb_answer_list,
+    )
+
+    pdf_report_title = String(
+        display_name=_("PDF Title"),
+        help=_("Title of the PDF report. Leave blank to use the course title."),
+        default=None,
+        scope=Scope.content,
     )
 
     pdf_report_link_heading = String(
@@ -122,15 +132,27 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         scope=Scope.content,
     )
 
+    custom_font = String(
+        display_name=_("Default Font"),
+        help=_("Studio static URL to a custom font file to be used for PDF report. "
+               "Example: \"/static/myfont.ttf\". Leave empty to use default fonts. "
+               "You can upload custom TTF font files from the Content - Files "
+               "& Uploads page."),
+        default=None,
+        scope=Scope.settings,
+    )
+
     editable_fields = (
         'display_name',
         'key_takeaways_pdf',
         'selected_pb_answer_blocks',
+        'pdf_report_title',
         'pdf_report_link_heading',
         'pdf_report_link_text',
         'display_metrics_section',
         'display_key_takeaways_section',
         'display_answers',
+        'custom_font',
     )
 
     def student_view(self, context=None):
@@ -177,16 +199,14 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         """
         Builds and serves a PDF document containing user's freeform answers.
         """
-        styles = getSampleStyleSheet()
+        font_path = self._expand_static_url(self.custom_font, absolute=True) if self.custom_font else None
+        styles = get_style_sheet(font_url=font_path)
         pdf_buffer = BytesIO()
-        course_name = self._get_course_name()
 
-        title = _('{course_name} Report'.format(course_name=course_name))
-        display_name = self.display_name or course_name
-
-        document = SimpleDocTemplate(pdf_buffer, pagesize=pagesizes.letter, title=title)
+        report_header_name = self.pdf_report_title or self._get_course_name()
+        document = SimpleDocTemplate(pdf_buffer, pagesize=pagesizes.letter, title=report_header_name)
         story = [
-            Paragraph(display_name, styles["Title"]),
+            Paragraph(report_header_name, styles["Title"]),
         ]
 
         answer_sections = self.list_user_pb_answers_by_section()
@@ -316,17 +336,31 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         try:
             course_key = self.scope_ids.usage_id.course_key
         except AttributeError:
-            return ""  # We are not in an edX runtime
+            return ''  # We are not in an edX runtime
+
         try:
             course_root_key = course_key.make_usage_key('course', 'course')
             return self.runtime.get_block(course_root_key).display_name
-        except Exception:  # ItemNotFoundError most likely, but we can't import that exception in non-edX environments
+        # ItemNotFoundError most likely, but we can't import that exception in non-edX environments
+        except Exception:  # pylint: disable=W0703
             # We may be on old mongo:
             try:
                 course_root_key = course_key.make_usage_key('course', course_key.run)
                 return self.runtime.get_block(course_root_key).display_name
-            except Exception:
-                return ""
+            except Exception:  # pylint: disable=W0703
+                return ''
+
+    @staticmethod
+    def _make_url_absolute(url):
+        """
+        This method will turn make relative urls absolute. It's helpfull in
+        some cases where some functions treat a varible as a path and url in
+        the same time
+        """
+        lms_base = settings.ENV_TOKENS.get('LMS_BASE')
+        scheme = 'https' if settings.HTTPS == 'on' else 'http'
+        lms_base = '{}://{}'.format(scheme, lms_base)
+        return urljoin(lms_base, url)
 
     def get_progress_metrics(self):
         """
@@ -430,7 +464,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         )
         return response
 
-    def _expand_static_url(self, url):
+    def _expand_static_url(self, url, absolute=False):
         """
         This is required to make URLs like '/static/takeaways.pdf' work (note: that is the
         only portable URL format for static files that works across export/import and reruns).
@@ -447,4 +481,8 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
                 url = replace_static_urls('"{}"'.format(url), None, course_id=self.runtime.course_id)[1:-1]
             except ImportError:
                 pass
+
+        if absolute:
+            url = self._make_url_absolute(url)
+
         return url

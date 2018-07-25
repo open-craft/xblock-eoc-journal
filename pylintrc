@@ -12,4 +12,4 @@ disable=
     locally-disabled
 
 [OPTIONS]
-good-names=_,loader
+good-names=_,loader,log
