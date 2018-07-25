@@ -63,8 +63,8 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
 
     display_name = String(
         display_name=_("Title (display name)"),
-        help=_("Title to display"),
-        default=_("Course Journal"),
+        help=_("Title to display. Leave blank to use the course title."),
+        default=None,
         scope=Scope.content,
     )
 
@@ -179,9 +179,14 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         """
         styles = getSampleStyleSheet()
         pdf_buffer = BytesIO()
-        document = SimpleDocTemplate(pdf_buffer, pagesize=pagesizes.letter, title=_("Report"))
+        course_name = self._get_course_name()
+
+        title = _('{course_name} Report'.format(course_name=course_name))
+        display_name = self.display_name or course_name
+
+        document = SimpleDocTemplate(pdf_buffer, pagesize=pagesizes.letter, title=title)
         story = [
-            Paragraph(self.display_name, styles["Title"]),
+            Paragraph(display_name, styles["Title"]),
         ]
 
         answer_sections = self.list_user_pb_answers_by_section()
@@ -303,6 +308,25 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         Returns anonymous id (string) corresponding to the current user.
         """
         return self.runtime.anonymous_student_id
+
+    def _get_course_name(self):
+        """
+        Get the name of the current course, for the downloadable report.
+        """
+        try:
+            course_key = self.scope_ids.usage_id.course_key
+        except AttributeError:
+            return ""  # We are not in an edX runtime
+        try:
+            course_root_key = course_key.make_usage_key('course', 'course')
+            return self.runtime.get_block(course_root_key).display_name
+        except Exception:  # ItemNotFoundError most likely, but we can't import that exception in non-edX environments
+            # We may be on old mongo:
+            try:
+                course_root_key = course_key.make_usage_key('course', course_key.run)
+                return self.runtime.get_block(course_root_key).display_name
+            except Exception:
+                return ""
 
     def get_progress_metrics(self):
         """
