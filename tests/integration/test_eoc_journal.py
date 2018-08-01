@@ -3,15 +3,19 @@ Basic integration tests for the EOC Journal XBlock.
 """
 
 import json
+import unittest
+
 from django.test.client import Client
 from mock import MagicMock, Mock, patch
+from reportlab.lib.styles import StyleSheet1
+from reportlab.rl_config import canvas_basefontname
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import Select
 
-from xblock.reference.user_service import XBlockUser
 from xblockutils.studio_editable_test import StudioEditableBaseTest
 from xblockutils.resources import ResourceLoader
 
+from eoc_journal.pdf_generator import get_style_sheet
 from .utils import extract_text_from_pdf
 
 
@@ -53,6 +57,7 @@ default_pb_answer_block_ids = [
     'i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233',
 ]
 
+course_name = 'Testing Ways'
 
 default_answers_data = [
     FakeAnswer("efac891", 'student input', '<p>Tell us more about <strong>yourself</strong>.</p>'),
@@ -104,7 +109,6 @@ class TestEOCJournal(StudioEditableBaseTest):
     default_css_selector = 'div.oec-journal-block'
     module_name = __name__
 
-
     def setUp(self):
         super(TestEOCJournal, self).setUp()
 
@@ -122,6 +126,17 @@ class TestEOCJournal(StudioEditableBaseTest):
             'eoc_journal.eoc_journal.EOCJournalXBlock._get_current_anonymous_user_id',
             lambda self: 'anonymous_user_id',
         )
+
+        # Patch _get_course_name method.
+        mock_course = Mock()
+        mock_course.return_value = course_name
+        self.patch('eoc_journal.eoc_journal.EOCJournalXBlock._get_course_name', mock_course)
+
+        # Patch _make_url_absolute method.
+        mock_url = Mock()
+        mock_url.return_value = 'Vera.ttf'
+        self.patch('eoc_journal.eoc_journal.EOCJournalXBlock._make_url_absolute', mock_url)
+
         # Patch CourseBlocksApiClient.
         self.patch('eoc_journal.eoc_journal.CourseBlocksApiClient.connect', Mock())
 
@@ -186,7 +201,6 @@ class TestEOCJournal(StudioEditableBaseTest):
             default_social_metrics_points
         )
 
-
     def patch(self, item, return_value):
         patcher = patch(item, return_value)
         patcher.start()
@@ -250,6 +264,7 @@ class TestEOCJournal(StudioEditableBaseTest):
                         pdf_report_link_text=None,
                         display_metrics_section=None,
                         display_key_takeaways_section=None,
+                        pdf_report_title=None,
                         display_answers=None
                         ):
         self.set_standard_scenario()
@@ -278,6 +293,10 @@ class TestEOCJournal(StudioEditableBaseTest):
             control = self.get_element_for_field('pdf_report_link_text')
             control.clear()
             control.send_keys(pdf_report_link_text)
+        if pdf_report_title is not None:
+            control = self.get_element_for_field('pdf_report_title')
+            control.clear()
+            control.send_keys(pdf_report_title)
 
         if display_metrics_section is not None:
             self.select_option_in_boolean_field(
@@ -514,6 +533,28 @@ class TestEOCJournal(StudioEditableBaseTest):
         title = self.element.find_element_by_css_selector('.title h3')
         self.assertEqual(title.text, custom_title)
 
+    def test_pdf_report_title(self):
+        client = Client()
+        custom_title = 'My Custom Report Title'
+
+        # The default title is the course name.
+        self.configure_block()
+        response = client.get(self.pdf_report_url())
+        self.assertEqual(response['Content-Type'], 'application/pdf')
+        pdf_text = extract_text_from_pdf(response.content)
+
+        self.assertIn(course_name, pdf_text)
+        self.assertNotIn(custom_title, pdf_text)
+
+        # Custom title testing
+        self.configure_block(pdf_report_title=custom_title)
+        response = client.get(self.pdf_report_url())
+        self.assertEqual(response['Content-Type'], 'application/pdf')
+        pdf_text = extract_text_from_pdf(response.content)
+
+        self.assertIn(custom_title, pdf_text)
+        self.assertNotIn(course_name, pdf_text)
+
     def test_no_takeaways_pdf_section_hidden_by_default(self):
         self.configure_block()
 
@@ -564,3 +605,18 @@ class TestEOCJournal(StudioEditableBaseTest):
                              pdf_report_link_text='Download Report')
         link = self.element.find_element_by_css_selector('a.pdf-report-link')
         self.assertEqual('Download Report', link.text)
+
+
+class TestPdfGenerator(unittest.TestCase):
+    def test_get_style_sheet_default_font(self):
+        stylesheet = get_style_sheet()
+
+        self.assertIsInstance(stylesheet, StyleSheet1)
+        self.assertEqual(stylesheet['Normal'].fontName, canvas_basefontname)
+
+    def test_get_style_sheet_custom_font(self):
+        path = 'Vera.ttf'
+        stylesheet = get_style_sheet(font_url=path)
+
+        self.assertIsInstance(stylesheet, StyleSheet1)
+        self.assertEqual(stylesheet['Normal'].fontName, 'customFont')
