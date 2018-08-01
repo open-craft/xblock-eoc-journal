@@ -55,6 +55,7 @@ default_pb_answer_block_ids = [
     'i4x://Org/Course/pb-answer/b86edf60454b47dbb8f2e1b4e2d48d6a',
     'i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c',
     'i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233',
+    'i4x://Org/Course/pb-answer/927c5b8cd051475e937b8c1091a9feaf',
 ]
 
 course_name = 'Testing Ways'
@@ -68,6 +69,7 @@ default_answers_data = [
 expected_answers_data = [
     {'question': u'Hello, who are you? What\u2019s your name?', 'answer': 'Not answered yet.'},
     {'question': u'Tell us more about yourself.', 'answer': 'student input'},
+    {'question': u'', 'answer': 'Not answered yet.'},
 ]
 
 
@@ -352,8 +354,8 @@ class TestEOCJournal(StudioEditableBaseTest):
 
         field_control = self.get_element_for_pb_answers_field()
         items = field_control.find_elements_by_css_selector('.list-settings-item')
-        # There are three pb-answer blocks in the mocked course blocks API response.
-        self.assertEqual(len(items), 3)
+        # There are four pb-answer blocks in the mocked course blocks API response.
+        self.assertEqual(len(items), 4)
         expected_choices = [
             {
                 'value': default_pb_answer_block_ids[0],
@@ -361,11 +363,15 @@ class TestEOCJournal(StudioEditableBaseTest):
             },
             {
                 'value': default_pb_answer_block_ids[1],
-                'title': 'Second Section / Subsection 2 / Unit 1 / Introductions'
+                'title': 'Second Section / Subsection 2 / Unit 1 / Introductions',
             },
             {
                 'value': default_pb_answer_block_ids[2],
-                'title': 'Second Section / Subsection 2 / Unit 1 / More Info'
+                'title': 'Second Section / Subsection 2 / Unit 1 / More Info',
+            },
+            {
+                'value': default_pb_answer_block_ids[3],
+                'title': 'Second Section / Subsection 2 / Unit 1 / More Introductions',
             },
         ]
         for idx, item in enumerate(items):
@@ -401,7 +407,7 @@ class TestEOCJournal(StudioEditableBaseTest):
         self.assertEqual(section_name.text, 'Second Section')
 
         answers_in_section = items[0].find_elements_by_css_selector('.eoc-selected-answer')
-        self.assertEqual(len(answers_in_section), 2)
+        self.assertEqual(len(answers_in_section), 3)
 
         for element, expected in zip(answers_in_section, expected_answers_data):
             question = element.find_element_by_css_selector('h5')

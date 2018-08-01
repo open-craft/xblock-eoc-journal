@@ -10,6 +10,7 @@ import webob
 from django.conf import settings
 
 from lxml import html
+from lxml.etree import XMLSyntaxError, ParserError
 from lxml.html.clean import clean_html
 
 from reportlab.lib import pagesizes
@@ -260,8 +261,11 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
                 if section not in answers:
                     answers[section] = []
 
-                parsed_question = html.fromstring(block['question'])
-                question = clean_html(parsed_question).text_content()
+                try:
+                    parsed_question = html.fromstring(block['question'])
+                    question = clean_html(parsed_question).text_content()
+                except (XMLSyntaxError, ParserError):
+                    question = block['question']
 
                 answers[section].append({
                     'answer': students_inputs.get(name, _('Not answered yet.')),

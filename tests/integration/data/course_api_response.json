@@ -120,12 +120,25 @@
             "type": "pb-answer",
             "id": "i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c"
         },
+        "i4x://Org/Course/pb-answer/927c5b8cd051475e937b8c1091a9feaf": {
+            "display_name": "More Introductions",
+            "block_id": "927c5b8cd051475e937b8c1091a9feaf",
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/pb-answer/927c5b8cd051475e937b8c1091a9feaf",
+            "student_view_data": {
+                "question": "",
+                "name": "c26b280"
+            },
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/pb-answer/927c5b8cd051475e937b8c1091a9feaf",
+            "type": "pb-answer",
+            "id": "i4x://Org/Course/pb-answer/927c5b8cd051475e937b8c1091a9feaf"
+        },
         "i4x://Org/Course/vertical/8f995fb218664104bb3f898f10744511": {
             "display_name": "Unit 1",
             "block_id": "8f995fb218664104bb3f898f10744511",
             "children": [
                 "i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c",
-                "i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233"
+                "i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233",
+                "i4x://Org/Course/pb-answer/927c5b8cd051475e937b8c1091a9feaf"
             ],
             "student_view_url": "http://example.com/xblock/i4x://Org/Course/vertical/8f995fb218664104bb3f898f10744511",
             "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/vertical/8f995fb218664104bb3f898f10744511",
