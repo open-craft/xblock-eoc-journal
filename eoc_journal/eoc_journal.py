@@ -1,7 +1,7 @@
 """
 An XBlock that allows learners to download their activity after they finish their course.
 """
-
+import json
 from collections import OrderedDict
 from io import BytesIO
 from urlparse import urljoin
@@ -156,31 +156,60 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         'custom_font',
     )
 
-    def student_view(self, context=None):
+    def student_view_data(self, context=None):
         """
-        View shown to students.
+        JSON representation of data shown to students.
         """
         context = context.copy() if context else {}
 
         context["display_name"] = self.display_name
-        context["answer_sections"] = self.list_user_pb_answers_by_section()
         context["display_answers"] = self.display_answers
-
         context["display_user_metrics"] = self.display_metrics_section
-        if self.display_metrics_section:
-            context["progress"] = self.get_progress_metrics()
-            context["proficiency"] = self.get_proficiency_metrics()
-            context["engagement"] = self.get_engagement_metrics()
 
-        context["display_keytakeaways"] = self.display_key_takeaways_section
+        context["display_key_takeaways"] = self.display_key_takeaways_section
         if self.display_key_takeaways_section:
             key_takeaways_handle = self.key_takeaways_pdf.strip()
             if key_takeaways_handle:
                 context["key_takeaways_pdf_url"] = self._expand_static_url(self.key_takeaways_pdf)
 
-        context["pdf_report_url"] = self.runtime.handler_url(self, "serve_pdf")
+        context["pdf_report_url"] = self._make_url_absolute(
+            self.runtime.handler_url(self, "serve_pdf")
+        )
         context["pdf_report_link_heading"] = self.pdf_report_link_heading
         context["pdf_report_link_text"] = self.pdf_report_link_text
+
+        return context
+
+    def _get_user_state(self):
+        """
+        Return student-specific data in dictionary.
+        """
+        state = {
+            "answer_sections": self.list_user_pb_answers_by_section(),
+        }
+
+        if self.display_metrics_section:
+            state["progress"] = self.get_progress_metrics()
+            state["proficiency"] = self.get_proficiency_metrics()
+            state["engagement"] = self.get_engagement_metrics()
+        return state
+
+    @XBlock.handler
+    def student_view_user_state(self, request, suffix=''):  # pylint: disable=unused-argument
+        """
+        XBlock handler to return student-specific block data as JSON.
+        """
+        return webob.Response(
+            body=json.dumps(self._get_user_state()),
+            content_type='application/json',
+        )
+
+    def student_view(self, context=None):
+        """
+        View shown to students.
+        """
+        context = self.student_view_data(context=context)
+        context.update(self._get_user_state())
 
         fragment = Fragment()
         fragment.add_content(
@@ -403,7 +432,6 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         return {
             'user': int(round(proficiency.get('user', 0))),
             'cohort_average': int(round(proficiency.get('cohort_average', 0))),
-            'graded_items': proficiency.get('graded_items', []),
         }
 
     def get_engagement_metrics(self):
