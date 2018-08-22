@@ -599,7 +599,7 @@ class TestEOCJournal(StudioEditableBaseTest):
         self.assertIn('Key Takeaways', link.text)
         self.assertEqual(link.get_attribute('target'), '_blank')
         self.assert_in_student_view_data('display_key_takeaways', True)
-        self.assert_in_student_view_data('key_takeaways_pdf_url', '/static/my.pdf')
+        self.assert_in_student_view_data('key_takeaways_pdf_url', 'https://lms.base/static/my.pdf')
 
     def test_no_pdf_report_link_heading_configured(self):
         selected_block_ids = default_pb_answer_block_ids[1:]

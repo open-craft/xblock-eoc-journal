@@ -170,7 +170,10 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         if self.display_key_takeaways_section:
             key_takeaways_handle = self.key_takeaways_pdf.strip()
             if key_takeaways_handle:
-                context["key_takeaways_pdf_url"] = self._expand_static_url(self.key_takeaways_pdf)
+                context["key_takeaways_pdf_url"] = self._expand_static_url(
+                    url=self.key_takeaways_pdf,
+                    absolute=True,
+                )
 
         context["pdf_report_url"] = self._make_url_absolute(
             self.runtime.handler_url(self, "serve_pdf")
@@ -386,8 +389,8 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
     @staticmethod
     def _make_url_absolute(url):
         """
-        This method will turn make relative urls absolute. It's helpfull in
-        some cases where some functions treat a varible as a path and url in
+        This method will turn make relative urls absolute. It's helpful in
+        some cases where some functions treat a variable as a path and url in
         the same time
         """
         lms_base = settings.ENV_TOKENS.get('LMS_BASE')

@@ -14,8 +14,8 @@ Example return value:
     "display_answers": true,
     "display_user_metrics": true,
     "display_key_takeaways": true,
-    "key_takeaways_pdf_url": "/path/to/takeaways.pdf",
-    "pdf_report_url": "/path/to/report.pdf",
+    "key_takeaways_pdf_url": "https://courses.example.com/path/to/takeaways.pdf",
+    "pdf_report_url": "https://courses.example.com/path/to/report.pdf",
     "pdf_report_link_heading": "PDF Report",
     "pdf_report_link_text": "PDF Report Link"
   },
