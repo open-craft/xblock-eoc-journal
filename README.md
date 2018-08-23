@@ -9,6 +9,8 @@ with the course averages.
 
 NOTE: While it is called the End of Course Journal, the block can actually be added at any point during the course.
 
+See the [Native API documentation](native-api.md) for access to the student view and student view state data.
+
 Installation
 ------------
 

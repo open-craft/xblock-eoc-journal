@@ -5,19 +5,18 @@ Basic integration tests for the EOC Journal XBlock.
 import json
 import unittest
 
+from django.test import override_settings
 from django.test.client import Client
 from mock import MagicMock, Mock, patch
 from reportlab.lib.styles import StyleSheet1
 from reportlab.rl_config import canvas_basefontname
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import Select
-
-from xblockutils.studio_editable_test import StudioEditableBaseTest
 from xblockutils.resources import ResourceLoader
+from xblockutils.studio_editable_test import StudioEditableBaseTest
 
 from eoc_journal.pdf_generator import get_style_sheet
 from .utils import extract_text_from_pdf
-
 
 loader = ResourceLoader(__name__)
 
@@ -72,7 +71,6 @@ expected_answers_data = [
     {'question': u'', 'answer': 'Not answered yet.'},
 ]
 
-
 default_social_metrics_points = {
     'num_threads': 1,
     'num_comments': 1,
@@ -81,7 +79,6 @@ default_social_metrics_points = {
     'num_comments_generated': 1,
     'num_thread_followers': 1,
 }
-
 
 default_engagement_metrics = {
     'user_score': 6,
@@ -99,14 +96,13 @@ default_completion_leader_metrics = {
     'completions': 33.33,
 }
 
-
 default_user_progress = 4
 default_cohort_average_progress = int(round(default_completion_leader_metrics['course_avg']))
 
 default_user_proficiency = 83
 default_cohort_average_proficiency = 44
 
-
+@override_settings(ENV_TOKENS={'LMS_BASE': 'lms.base'}, HTTPS='on')
 class TestEOCJournal(StudioEditableBaseTest):
     default_css_selector = 'div.oec-journal-block'
     module_name = __name__
@@ -116,6 +112,7 @@ class TestEOCJournal(StudioEditableBaseTest):
 
         def mock_answers_filter(**kwargs):
             return FakeQuerySet(default_answers_data)
+
         answer_mock = MagicMock()
         answer_mock.objects.filter = mock_answers_filter
         self.patch('eoc_journal.eoc_journal.Answer', answer_mock)
@@ -133,11 +130,6 @@ class TestEOCJournal(StudioEditableBaseTest):
         mock_course = Mock()
         mock_course.return_value = course_name
         self.patch('eoc_journal.eoc_journal.EOCJournalXBlock._get_course_name', mock_course)
-
-        # Patch _make_url_absolute method.
-        mock_url = Mock()
-        mock_url.return_value = 'Vera.ttf'
-        self.patch('eoc_journal.eoc_journal.EOCJournalXBlock._make_url_absolute', mock_url)
 
         # Patch CourseBlocksApiClient.
         self.patch('eoc_journal.eoc_journal.CourseBlocksApiClient.connect', Mock())
@@ -424,6 +416,7 @@ class TestEOCJournal(StudioEditableBaseTest):
         link = report_link_container.find_element_by_css_selector('a')
 
         self.assertTrue(link.get_attribute('href').endswith(self.pdf_report_url()))
+        self.assert_in_student_view_data('pdf_report_url')
 
     def test_pb_answers_listed_in_pdf_report(self):
         selected_block_ids = default_pb_answer_block_ids[1:]
@@ -476,6 +469,10 @@ class TestEOCJournal(StudioEditableBaseTest):
             NoSuchElementException,
             self.get_element_for_course_engagement
         )
+        self.assert_in_student_view_data('display_user_metrics', False)
+        self.assert_not_in_student_view_user_state('progress')
+        self.assert_not_in_student_view_user_state('proficiency')
+        self.assert_not_in_student_view_user_state('engagement')
 
     def test_progress_metrics_listed_in_student_view_when_enabled(self):
         self.configure_block(display_metrics_section=True)
@@ -486,6 +483,11 @@ class TestEOCJournal(StudioEditableBaseTest):
 
         cohort_score = element.find_element_by_css_selector('span[data-progress-name="cohort"]')
         self.assertEqual(float(cohort_score.text), default_cohort_average_progress)
+        self.assert_in_student_view_data('display_user_metrics', True)
+        self.assert_in_student_view_user_state('progress', {
+            'cohort_average': default_cohort_average_progress,
+            'user': default_user_progress,
+        })
 
     def test_proficiency_metrics_listed_in_student_view_when_enabled(self):
         self.configure_block(display_metrics_section=True)
@@ -496,6 +498,11 @@ class TestEOCJournal(StudioEditableBaseTest):
 
         cohort_score = element.find_element_by_css_selector('span[data-proficiency-name="cohort"]')
         self.assertEqual(float(cohort_score.text), default_cohort_average_proficiency)
+        self.assert_in_student_view_data('display_user_metrics', True)
+        self.assert_in_student_view_user_state('proficiency', {
+            'cohort_average': default_cohort_average_proficiency,
+            'user': default_user_proficiency,
+        })
 
     def test_engagement_metrics_listed_in_student_view_when_enabled(self):
         self.configure_block(display_metrics_section=True)
@@ -512,6 +519,8 @@ class TestEOCJournal(StudioEditableBaseTest):
 
             entry = element.find_element_by_css_selector(tag)
             self.assertEqual(float(entry.text), value)
+        self.assert_in_student_view_data('display_user_metrics', True)
+        self.assert_in_student_view_user_state('engagement', default_engagement_metrics)
 
     def test_pb_answer_blocks_selection_preserved_in_edit_view(self):
         selected_block_id = default_pb_answer_block_ids[1]
@@ -534,10 +543,12 @@ class TestEOCJournal(StudioEditableBaseTest):
         # The default title is 'Course Journal'.
         default_title = 'Course Journal'
         self.assertEqual(title.text, default_title)
+        self.assert_in_student_view_data('display_name', 'Course Journal')
         custom_title = 'My Custom Yournal'
         self.configure_block(display_name=custom_title)
         title = self.element.find_element_by_css_selector('.title h3')
         self.assertEqual(title.text, custom_title)
+        self.assert_in_student_view_data('display_name', 'My Custom Yournal')
 
     def test_pdf_report_title(self):
         client = Client()
@@ -570,12 +581,14 @@ class TestEOCJournal(StudioEditableBaseTest):
             '.eoc-key-takeaways'
         )
         self.assertNotIn('Takeaways PDF', self.element.text)
+        self.assert_in_student_view_data('display_key_takeaways', False)
 
     def test_takeaways_pdf_enabled_but_not_configured(self):
         self.configure_block(display_key_takeaways_section=True)
         links = self.element.find_elements_by_css_selector('a.key-takeaways-link')
         self.assertEqual(len(links), 0)
         self.assertIn('Key Takeaways PDF not available at this time.', self.element.text)
+        self.assert_in_student_view_data('display_key_takeaways', True)
 
     def test_takeaways_pdf_enabled_and_configured(self):
         self.configure_block(
@@ -585,12 +598,15 @@ class TestEOCJournal(StudioEditableBaseTest):
         link = self.element.find_element_by_css_selector('a.key-takeaways-link')
         self.assertIn('Key Takeaways', link.text)
         self.assertEqual(link.get_attribute('target'), '_blank')
+        self.assert_in_student_view_data('display_key_takeaways', True)
+        self.assert_in_student_view_data('key_takeaways_pdf_url', 'https://lms.base/static/my.pdf')
 
     def test_no_pdf_report_link_heading_configured(self):
         selected_block_ids = default_pb_answer_block_ids[1:]
         self.configure_block(selected_pb_answer_blocks=selected_block_ids)
         heading = self.element.find_element_by_css_selector('.eoc-pdf-report .title')
         self.assertEqual('PDF Report', heading.text)
+        self.assert_in_student_view_data('pdf_report_link_heading', 'PDF Report')
 
     def test_pdf_report_link_heading_configured(self):
         selected_block_ids = default_pb_answer_block_ids[1:]
@@ -598,12 +614,14 @@ class TestEOCJournal(StudioEditableBaseTest):
                              pdf_report_link_heading='My Report')
         heading = self.element.find_element_by_css_selector('.eoc-pdf-report .title')
         self.assertEqual('My Report', heading.text)
+        self.assert_in_student_view_data('pdf_report_link_heading', 'My Report')
 
     def test_no_pdf_report_link_text_configured(self):
         selected_block_ids = default_pb_answer_block_ids[1:]
         self.configure_block(selected_pb_answer_blocks=selected_block_ids)
         link = self.element.find_element_by_css_selector('a.pdf-report-link')
         self.assertEqual('Download PDF', link.text)
+        self.assert_in_student_view_data('pdf_report_link_text', 'Download PDF')
 
     def test_pdf_report_link_text_configured(self):
         selected_block_ids = default_pb_answer_block_ids[1:]
@@ -611,6 +629,77 @@ class TestEOCJournal(StudioEditableBaseTest):
                              pdf_report_link_text='Download Report')
         link = self.element.find_element_by_css_selector('a.pdf-report-link')
         self.assertEqual('Download Report', link.text)
+        self.assert_in_student_view_data('pdf_report_link_text', 'Download Report')
+
+    def test_student_view_data(self):
+        selected_block_ids = default_pb_answer_block_ids[1:]
+        self.configure_block(selected_pb_answer_blocks=selected_block_ids, )
+        block = self.load_root_xblock()
+        data = block.student_view_data()
+        self.assertEqual(data, {
+            'display_name': u'Course Journal',
+            'display_key_takeaways': False,
+            'pdf_report_link_heading': u'PDF Report',
+            'pdf_report_url': u'https://lms.base/handler/test-scenario.eoc-journal.d0.u0/serve_pdf/?student=student_1',
+            'pdf_report_link_text': u'Download PDF',
+            'display_answers': False,
+            'display_user_metrics': False
+        })
+
+    def test_student_view_user_state(self):
+        selected_block_ids = default_pb_answer_block_ids[1:]
+        self.configure_block(
+            selected_pb_answer_blocks=selected_block_ids,
+            display_key_takeaways_section=True,
+            display_answers=True,
+            display_metrics_section=True,
+        )
+        block = self.load_root_xblock()
+        response = block.handle('student_view_user_state', None)
+        data = json.loads(response.body)
+        self.assertEqual(data, {
+            'answer_sections': [{
+                'name': u'Second Section',
+                'questions': expected_answers_data,
+            }],
+            'progress': {
+                'cohort_average': default_cohort_average_progress,
+                'user': default_user_progress,
+            },
+            'proficiency': {
+                'cohort_average': default_cohort_average_proficiency,
+                'user': default_user_proficiency,
+            },
+            'engagement': default_engagement_metrics,
+        })
+
+    def assert_in_student_view_data(self, key, value=None):
+        block = self.load_root_xblock()
+        data = block.student_view_data()
+        if value:
+            self.assertEqual(data[key], value)
+        else:
+            self.assertIn(key, data)
+
+    def assert_in_student_view_user_state(self, key, value=None):
+        block = self.load_root_xblock()
+        response = block.handle('student_view_user_state', None)
+        data = json.loads(response.body)
+        if value:
+            self.assertEqual(data[key], value)
+        else:
+            self.assertIn(key, data)
+
+    def assert_not_in_student_view_user_state(self, key):
+        block = self.load_root_xblock()
+        response = block.handle('student_view_user_state', None)
+        data = json.loads(response.body)
+        self.assertNotIn(key, data)
+
+    def assert_not_in_student_view_data(self, key):
+        block = self.load_root_xblock()
+        data = block.student_view_data()
+        self.assertNotIn(key, data)
 
 
 class TestPdfGenerator(unittest.TestCase):
