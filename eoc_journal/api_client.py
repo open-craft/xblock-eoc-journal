@@ -1,6 +1,8 @@
 """
 A wrapper around the Edx API.
 """
+from urllib import urlencode
+
 import requests
 
 from django.conf import settings
@@ -8,16 +10,6 @@ from edx_rest_api_client.exceptions import HttpClientError
 
 from .utils import build_jwt_edx_client
 
-
-# Points for social activities
-SOCIAL_METRICS_POINTS = {
-    'num_threads': 10,
-    'num_comments': 15,
-    'num_replies': 15,
-    'num_upvotes': 25,
-    'num_thread_followers': 5,
-    'num_comments_generated': 15,
-}
 
 PROGRESS_IGNORE_COMPONENTS = [
     'discussion-course',
@@ -53,17 +45,6 @@ PROGRESS_IGNORE_COMPONENTS = [
     'gp-v2-navigator-ask-ta',
     'gp-v2-navigator-private-discussion',
 ]
-
-
-def calculate_engagement_score(social_metrics):
-    """
-    Calculates and returns the total score for the given social metrics
-    """
-    engagement_total = 0
-
-    for key, val in SOCIAL_METRICS_POINTS.iteritems():
-        engagement_total += social_metrics.get(key, 0) * val
-    return engagement_total
 
 
 def course_components_ids(course, ignored_categories):
@@ -146,22 +127,12 @@ class ApiClient(object):
         Fetches and returns social metrics for the current user in the
         specified course.
         """
-        url = '{base_url}/users/{user_id}/courses/{course_id}/metrics/social/'.format(
+        qs_params = {'include_stats': 'true'}
+        url = '{base_url}/users/{user_id}/courses/{course_id}/metrics/social/?{query_string}'.format(
             base_url=self.API_BASE_URL,
             user_id=self.user.id,
             course_id=self.course_id,
-        )
-
-        return get(url)
-
-    def get_cohort_engagement_metrics(self):
-        """
-        Fetches the cohort engagement points, calculates and returns the
-        average.
-        """
-        url = '{base_url}/courses/{course_id}/metrics/social/'.format(
-            base_url=self.API_BASE_URL,
-            course_id=self.course_id,
+            query_string=urlencode(qs_params),
         )
 
         return get(url)
