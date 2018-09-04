@@ -71,15 +71,6 @@ expected_answers_data = [
     {'question': u'', 'answer': 'Not answered yet.'},
 ]
 
-default_social_metrics_points = {
-    'num_threads': 1,
-    'num_comments': 1,
-    'num_replies': 1,
-    'num_upvotes': 1,
-    'num_comments_generated': 1,
-    'num_thread_followers': 1,
-}
-
 default_engagement_metrics = {
     'user_score': 6,
     'cohort_score': 9,
@@ -150,14 +141,6 @@ class TestEOCJournal(StudioEditableBaseTest):
             mock_get_user_engagement_metrics
         )
 
-        def mock_get_cohort_engagement_metrics(self):
-            return json.loads(loader.load_unicode('data/cohort_engagement_metrics_response.json'))
-
-        self.patch(
-            'eoc_journal.api_client.ApiClient.get_cohort_engagement_metrics',
-            mock_get_cohort_engagement_metrics
-        )
-
         def mock_get_course_completions(self):
             return json.loads(loader.load_unicode('data/course_completions_response.json'))
 
@@ -188,11 +171,6 @@ class TestEOCJournal(StudioEditableBaseTest):
         self.patch(
             'eoc_journal.api_client.ApiClient._get_completion_leader_metrics',
             mock_get_completion_leader_metrics
-        )
-
-        self.patch(
-            'eoc_journal.api_client.SOCIAL_METRICS_POINTS',
-            default_social_metrics_points
         )
 
     def patch(self, item, return_value):
@@ -320,7 +298,6 @@ class TestEOCJournal(StudioEditableBaseTest):
         # They are not available in the Studio, for example.
         api_client_methods = [
             'get_user_engagement_metrics',
-            'get_cohort_engagement_metrics',
             'get_cohort_average_progress',
             '_get_course_completions',
             '_get_grades_leader_metrics',

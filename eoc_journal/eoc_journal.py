@@ -25,7 +25,7 @@ from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 
-from .api_client import ApiClient, calculate_engagement_score
+from .api_client import ApiClient
 from .course_blocks_api import CourseBlocksApiClient
 from .pdf_generator import get_style_sheet
 from .utils import _, normalize_id
@@ -447,32 +447,23 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         client = ApiClient(user, course_id)
 
         user_engagement = client.get_user_engagement_metrics()
-        course_engagement = client.get_cohort_engagement_metrics()
 
-        if not course_engagement:
+        if not user_engagement:
             return None
         else:
-            course_point_sum = [
-                calculate_engagement_score(metrics)
-                for metrics in course_engagement['users'].itervalues()
-            ]
-            course_point_sum = sum(course_point_sum)
-
-            enrollments = course_engagement['total_enrollments']
-
-            if enrollments > 0:
-                cohort_score = float(course_point_sum) / enrollments
-            else:
-                cohort_score = 0
-
+            cohort_score = user_engagement['course_avg']
+            cohort_score_rounded = int(round(cohort_score))
+            if cohort_score_rounded < 1 and cohort_score > 0:
+                cohort_score_rounded = 1
+            metrics = user_engagement['stats']
             return {
-                'user_score': int(round(calculate_engagement_score(user_engagement))),
-                'cohort_score': int(round(cohort_score)),
-                'new_posts': user_engagement.get('num_threads', 0),
-                'total_replies': user_engagement.get('num_replies', 0) + user_engagement.get('num_comments', 0),
-                'upvotes': user_engagement.get('num_upvotes', 0),
-                'comments_generated': user_engagement.get('num_comments_generated', 0),
-                'posts_followed': user_engagement.get('num_thread_followers', 0),
+                'user_score': user_engagement['score'],
+                'cohort_score': cohort_score_rounded,
+                'new_posts': metrics.get('num_threads', 0),
+                'total_replies': metrics.get('num_replies', 0) + metrics.get('num_comments', 0),
+                'upvotes': metrics.get('num_upvotes', 0),
+                'comments_generated': metrics.get('num_comments_generated', 0),
+                'posts_followed': metrics.get('num_thread_followers', 0),
             }
 
     def _fetch_pb_answer_blocks(self, all_blocks=False):
