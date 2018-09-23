@@ -329,17 +329,19 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
                 subsection_block = blocks[subsection_id]
                 for unit_id in subsection_block.get('children', []):
                     unit_block = blocks[unit_id]
-                    for pb_answer_id in unit_block.get('children', []):
-                        pb_answer_block = blocks[pb_answer_id]
-                        result.append({
-                            'section': section_block['display_name'],
-                            'subsection': subsection_block['display_name'],
-                            'unit': unit_block['display_name'],
-                            'id': pb_answer_block['id'],
-                            'name': pb_answer_block['student_view_data']['name'],
-                            'question': pb_answer_block['student_view_data']['question'],
-                            'display_name': pb_answer_block['display_name'],
-                        })
+                    for pb_id in unit_block.get('children', []):
+                        pb_block = blocks[pb_id]
+                        for pb_answer_id in pb_block.get('children', []):
+                            pb_answer_block = blocks[pb_answer_id]
+                            result.append({
+                                'section': section_block['display_name'],
+                                'subsection': subsection_block['display_name'],
+                                'unit': unit_block['display_name'],
+                                'id': pb_answer_block['id'],
+                                'name': pb_answer_block['student_view_data']['name'],
+                                'question': pb_answer_block['student_view_data']['question'],
+                                'display_name': pb_answer_block['display_name'],
+                            })
         return result
 
     def _get_course_id(self):
@@ -485,7 +487,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             depth='all',
             requested_fields='student_view_data,children',
             student_view_data='pb-answer',
-            block_types_filter='pb-answer,vertical,sequential,chapter,course',
+            block_types_filter='pb-answer,problem-builder,vertical,sequential,chapter,course',
             username=user.username,
         )
         return response
