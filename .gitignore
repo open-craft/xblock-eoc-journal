@@ -59,4 +59,4 @@ target/
 # IDEs
 .idea
 .idea/*
-
+.vscode

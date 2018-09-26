@@ -14,7 +14,7 @@ lxml
 mako
 markupsafe
 pdfminer
-pep8
+pycodestyle
 pylint
 python-dateutil
 pytz

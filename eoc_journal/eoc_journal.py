@@ -312,6 +312,31 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         else:
             return None
 
+    @staticmethod
+    def _iter_pb_answers(response):
+        """
+        Iterate over pb-answer blocks in course blocks API response and yield
+        section, subsection and unit display names along with pb-answer blocks.
+        """
+        blocks = response['blocks']
+        course_block = blocks[response['root']]
+        for section_id in course_block.get('children', []):
+            section_block = blocks[section_id]
+            for subsection_id in section_block.get('children', []):
+                subsection_block = blocks[subsection_id]
+                for unit_id in subsection_block.get('children', []):
+                    unit_block = blocks[unit_id]
+                    for pb_id in unit_block.get('children', []):
+                        pb_block = blocks[pb_id]
+                        for pb_answer_id in pb_block.get('children', []):
+                            pb_answer_block = blocks[pb_answer_id]
+                            yield (
+                                section_block['display_name'],
+                                subsection_block['display_name'],
+                                unit_block['display_name'],
+                                pb_answer_block,
+                            )
+
     def list_pb_answers(self, all_blocks=False):
         """
         Returns a list of dicts with info about all problem builder's pb-answer
@@ -320,27 +345,18 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         The items are ordered in the order they appear in the course.
         """
         response = self._fetch_pb_answer_blocks(all_blocks)
-        blocks = response['blocks']
-        course_block = blocks[response['root']]
-        result = []
-        for section_id in course_block.get('children', []):
-            section_block = blocks[section_id]
-            for subsection_id in section_block.get('children', []):
-                subsection_block = blocks[subsection_id]
-                for unit_id in subsection_block.get('children', []):
-                    unit_block = blocks[unit_id]
-                    for pb_answer_id in unit_block.get('children', []):
-                        pb_answer_block = blocks[pb_answer_id]
-                        result.append({
-                            'section': section_block['display_name'],
-                            'subsection': subsection_block['display_name'],
-                            'unit': unit_block['display_name'],
-                            'id': pb_answer_block['id'],
-                            'name': pb_answer_block['student_view_data']['name'],
-                            'question': pb_answer_block['student_view_data']['question'],
-                            'display_name': pb_answer_block['display_name'],
-                        })
-        return result
+        return [
+            {
+                'section': section,
+                'subsection': subsection,
+                'unit': unit,
+                'id': block['id'],
+                'name': block['student_view_data']['name'],
+                'question': block['student_view_data']['question'],
+                'display_name': block['display_name'],
+            }
+            for section, subsection, unit, block in self._iter_pb_answers(response)
+        ]
 
     def _get_course_id(self):
         """
@@ -485,7 +501,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             depth='all',
             requested_fields='student_view_data,children',
             student_view_data='pb-answer',
-            block_types_filter='pb-answer,vertical,sequential,chapter,course',
+            block_types_filter='pb-answer,problem-builder,vertical,sequential,chapter,course',
             username=user.username,
         )
         return response

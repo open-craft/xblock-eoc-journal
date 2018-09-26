@@ -90,12 +90,23 @@
             "display_name": "Unit 3",
             "block_id": "e87577535d0e4c68a2ac9d760d003c92",
             "children": [
-                "i4x://Org/Course/pb-answer/b86edf60454b47dbb8f2e1b4e2d48d6a"
+                "i4x://Org/Course/problem-builder/7e70fa0ea4684ec489e4f72734cc7bce"
             ],
             "student_view_url": "http://example.com/xblock/i4x://Org/Course/vertical/e87577535d0e4c68a2ac9d760d003c92",
             "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/vertical/e87577535d0e4c68a2ac9d760d003c92",
             "type": "vertical",
             "id": "i4x://Org/Course/vertical/e87577535d0e4c68a2ac9d760d003c92"
+        },
+        "i4x://Org/Course/problem-builder/7e70fa0ea4684ec489e4f72734cc7bce": {
+            "display_name": "",
+            "block_id": "7e70fa0ea4684ec489e4f72734cc7bce",
+            "children": [
+                "i4x://Org/Course/pb-answer/b86edf60454b47dbb8f2e1b4e2d48d6a"
+            ],
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/problem-builder/7e70fa0ea4684ec489e4f72734cc7bce",
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/problem-builder/7e70fa0ea4684ec489e4f72734cc7bce",
+            "type": "problem-builder",
+            "id": "i4x://Org/Course/problem-builder/7e70fa0ea4684ec489e4f72734cc7bce"
         },
         "i4x://Org/Course/chapter/c154bd7716654193969e20d6e2fd994a": {
             "display_name": "Second Section",
@@ -136,14 +147,36 @@
             "display_name": "Unit 1",
             "block_id": "8f995fb218664104bb3f898f10744511",
             "children": [
-                "i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c",
-                "i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233",
-                "i4x://Org/Course/pb-answer/927c5b8cd051475e937b8c1091a9feaf"
+                "i4x://Org/Course/problem-builder/693f5d5a98b94f9481c381457d290bf6",
+                "i4x://Org/Course/problem-builder/26071191d5344d5e931c9a90a49e6192"
             ],
             "student_view_url": "http://example.com/xblock/i4x://Org/Course/vertical/8f995fb218664104bb3f898f10744511",
             "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/vertical/8f995fb218664104bb3f898f10744511",
             "type": "vertical",
             "id": "i4x://Org/Course/vertical/8f995fb218664104bb3f898f10744511"
+        },
+        "i4x://Org/Course/problem-builder/693f5d5a98b94f9481c381457d290bf6": {
+            "display_name": "",
+            "block_id": "693f5d5a98b94f9481c381457d290bf6",
+            "children": [
+                "i4x://Org/Course/pb-answer/6f070c350e39429cbccfd3185a33621c",
+                "i4x://Org/Course/pb-answer/a0b04a13d3074229b6be33fbc31de233"
+            ],
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/problem-builder/693f5d5a98b94f9481c381457d290bf6",
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/problem-builder/693f5d5a98b94f9481c381457d290bf6",
+            "type": "problem-builder",
+            "id": "i4x://Org/Course/vertical/693f5d5a98b94f9481c381457d290bf6"
+        },
+        "i4x://Org/Course/problem-builder/26071191d5344d5e931c9a90a49e6192": {
+            "display_name": "",
+            "block_id": "26071191d5344d5e931c9a90a49e6192",
+            "children": [
+                "i4x://Org/Course/pb-answer/927c5b8cd051475e937b8c1091a9feaf"
+            ],
+            "student_view_url": "http://example.com/xblock/i4x://Org/Course/problem-builder/26071191d5344d5e931c9a90a49e6192",
+            "lms_web_url": "http://example.com/courses/Org/Course/Run/jump_to/i4x://Org/Course/problem-builder/26071191d5344d5e931c9a90a49e6192",
+            "type": "problem-builder",
+            "id": "i4x://Org/Course/vertical/26071191d5344d5e931c9a90a49e6192"
         },
         "i4x://Org/Course/sequential/4309902bea4d4228ba1895df438c27dc": {
             "display_name": "Subsection 2",
