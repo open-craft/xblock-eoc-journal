@@ -123,15 +123,23 @@ class TestEOCJournal(StudioEditableBaseTest):
         self.patch('eoc_journal.eoc_journal.EOCJournalXBlock._get_course_name', mock_course)
 
         # Patch CourseBlocksApiClient.
-        self.patch('eoc_journal.eoc_journal.CourseBlocksApiClient.connect', Mock())
+        self.patch('eoc_journal.eoc_journal.CourseBlocksApiClient._connect', Mock())
 
         def mock_get_blocks(self, **kwargs):
             return json.loads(loader.load_unicode('data/course_api_response.json'))
 
         self.patch('eoc_journal.eoc_journal.CourseBlocksApiClient.get_blocks', mock_get_blocks)
 
+        # Patch CompletionApiClient.
+        self.patch('eoc_journal.eoc_journal.CompletionApiClient._connect', Mock())
+
+        def mock_get_user_progress(self, **kwargs):
+            return json.loads(loader.load_unicode('data/user_progress_response.json'))
+
+        self.patch('eoc_journal.eoc_journal.CompletionApiClient.get_user_progress', mock_get_user_progress)
+
         # Patch UserMetricsClient.
-        self.patch('eoc_journal.api_client.ApiClient.connect_with_jwt', Mock())
+        self.patch('eoc_journal.api_client.ApiClient._connect', Mock())
 
         def mock_get_user_engagement_metrics(self):
             return json.loads(loader.load_unicode('data/user_engagement_metrics_response.json'))
@@ -139,14 +147,6 @@ class TestEOCJournal(StudioEditableBaseTest):
         self.patch(
             'eoc_journal.api_client.ApiClient.get_user_engagement_metrics',
             mock_get_user_engagement_metrics
-        )
-
-        def mock_get_course_completions(self):
-            return json.loads(loader.load_unicode('data/course_completions_response.json'))
-
-        self.patch(
-            'eoc_journal.api_client.ApiClient._get_course_completions',
-            mock_get_course_completions
         )
 
         def mock_get_grades_leader_metrics(self):
@@ -299,7 +299,6 @@ class TestEOCJournal(StudioEditableBaseTest):
         api_client_methods = [
             'get_user_engagement_metrics',
             'get_cohort_average_progress',
-            '_get_course_completions',
             '_get_grades_leader_metrics',
             '_get_course',
         ]
