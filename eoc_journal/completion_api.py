@@ -9,13 +9,7 @@ class CompletionApiClient(BaseApiClient):
     """
     Object builds an API client to make calls to the LMS Grades API.
     """
-    API_URL = '/api/completion-aggregator/v1'
-
-    def __init__(self, user, course_id):
-        """
-        Connect to the REST API.
-        """
-        super(CompletionApiClient, self).__init__(user, course_id, self.API_URL)
+    API_PATH = '/api/completion-aggregator/v1'
 
     def get_user_progress(self, **kwargs):
         """

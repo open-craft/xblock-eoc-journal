@@ -10,13 +10,7 @@ class CourseBlocksApiClient(BaseApiClient):
     """
     Object builds an API client to make calls to the LMS Grades API.
     """
-    API_URL = '/api/courses/v1'
-
-    def __init__(self, user, course_id):
-        """
-        Connect to the REST API.
-        """
-        super(CourseBlocksApiClient, self).__init__(user, course_id, self.API_URL)
+    API_PATH = '/api/courses/v1'
 
     def get_blocks(self, **kwargs):
         """

@@ -94,13 +94,7 @@ class ApiClient(BaseApiClient):
     """
     Object builds an API client to make calls to the LMS user API.
     """
-    API_URL = '/api/server'
-
-    def __init__(self, user, course_id):
-        """
-        Connect to the REST API.
-        """
-        super(ApiClient, self).__init__(user, course_id, self.API_URL)
+    API_PATH = '/api/server'
 
     def get_user_engagement_metrics(self):
         """
@@ -109,7 +103,7 @@ class ApiClient(BaseApiClient):
         """
         qs_params = {'include_stats': 'true'}
         url = '{base_url}/users/{user_id}/courses/{course_id}/metrics/social/?{query_string}'.format(
-            base_url=self.API_BASE_URL,
+            base_url=self.api_url,
             user_id=self.user.id,
             course_id=self.course_id,
             query_string=urlencode(qs_params),
@@ -139,7 +133,7 @@ class ApiClient(BaseApiClient):
         }
 
         url = '{base_url}/courses/{course_id}/metrics/completions/leaders/'.format(
-            base_url=self.API_BASE_URL,
+            base_url=self.api_url,
             course_id=self.course_id,
         )
 
@@ -151,7 +145,7 @@ class ApiClient(BaseApiClient):
         """
         params = {'user_id': self.user.id}
         url = '{base_url}/courses/{course_id}/metrics/grades/leaders/'.format(
-            base_url=self.API_BASE_URL,
+            base_url=self.api_url,
             course_id=self.course_id,
         )
         return get(url, params=params)
