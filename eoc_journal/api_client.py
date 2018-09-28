@@ -10,91 +10,37 @@ from edx_rest_api_client.exceptions import HttpClientError
 
 from .base_api_client import BaseApiClient
 
-PROGRESS_IGNORE_COMPONENTS = [
-    'discussion-course',
-    'group-project',
-    'discussion-forum',
-    'eoc-journal',
-
-    # GP v2 categories
-    'gp-v2-project',
-    'gp-v2-activity',
-    'gp-v2-stage-basic',
-    'gp-v2-stage-completion',
-    'gp-v2-stage-submission',
-    'gp-v2-stage-team-evaluation',
-    'gp-v2-stage-peer-review',
-    'gp-v2-stage-evaluation-display',
-    'gp-v2-stage-grade-display',
-    'gp-v2-resource',
-    'gp-v2-video-resource',
-    'gp-v2-submission',
-    'gp-v2-peer-selector',
-    'gp-v2-group-selector',
-    'gp-v2-review-question',
-    'gp-v2-peer-assessment',
-    'gp-v2-group-assessment',
-    'gp-v2-static-submissions',
-    'gp-v2-static-grade-rubric',
-    'gp-v2-project-team',
-    'gp-v2-navigator',
-    'gp-v2-navigator-navigation',
-    'gp-v2-navigator-resources',
-    'gp-v2-navigator-submissions',
-    'gp-v2-navigator-ask-ta',
-    'gp-v2-navigator-private-discussion',
-]
-
-
-def course_components_ids(course, ignored_categories):
-    """
-    Returns list of course components, excluding components of ignored
-    categories.
-    """
-    def filter_children(children):
-        """Returns list of children filtered out by category. """
-        return [c['id'] for c in children if c['category'] not in ignored_categories]
-
-    components = []
-    for lesson in course['chapters']:
-        for sequential in lesson['sequentials']:
-            for page in sequential['pages']:
-                if 'children' in page:
-                    children = filter_children(page['children'])
-                    components.extend(children)
-    return components
-
-
-def _get_edx_api_key():
-    """
-    Returns the EDX_API_KEY from the django settings.
-    If key is not set, returns None.
-
-    This key should never be sent to the client, as it is only used to
-    communicate with the api server.
-    """
-    if hasattr(settings, 'EDX_API_KEY'):
-        return settings.EDX_API_KEY
-    return None
-
-
-def get(url, params=None):
-    """
-    Sends a GET request to the URL and returns the parsed JSON response.
-    """
-    key = _get_edx_api_key()
-
-    if key:
-        headers = {'X-Edx-Api-Key': key}
-        return requests.get(url, headers=headers, params=params).json()
-    return None
-
 
 class ApiClient(BaseApiClient):
     """
     Object builds an API client to make calls to the LMS user API.
     """
     API_PATH = '/api/server'
+
+    @staticmethod
+    def _get_edx_api_key():
+        """
+        Returns the EDX_API_KEY from the django settings.
+        If key is not set, returns None.
+
+        This key should never be sent to the client, as it is only used to
+        communicate with the api server.
+        """
+        if hasattr(settings, 'EDX_API_KEY'):
+            return settings.EDX_API_KEY
+        return None
+
+    @staticmethod
+    def _get(url, params=None):
+        """
+        Sends a GET request to the URL and returns the parsed JSON response.
+        """
+        key = ApiClient._get_edx_api_key()
+
+        if key:
+            headers = {'X-Edx-Api-Key': key}
+            return requests.get(url, headers=headers, params=params).json()
+        return None
 
     def get_user_engagement_metrics(self):
         """
@@ -109,7 +55,7 @@ class ApiClient(BaseApiClient):
             query_string=urlencode(qs_params),
         )
 
-        return get(url)
+        return self._get(url)
 
     def _get_course(self):
         """
@@ -137,7 +83,7 @@ class ApiClient(BaseApiClient):
             course_id=self.course_id,
         )
 
-        return get(url, params=params)
+        return self._get(url, params=params)
 
     def _get_grades_leader_metrics(self):
         """
@@ -148,7 +94,7 @@ class ApiClient(BaseApiClient):
             base_url=self.api_url,
             course_id=self.course_id,
         )
-        return get(url, params=params)
+        return self._get(url, params=params)
 
     def get_cohort_average_progress(self):
         """
