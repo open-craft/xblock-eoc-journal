@@ -8,6 +8,7 @@ import requests
 from django.conf import settings
 from edx_rest_api_client.exceptions import HttpClientError
 
+from .completion_api import CompletionApiClient
 from .utils import build_jwt_edx_client
 
 
@@ -137,17 +138,6 @@ class ApiClient(object):
 
         return get(url)
 
-    def _get_course_completions(self):
-        """
-        Fetches and returns the user's completed modules within the course.
-        """
-        params = {'page_size': 0, 'user_id': self.user.id}
-        url = '{base_url}/courses/{course_id}/completions'.format(
-            base_url=self.API_BASE_URL,
-            course_id=self.course_id,
-        )
-        return get(url, params=params)
-
     def _get_course(self):
         """
         Fetches and returns chapters, sequentials, and pages information about
@@ -189,38 +179,10 @@ class ApiClient(object):
 
     def get_user_progress(self):
         """
-        Calculates the progress percentage for the current user.
+        Returns the progress percentage for the current user.
         """
-        completions = self._get_course_completions()
-        course = self._get_course()
-
-        if completions is None or course is None:
-            return None
-
-        completed_ids = [result['content_id'] for result in completions]
-
-        chapters = [
-            module
-            for module in course['content'] if module['category'] == 'chapter'
-        ]
-
-        for chapter in chapters:
-            chapter['sequentials'] = [
-                child for child in chapter['children'] if child['category'] == 'sequential'
-            ]
-            for sequential in chapter['sequentials']:
-                sequential['pages'] = [
-                    child for child in sequential['children'] if child['category'] == 'vertical'
-                ]
-        course['chapters'] = chapters
-
-        components_ids = course_components_ids(course, PROGRESS_IGNORE_COMPONENTS)
-        actual_completions = set(components_ids).intersection(completed_ids)
-
-        try:
-            return round(float(100 * len(actual_completions)) / len(components_ids))
-        except ZeroDivisionError:
-            return 0
+        client = CompletionApiClient(self.user, self.course_id)
+        return client.get_course_completion()
 
     def get_cohort_average_progress(self):
         """
