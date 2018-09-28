@@ -94,16 +94,13 @@ class ApiClient(BaseApiClient):
     """
     Object builds an API client to make calls to the LMS user API.
     """
+    API_URL = '/api/server'
 
     def __init__(self, user, course_id):
         """
         Connect to the REST API.
         """
-        super(ApiClient, self).__init__(user, course_id)
-        # pylint: disable=C0103
-        if self.API_BASE_URL:
-            self.API_BASE_URL += '/api/server'
-        self.connect()
+        super(ApiClient, self).__init__(user, course_id, self.API_URL)
 
     def get_user_engagement_metrics(self):
         """

@@ -4,20 +4,18 @@ A client for completion API for downloading course completion data.
 from .base_api_client import BaseApiClient
 
 
+# pylint: disable=R0903
 class CompletionApiClient(BaseApiClient):
     """
     Object builds an API client to make calls to the LMS Grades API.
     """
+    API_URL = '/api/completion-aggregator/v1'
 
     def __init__(self, user, course_id):
         """
         Connect to the REST API.
         """
-        super(CompletionApiClient, self).__init__(user, course_id)
-        # pylint: disable=C0103
-        if self.API_BASE_URL:
-            self.API_BASE_URL += '/api/completion-aggregator/v1'
-        self.connect()
+        super(CompletionApiClient, self).__init__(user, course_id, self.API_URL)
 
     def get_user_progress(self, **kwargs):
         """
