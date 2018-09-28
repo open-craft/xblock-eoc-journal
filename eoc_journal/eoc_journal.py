@@ -26,6 +26,7 @@ from xblockutils.resources import ResourceLoader
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 
 from .api_client import ApiClient
+from .completion_api import CompletionApiClient
 from .course_blocks_api import CourseBlocksApiClient
 from .pdf_generator import get_style_sheet
 from .utils import _, normalize_id
@@ -422,8 +423,9 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         user = self._get_current_user()
         course_id = self._get_course_id()
         client = ApiClient(user, course_id)
+        completion_client = CompletionApiClient(user, course_id)
 
-        user_progress = client.get_user_progress()
+        user_progress = completion_client.get_user_progress()
         cohort_average = client.get_cohort_average_progress()
 
         if user_progress is None or cohort_average is None:

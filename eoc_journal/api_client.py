@@ -8,7 +8,6 @@ import requests
 from django.conf import settings
 from edx_rest_api_client.exceptions import HttpClientError
 
-from .completion_api import CompletionApiClient
 from .utils import build_jwt_edx_client
 
 
@@ -176,13 +175,6 @@ class ApiClient(object):
             course_id=self.course_id,
         )
         return get(url, params=params)
-
-    def get_user_progress(self):
-        """
-        Returns the progress percentage for the current user.
-        """
-        client = CompletionApiClient(self.user, self.course_id)
-        return client.get_course_completion()
 
     def get_cohort_average_progress(self):
         """

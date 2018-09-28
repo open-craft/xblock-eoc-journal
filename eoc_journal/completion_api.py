@@ -37,11 +37,10 @@ class CompletionApiClient(object):
             self.expires_in, append_slash=True
         )
 
-    def get_course_completion(self):
+    def get_user_progress(self, **kwargs):
         """
-        Fetches and returns percentage completion from Course API.
+        Fetches and returns the progress percentage for the current user.
         """
-        data = self.client \
-            .course(self.course_id) \
-            .get(username=self.user.username).json()
-        return data['results']['percent']
+        course_api = self.client.course(self.course_id)
+        data = course_api.get(username=self.user.username, **kwargs)
+        return data['results'][0]['completion']['percent'] * 100
