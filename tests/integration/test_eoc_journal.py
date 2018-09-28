@@ -149,14 +149,6 @@ class TestEOCJournal(StudioEditableBaseTest):
             mock_get_user_engagement_metrics
         )
 
-        def mock_get_course_completions(self):
-            return json.loads(loader.load_unicode('data/course_completions_response.json'))
-
-        self.patch(
-            'eoc_journal.api_client.ApiClient._get_course_completions',
-            mock_get_course_completions
-        )
-
         def mock_get_grades_leader_metrics(self):
             return json.loads(loader.load_unicode('data/grades_leader_metrics_response.json'))
 
@@ -307,7 +299,6 @@ class TestEOCJournal(StudioEditableBaseTest):
         api_client_methods = [
             'get_user_engagement_metrics',
             'get_cohort_average_progress',
-            '_get_course_completions',
             '_get_grades_leader_metrics',
             '_get_course',
         ]
