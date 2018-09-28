@@ -8,8 +8,7 @@ import requests
 from django.conf import settings
 from edx_rest_api_client.exceptions import HttpClientError
 
-from .utils import build_jwt_edx_client
-
+from .base_api_client import BaseApiClient
 
 PROGRESS_IGNORE_COMPONENTS = [
     'discussion-course',
@@ -91,7 +90,7 @@ def get(url, params=None):
     return None
 
 
-class ApiClient(object):
+class ApiClient(BaseApiClient):
     """
     Object builds an API client to make calls to the LMS user API.
     """
@@ -100,27 +99,10 @@ class ApiClient(object):
         """
         Connect to the REST API.
         """
-        self.user = user
-        self.course_id = course_id
-
-        # pylint: disable=C0103
-        if hasattr(settings, 'LMS_ROOT_URL'):
-            self.API_BASE_URL = settings.LMS_ROOT_URL + '/api/server'
-        else:
-            self.API_BASE_URL = None
-
-        self.expires_in = getattr(settings, 'OAUTH_ID_TOKEN_EXPIRATION', 300)
-        self.jwt_edx_client = None
-        self.connect_with_jwt()
-
-    def connect_with_jwt(self):
-        """
-        Connect to the REST API, authenticating with a JWT for the current user.
-        """
-        self.jwt_edx_client = build_jwt_edx_client(
-            self.API_BASE_URL, scopes=['profile', 'email'],
-            user=self.user, expires_in=self.expires_in, append_slash=False
-        )
+        super(ApiClient, self).__init__(user, course_id)
+        if self.API_BASE_URL:
+            self.API_BASE_URL += '/api/server'
+        self.connect()
 
     def get_user_engagement_metrics(self):
         """
@@ -143,7 +125,7 @@ class ApiClient(object):
         the current course.
         """
         try:
-            course = self.jwt_edx_client.courses(id=self.course_id).get(depth=5)
+            course = self.client.courses(id=self.course_id).get(depth=5)
         except HttpClientError:
             return None
 
