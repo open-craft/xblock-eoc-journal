@@ -130,8 +130,16 @@ class TestEOCJournal(StudioEditableBaseTest):
 
         self.patch('eoc_journal.eoc_journal.CourseBlocksApiClient.get_blocks', mock_get_blocks)
 
+        # Patch CompletionApiClient.
+        self.patch('eoc_journal.eoc_journal.CompletionApiClient.connect', Mock())
+
+        def mock_get_user_progress(self, **kwargs):
+            return json.loads(loader.load_unicode('data/user_progress_response.json'))
+
+        self.patch('eoc_journal.eoc_journal.CompletionApiClient.get_user_progress', mock_get_user_progress)
+
         # Patch UserMetricsClient.
-        self.patch('eoc_journal.api_client.ApiClient.connect_with_jwt', Mock())
+        self.patch('eoc_journal.api_client.ApiClient.connect', Mock())
 
         def mock_get_user_engagement_metrics(self):
             return json.loads(loader.load_unicode('data/user_engagement_metrics_response.json'))

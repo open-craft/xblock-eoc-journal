@@ -1,0 +1,18 @@
+{
+    "pagination": {
+        "count": 1,
+        "previous": null,
+        "num_pages": 1,
+        "next": null
+    },
+    "results": [
+        {
+            "course_key": "course-v1:edX+DemoX+Demo_Course",
+            "completion": {
+                "earned": 2,
+                "possible": 2,
+                "percent": 1
+            }
+        }
+    ]
+}
