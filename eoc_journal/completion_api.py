@@ -39,13 +39,9 @@ class CompletionApiClient(object):
 
     def get_course_completion(self):
         """
-        Fetches and returns blocks from the Course API.
+        Fetches and returns percentage completion from Course API.
         """
-        data = self.client.course.get(username=self.user.username).json()
-        results = data['results']
-        course_data = {}
-        for result in results:
-            if result['course_key'] == self.course_id:
-                course_data = result
-
-        return course_data['percent']
+        data = self.client \
+            .course(self.course_id) \
+            .get(username=self.user.username).json()
+        return data['results']['percent']
