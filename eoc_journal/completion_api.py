@@ -14,6 +14,7 @@ class CompletionApiClient(BaseApiClient):
         Connect to the REST API.
         """
         super(CompletionApiClient, self).__init__(user, course_id)
+        # pylint: disable=C0103
         if self.API_BASE_URL:
             self.API_BASE_URL += '/api/completion-aggregator/v1'
         self.connect()

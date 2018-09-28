@@ -7,6 +7,7 @@ from django.conf import settings
 from .utils import build_jwt_edx_client
 
 
+# pylint: disable=R0903
 class BaseApiClient(object):
     """
     Base API client abstract class.
@@ -20,6 +21,7 @@ class BaseApiClient(object):
         self.user = user
         self.course_id = course_id
         self.expires_in = getattr(settings, 'OAUTH_ID_TOKEN_EXPIRATION', 300)
+        # pylint: disable=C0103
         self.API_BASE_URL = getattr(settings, 'LMS_ROOT_URL', None)
         self.client = None
 
