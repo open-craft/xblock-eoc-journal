@@ -2,6 +2,7 @@
 A client for completion API for downloading course completion data.
 """
 from .base_api_client import BaseApiClient
+from edx_rest_api_client.exceptions import HttpClientError
 
 
 # pylint: disable=R0903
@@ -16,5 +17,8 @@ class CompletionApiClient(BaseApiClient):
         Fetches and returns the progress percentage for the current user.
         """
         course_api = self.client.course(self.course_id)
-        data = course_api.get(username=self.user.username, **kwargs)
-        return data['results'][0]['completion']['percent'] * 100
+        try:
+            data = course_api.get(username=self.user.username, **kwargs)
+            return data['results'][0]['completion']['percent'] * 100
+        except (HttpClientError, KeyError, IndexError):
+            return None
