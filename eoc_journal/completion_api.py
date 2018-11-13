@@ -20,5 +20,5 @@ class CompletionApiClient(BaseApiClient):
         try:
             data = course_api.get(username=self.user.username, **kwargs)
             return data['results'][0]['completion']['percent'] * 100
-        except (HttpClientError, KeyError, IndexError):
+        except (HttpClientError, IndexError):
             return None
