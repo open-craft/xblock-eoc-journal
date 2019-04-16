@@ -24,6 +24,7 @@ from xblock.fields import Boolean, Scope, String, List
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.studio_editable import StudioEditableXBlockMixin
+from opaque_keys.edx.keys import UsageKey, CourseKey
 
 from .api_client import ApiClient
 from .completion_api import CompletionApiClient
@@ -530,3 +531,41 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             url = self._make_url_absolute(url)
 
         return url
+
+    @classmethod
+    def parse_xml(cls, node, runtime, keys, id_generator):
+        """
+        Use `node` to construct a new block.
+        Arguments:
+            node (:class:`~xml.etree.ElementTree.Element`): The xml node to parse into an xblock.
+            runtime (:class:`.Runtime`): The runtime to use while parsing.
+            keys (:class:`.ScopeIds`): The keys identifying where this block
+                will store its data.
+            id_generator (:class:`.IdGenerator`): An object that will allow the
+                runtime to generate correct definition and usage ids for
+                children of this block.
+
+        Notes:
+            This method is overwritten from :class:`~xblock.mixins.XmlSerizalizationMixin`.
+            https://github.com/edx/XBlock/blob/master/xblock/mixins.py
+        """
+        block = super(EOCJournalXBlock, cls).parse_xml(node, runtime, keys, id_generator)
+        course_id = getattr(id_generator, 'target_course_id', '')
+
+        if not course_id:
+            return block
+
+        course_id = unicode(normalize_id(course_id))
+        course_key = CourseKey.from_string(course_id)
+
+        transformed_block_ids = []
+        for selected in block.selected_pb_answer_blocks:
+            usage_key = UsageKey.from_string(selected)
+            if usage_key.course_key == course_key:
+                transformed_block_ids.append(selected)
+            else:
+                mapped = usage_key.map_into_course(course_key)
+                transformed_block_ids.append(unicode(mapped))
+
+        block.selected_pb_answer_blocks = transformed_block_ids
+        return block
