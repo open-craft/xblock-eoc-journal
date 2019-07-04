@@ -77,7 +77,7 @@ STATICI18N_DOMAIN = 'textjs'
 
 STATICI18N_NAMESPACE = 'EOCJournalXBlockI18N'
 STATICI18N_PACKAGES = (
-    'chat',
+    'eoc_journal',
 )
 STATICI18N_ROOT = 'eoc_journal/public/js'
 STATICI18N_OUTPUT_DIR = 'translations'
