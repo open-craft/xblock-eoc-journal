@@ -54,3 +54,48 @@ Note that you need a compatible version of Firefox installed to be able to run i
 Firefox are not currently supported by the selenium driver that we are using. If your default Firefox installation
 doesn't work, you can install Firefox 43 which is known to be compatible somewhere on your disk, and then set the
 `SELENIUM_FIREFOX_PATH` environment variable to point to your custom Firefox 43 installation.
+
+Translation (i18n)
+-------------------------------
+
+This repo offers multiple make targets to automate the translation tasks.
+First, install `requirements-test.txt`:
+
+```bash
+pip install -r requirements-test.txt
+```
+
+Each make target will be explained below:
+
+- `extract_translations`. Use [`i18n_tool` extract](https://github.com/edx/i18n-tools) to create `.po` files based on all the tagged strings in the python and javascript code.
+- `compile_translations`. Use [`i18n_tool` generate](https://github.com/edx/i18n-tools) to create `.mo` compiled files.
+- `detect_changed_source_translations`. Use [`i18n_tool` changed](https://github.com/edx/i18n-tools) to identify any updated translations.
+- `validate_translations`. Compile translations and check the source translations haven't changed.
+
+If you want to add a new language:
+  1. Add language to `eoc_journal/translations/config.yaml`
+  2. Make sure all tagged strings have been extracted:
+  ```bash
+  make extract_translations
+  ```
+  3. Clone `en` directory to `eoc_journal/translations/<lang_code>/` for example: `eoc_journal/translations/fa_IR/`
+  4. Make necessary changes to translation files headers. Make sure you have proper `Language` and `Plural-Forms` lines.
+  5. When you finished your modification process, re-compile the translation messages.
+  ```bash
+  make compile_translations
+  ```
+
+Transifex
+---------
+
+This repo offers different make targets to automate interaction with transifex. To use these make targets first install `requirements-test.txt`.
+```bash
+pip install -r requirements-test.txt
+```
+
+These are the different make targets used to interact with transifex:
+
+- `pull_translations`. Pull translations from Transifex.
+- `push_translations`. Push translations to Transifex.
+
+The transifex configuration is stored in `.tx`. For more information read [transifex's documentation](https://docs.transifex.com/client/client-configuration)
