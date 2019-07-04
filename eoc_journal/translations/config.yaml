@@ -1,0 +1,23 @@
+# Configuration for i18n workflow.
+
+locales:
+    - en  # English - Source Language
+    - es_419  # Spanish
+
+# The locales used for fake-accented English, for testing.
+dummy_locales:
+    - eo
+
+# Directories we don't search for strings.
+ignore_dirs:
+    - tests
+    - eoc_journal/conf
+    - eoc_journal/translations
+    - eoc_journal/public/js/translations
+
+# i18n_tools produces just "django-partial.po" by default, but we need "django.po":
+generate_merge:
+    django.po:
+        - django-partial.po
+    djangojs.po:
+        - djangojs-partial.po

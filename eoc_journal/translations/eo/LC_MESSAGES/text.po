@@ -1,0 +1,309 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-07-03 18:55-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: eo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: eoc_journal.py
+msgid "Title (display name)"
+msgstr "Tïtlé (dïspläý nämé) Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: eoc_journal.py
+msgid "Title to display"
+msgstr "Tïtlé tö dïspläý Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αм#"
+
+#: eoc_journal.py
+msgid "Course Journal"
+msgstr "Çöürsé Jöürnäl Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт#"
+
+#: eoc_journal.py
+msgid "Key Takeaways PDF handle"
+msgstr "Kéý Täkéäwäýs PDF händlé Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢ση#"
+
+#: eoc_journal.py
+msgid ""
+"URL handle of the Key Takeaways PDF file that was uploaded to Studio Files &"
+" Uploads section. Should start with '/static/'. Example: "
+"/static/KeyTakeaways.pdf"
+msgstr ""
+"ÛRL händlé öf thé Kéý Täkéäwäýs PDF fïlé thät wäs üplöädéd tö Stüdïö Fïlés &"
+" Ûplöäds séçtïön. Shöüld stärt wïth '/stätïç/'. Éxämplé: "
+"/stätïç/KéýTäkéäwäýs.pdf Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя "
+"α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα"
+" αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ "
+"ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη "
+"яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα "
+"ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι "
+"σƒƒι¢ια ∂єѕєяυηт #"
+
+#: eoc_journal.py
+msgid "Problem Builder Freeform Answers"
+msgstr ""
+"Prößlém Büïldér Frééförm Ànswérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: eoc_journal.py
+msgid ""
+"Select Problem Builder Freeform Answer components which you want to include "
+"in the report."
+msgstr ""
+"Séléçt Prößlém Büïldér Frééförm Ànswér çömpönénts whïçh ýöü wänt tö ïnçlüdé "
+"ïn thé répört. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕ#"
+
+#: eoc_journal.py
+msgid "PDF Title"
+msgstr "PDF Tïtlé Ⱡ'σяєм ιρѕυм ∂σł#"
+
+#: eoc_journal.py
+msgid "Title of the PDF report. Leave blank to use the course title."
+msgstr ""
+"Tïtlé öf thé PDF répört. Léävé ßlänk tö üsé thé çöürsé tïtlé. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: eoc_journal.py
+msgid "PDF Report Link heading"
+msgstr "PDF Répört Lïnk héädïng Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σ#"
+
+#: eoc_journal.py
+msgid ""
+"The heading text to display above the link for downloading the PDF Report."
+msgstr ""
+"Thé héädïng téxt tö dïspläý äßövé thé lïnk för döwnlöädïng thé PDF Répört. "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
+
+#: eoc_journal.py
+msgid "PDF Report"
+msgstr "PDF Répört Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: eoc_journal.py
+msgid "PDF Report Link text"
+msgstr "PDF Répört Lïnk téxt Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: eoc_journal.py
+msgid "The text to display in the link for downloading the PDF Report."
+msgstr ""
+"Thé téxt tö dïspläý ïn thé lïnk för döwnlöädïng thé PDF Répört. Ⱡ'σяєм ιρѕυм"
+" ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: eoc_journal.py
+msgid "Download PDF"
+msgstr "Döwnlöäd PDF Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: eoc_journal.py
+msgid "Display User Metrics"
+msgstr "Dïspläý Ûsér Métrïçs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: eoc_journal.py
+msgid ""
+"Would you like to display progress, proficiency and engagement metrics in "
+"the XBlock view in LMS?"
+msgstr ""
+"Wöüld ýöü lïké tö dïspläý prögréss, pröfïçïénçý änd éngägémént métrïçs ïn "
+"thé XBlöçk vïéw ïn LMS? Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, #"
+
+#: eoc_journal.py
+msgid "Display Key Takeaways section"
+msgstr "Dïspläý Kéý Täkéäwäýs séçtïön Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢#"
+
+#: eoc_journal.py
+msgid ""
+"Would you like to display Key Takeaways section in the XBlock view in LMS?"
+msgstr ""
+"Wöüld ýöü lïké tö dïspläý Kéý Täkéäwäýs séçtïön ïn thé XBlöçk vïéw ïn LMS? "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυ#"
+
+#: eoc_journal.py
+msgid "Display answers"
+msgstr "Dïspläý änswérs Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт α#"
+
+#: eoc_journal.py
+msgid "Would you like to display free text answers in the XBlock view in LMS?"
+msgstr ""
+"Wöüld ýöü lïké tö dïspläý fréé téxt änswérs ïn thé XBlöçk vïéw ïn LMS? "
+"Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя #"
+
+#: eoc_journal.py
+msgid "Default Font"
+msgstr "Défäült Fönt Ⱡ'σяєм ιρѕυм ∂σłσя ѕ#"
+
+#: eoc_journal.py
+msgid ""
+"Studio static URL to a custom font file to be used for PDF report. Example: "
+"\"/static/myfont.ttf\". Leave empty to use default fonts. You can upload "
+"custom TTF font files from the Content - Files & Uploads page."
+msgstr ""
+"Stüdïö stätïç ÛRL tö ä çüstöm fönt fïlé tö ßé üséd för PDF répört. Éxämplé: "
+"\"/stätïç/mýfönt.ttf\". Léävé émptý tö üsé défäült fönts. Ýöü çän üplöäd "
+"çüstöm TTF fönt fïlés fröm thé Çöntént - Fïlés & Ûplöäds pägé. Ⱡ'σяєм ιρѕυм "
+"∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя "
+"ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ "
+"ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ "
+"¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє "
+"¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя#"
+
+#: eoc_journal.py
+msgid "Not answered yet."
+msgstr "Nöt änswéréd ýét. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмє#"
+
+#: templates/eoc_journal.html
+msgid "Progress"
+msgstr "Prögréss Ⱡ'σяєм ιρѕυм ∂#"
+
+#: templates/eoc_journal.html
+#, python-format
+msgid ""
+"\n"
+"      You are %(tag_start)s%(percentage)s%(tag_end)s%% of the way through\n"
+"      the course based on completion of modules within lessons.\n"
+"      "
+msgstr ""
+"\n"
+"      Ýöü äré %(tag_start)s%(percentage)s%(tag_end)s%% öf thé wäý thröügh\n"
+"      thé çöürsé ßäséd ön çömplétïön öf mödülés wïthïn léssöns.\n"
+"       Ⱡ'σяєм ιρѕυм ∂σ#"
+
+#: templates/eoc_journal.html
+#, python-format
+msgid ""
+"\n"
+"      The cohort average is %(tag_start)s%(percentage)s%(tag_end)s%%.\n"
+"      "
+msgstr ""
+"\n"
+"      Thé çöhört ävérägé ïs %(tag_start)s%(percentage)s%(tag_end)s%%.\n"
+"       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/eoc_journal.html
+msgid "Progress data is not available."
+msgstr "Prögréss dätä ïs nöt äväïläßlé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: templates/eoc_journal.html
+msgid "Proficiency"
+msgstr "Pröfïçïénçý Ⱡ'σяєм ιρѕυм ∂σłσя #"
+
+#: templates/eoc_journal.html
+#, python-format
+msgid ""
+"\n"
+"      Your current proficiency score is %(tag_start)s%(proficiency)s%(tag_end)s%% following completion of graded\n"
+"      items in this course.\n"
+"      "
+msgstr ""
+"\n"
+"      Ýöür çürrént pröfïçïénçý sçöré ïs %(tag_start)s%(proficiency)s%(tag_end)s%% föllöwïng çömplétïön öf grädéd\n"
+"      ïtéms ïn thïs çöürsé.\n"
+"       Ⱡ'σяєм ιρѕυм #"
+
+#: templates/eoc_journal.html
+#, python-format
+msgid ""
+"\n"
+"      The cohort average is %(tag_start)s%(proficiency)s%(tag_end)s%%.\n"
+"      "
+msgstr ""
+"\n"
+"      Thé çöhört ävérägé ïs %(tag_start)s%(proficiency)s%(tag_end)s%%.\n"
+"       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/eoc_journal.html
+msgid "Proficiency data is not available."
+msgstr ""
+"Pröfïçïénçý dätä ïs nöt äväïläßlé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/eoc_journal.html
+msgid "Engagement"
+msgstr "Éngägémént Ⱡ'σяєм ιρѕυм ∂σłσ#"
+
+#: templates/eoc_journal.html
+#, python-format
+msgid ""
+"\n"
+"      Your current engagement score is %(tag_start)s%(score)s%(tag_end)s\n"
+"      based on your engagement interactions with other participants in your cohort in the discussion forums.\n"
+"      "
+msgstr ""
+"\n"
+"      Ýöür çürrént éngägémént sçöré ïs %(tag_start)s%(score)s%(tag_end)s\n"
+"      ßäséd ön ýöür éngägémént ïntéräçtïöns wïth öthér pärtïçïpänts ïn ýöür çöhört ïn thé dïsçüssïön förüms.\n"
+"       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α∂ιριѕι¢ιηg єłιт, ѕє∂ ∂σ єιυѕмσ∂ тємρσя ιη¢ι∂ι∂υηт υт łαвσяє єт ∂σłσяє мαgηα αłιqυα. υт єηιм α∂ мιηιм νєηιαм, qυιѕ ησѕтяυ∂ єχєя¢ιтαтιση υłłαм¢σ łαвσяιѕ ηιѕι υт αłιqυιρ єχ єα ¢σммσ∂σ ¢σηѕєqυαт. ∂υιѕ αυтє ιяυяє ∂σłσя ιη яєρяєнєη∂єяιт ιη νσłυρтαтє νєłιт єѕѕє ¢ιłłυм ∂σłσяє єυ ƒυgιαт ηυłłα ραяιαтυя. єχ¢єρтєυя ѕιηт σ¢¢αє¢αт ¢υρι∂αтαт ηση ρяσι∂єηт, ѕυηт ιη ¢υłρα qυι σƒƒι¢ια#"
+
+#: templates/eoc_journal.html
+#, python-format
+msgid ""
+"\n"
+"      The cohort average is %(tag_start)s%(score)s%(tag_end)s.\n"
+"      "
+msgstr ""
+"\n"
+"      Thé çöhört ävérägé ïs %(tag_start)s%(score)s%(tag_end)s.\n"
+"       Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєтυя α#"
+
+#: templates/eoc_journal.html
+msgid "Measured engagement"
+msgstr "Méäsüréd éngägémént Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт,#"
+
+#: templates/eoc_journal.html
+msgid "Stats"
+msgstr "Stäts Ⱡ'σяєм ιρѕ#"
+
+#: templates/eoc_journal.html
+msgid "Number of New Posts you created"
+msgstr "Nümßér öf Néw Pösts ýöü çréätéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢т#"
+
+#: templates/eoc_journal.html
+msgid "Number of Replies you made to other posts"
+msgstr ""
+"Nümßér öf Réplïés ýöü mädé tö öthér pösts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/eoc_journal.html
+msgid "Number of Comments Generated by your posts"
+msgstr ""
+"Nümßér öf Çömménts Générätéd ßý ýöür pösts Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/eoc_journal.html
+msgid "Number of Upvotes your posts have received"
+msgstr ""
+"Nümßér öf Ûpvötés ýöür pösts hävé réçéïvéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/eoc_journal.html
+msgid "Number of your posts being Followed"
+msgstr ""
+"Nümßér öf ýöür pösts ßéïng Föllöwéd Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тєт#"
+
+#: templates/eoc_journal.html
+msgid "Engagement data is not available."
+msgstr ""
+"Éngägémént dätä ïs nöt äväïläßlé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, ¢σηѕє¢тє#"
+
+#: templates/eoc_journal.html
+msgid "Key Takeaways"
+msgstr "Kéý Täkéäwäýs Ⱡ'σяєм ιρѕυм ∂σłσя ѕι#"
+
+#: templates/eoc_journal.html
+msgid "Key Takeaways PDF not available at this time."
+msgstr ""
+"Kéý Täkéäwäýs PDF nöt äväïläßlé ät thïs tïmé. Ⱡ'σяєм ιρѕυм ∂σłσя ѕιт αмєт, "
+"¢σηѕє¢тєтυя #"
+
+#: templates/eoc_journal_edit.html
+msgid "Save"
+msgstr "Sävé Ⱡ'σяєм ι#"
+
+#: templates/eoc_journal_edit.html
+msgid "Cancel"
+msgstr "Çänçél Ⱡ'σяєм ιρѕυ#"
