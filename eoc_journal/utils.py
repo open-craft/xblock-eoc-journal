@@ -2,7 +2,7 @@
 
 from edx_rest_api_client.client import EdxRestApiClient
 
-from openedx.core.djangoapps.oauth_dispatch.jwt import create_jwt_for_user
+from openedx.core.djangoapps.oauth_dispatch.jwt import create_jwt_for_user  # pylint: disable=import-error
 
 
 def normalize_id(key):

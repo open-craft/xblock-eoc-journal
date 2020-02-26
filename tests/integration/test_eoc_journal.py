@@ -3,6 +3,7 @@ Basic integration tests for the EOC Journal XBlock.
 """
 
 import json
+import sys
 import unittest
 
 from django.test import override_settings
@@ -15,6 +16,11 @@ from selenium.webdriver.support.ui import Select
 from xblockutils.resources import ResourceLoader
 from xblockutils.studio_editable_test import StudioEditableBaseTest
 
+sys.modules['openedx'] = Mock()
+sys.modules['openedx.core'] = Mock()
+sys.modules['openedx.core.djangoapps'] = Mock()
+sys.modules['openedx.core.djangoapps.oauth_dispatch'] = Mock()
+sys.modules['openedx.core.djangoapps.oauth_dispatch.jwt'] = Mock()
 from eoc_journal.pdf_generator import get_style_sheet
 from .utils import extract_text_from_pdf
 

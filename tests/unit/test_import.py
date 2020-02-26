@@ -2,9 +2,16 @@
 Test EOC Journal Block import.
 """
 
+import sys
 import unittest
 from mock import Mock, patch
 from django.test import TestCase
+
+sys.modules['openedx'] = Mock()
+sys.modules['openedx.core'] = Mock()
+sys.modules['openedx.core.djangoapps'] = Mock()
+sys.modules['openedx.core.djangoapps.oauth_dispatch'] = Mock()
+sys.modules['openedx.core.djangoapps.oauth_dispatch.jwt'] = Mock()
 from eoc_journal.eoc_journal import EOCJournalXBlock
 
 
