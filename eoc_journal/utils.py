@@ -2,6 +2,8 @@
 
 from edx_rest_api_client.client import EdxRestApiClient
 
+from .compat import create_jwt_for_user
+
 
 def normalize_id(key):
     """
@@ -27,9 +29,6 @@ def build_jwt_edx_client(url, scopes, user, expires_in, append_slash=True):
     Returns an edx API client authorized using JWT.
     """
 
-    # test env does not have edx-platform installed. because of this, all edx-platform imports must be
-    # kept inside this function so that the test code does not break when importing the module
-    from openedx.core.djangoapps.oauth_dispatch.jwt import create_jwt_for_user  # pylint: disable=import-error
     jwt = create_jwt_for_user(user)
     return EdxRestApiClient(url, append_slash=append_slash, jwt=jwt)
 
