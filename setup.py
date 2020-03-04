@@ -22,7 +22,7 @@ def package_data(pkg, roots):
 
 setup(
     name='xblock-eoc-journal',
-    version='0.4',
+    version='0.5',
     description='End of Course Journal XBlock',
     packages=[
         'eoc_journal',
