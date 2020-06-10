@@ -1,6 +1,6 @@
 
             (function(global){
-                var ChatXBlockI18N = {
+                var EOCJournalXBlockI18N = {
                   init: function() {
                     
 
@@ -93,7 +93,7 @@
 
                   }
                 };
-                ChatXBlockI18N.init();
-                global.ChatXBlockI18N = ChatXBlockI18N;
+                EOCJournalXBlockI18N.init();
+                global.EOCJournalXBlockI18N = EOCJournalXBlockI18N;
             }(this));
         
