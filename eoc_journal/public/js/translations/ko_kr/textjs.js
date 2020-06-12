@@ -34,7 +34,7 @@
   /* formatting library */
 
   django.formats = {
-    "DATETIME_FORMAT": "N j, Y, P", 
+    "DATETIME_FORMAT": "Y\ub144 n\uc6d4 j\uc77c g:i A", 
     "DATETIME_INPUT_FORMATS": [
       "%Y-%m-%d %H:%M:%S", 
       "%Y-%m-%d %H:%M:%S.%f", 
@@ -47,28 +47,33 @@
       "%m/%d/%y %H:%M:%S", 
       "%m/%d/%y %H:%M:%S.%f", 
       "%m/%d/%y %H:%M", 
-      "%m/%d/%y"
+      "%m/%d/%y", 
+      "%Y\ub144 %m\uc6d4 %d\uc77c %H\uc2dc %M\ubd84 %S\ucd08", 
+      "%Y\ub144 %m\uc6d4 %d\uc77c %H\uc2dc %M\ubd84"
     ], 
-    "DATE_FORMAT": "N j, Y", 
+    "DATE_FORMAT": "Y\ub144 n\uc6d4 j\uc77c", 
     "DATE_INPUT_FORMATS": [
       "%Y-%m-%d", 
       "%m/%d/%Y", 
-      "%m/%d/%y"
+      "%m/%d/%y", 
+      "%Y\ub144 %m\uc6d4 %d\uc77c"
     ], 
     "DECIMAL_SEPARATOR": ".", 
     "FIRST_DAY_OF_WEEK": "0", 
-    "MONTH_DAY_FORMAT": "F j", 
+    "MONTH_DAY_FORMAT": "F\uc6d4 j\uc77c", 
     "NUMBER_GROUPING": "3", 
-    "SHORT_DATETIME_FORMAT": "m/d/Y P", 
-    "SHORT_DATE_FORMAT": "m/d/Y", 
+    "SHORT_DATETIME_FORMAT": "Y-n-j H:i", 
+    "SHORT_DATE_FORMAT": "Y-n-j.", 
     "THOUSAND_SEPARATOR": ",", 
-    "TIME_FORMAT": "P", 
+    "TIME_FORMAT": "A g:i", 
     "TIME_INPUT_FORMATS": [
       "%H:%M:%S", 
       "%H:%M:%S.%f", 
-      "%H:%M"
+      "%H:%M", 
+      "%H\uc2dc %M\ubd84 %S\ucd08", 
+      "%H\uc2dc %M\ubd84"
     ], 
-    "YEAR_MONTH_FORMAT": "F Y"
+    "YEAR_MONTH_FORMAT": "Y\ub144 F\uc6d4"
   };
 
   django.get_format = function (format_type) {
