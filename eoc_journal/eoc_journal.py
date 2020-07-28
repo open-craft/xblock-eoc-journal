@@ -8,6 +8,7 @@ from urlparse import urljoin
 
 import webob
 from django.conf import settings
+from django import utils
 
 from lxml import html
 from lxml.etree import XMLSyntaxError, ParserError
@@ -209,6 +210,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             content_type='application/json',
         )
 
+    @XBlock.supports("multi_device")
     def student_view(self, context=None):
         """
         View shown to students.
@@ -223,11 +225,20 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         fragment.add_css_url(
             self.runtime.local_resource_url(self, "public/css/eoc_journal.css")
         )
+        fragment.add_javascript_url(self.get_translation_content())
         fragment.add_javascript_url(
             self.runtime.local_resource_url(self, "public/js/eoc_journal.js")
         )
         fragment.initialize_js("EOCJournalXBlock")
         return fragment
+
+    def get_translation_content(self):
+        try:
+            return self.runtime.local_resource_url(self, 'public/js/translations/ko_kr/textjs.js'.format(
+                lang=utils.translation.to_locale(utils.translation.get_language()),
+            ))
+        except IOError as e:
+            return self.runtime.local_resource_url(self, 'public/js/translations/en/textjs.js')
 
     @XBlock.handler
     def serve_pdf(self, request, _suffix):
