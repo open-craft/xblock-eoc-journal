@@ -31,15 +31,12 @@ from .api_client import ApiClient
 from .completion_api import CompletionApiClient
 from .course_blocks_api import CourseBlocksApiClient
 from .pdf_generator import get_style_sheet
-from .utils import _, normalize_id
+from .utils import _, normalize_id, DummyTranslationService
 
 try:
     from django.contrib.auth.models import User
 except ImportError:
     User = None  # pylint: disable=C0103
-
-
-loader = ResourceLoader(__name__)
 
 
 def provide_pb_answer_list(xblock_instance):
@@ -64,6 +61,7 @@ def provide_pb_answer_list(xblock_instance):
 
 @XBlock.needs('user')
 class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
+    loader = ResourceLoader(__name__)
     """
     An XBlock that allows learners to download their activity after they finish their course.
     """
@@ -159,6 +157,11 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         'custom_font',
     )
 
+    @property
+    def i18n_service(self):
+        """ Obtains translation service """
+        return self.runtime.service(self, "i18n") or DummyTranslationService()
+
     def student_view_data(self, context=None):
         """
         JSON representation of data shown to students.
@@ -210,7 +213,6 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             content_type='application/json',
         )
 
-    @XBlock.supports("multi_device")
     def student_view(self, context=None):
         """
         View shown to students.
@@ -220,7 +222,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
 
         fragment = Fragment()
         fragment.add_content(
-            loader.render_template("templates/eoc_journal.html", context)
+            self.loader.render_django_template('templates/eoc_journal.html', context, i18n_service=self.i18n_service)
         )
         fragment.add_css_url(
             self.runtime.local_resource_url(self, "public/css/eoc_journal.css")
@@ -234,10 +236,10 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
 
     def get_translation_content(self):
         try:
-            return self.runtime.local_resource_url(self, 'public/js/translations/ko_kr/textjs.js'.format(
+            return self.runtime.local_resource_url(self, 'public/js/translations/{lang}/textjs.js'.format(
                 lang=utils.translation.to_locale(utils.translation.get_language()),
             ))
-        except IOError as e:
+        except IOError:
             return self.runtime.local_resource_url(self, 'public/js/translations/en/textjs.js')
 
     @XBlock.handler
