@@ -59,12 +59,14 @@ def provide_pb_answer_list(xblock_instance):
     return result
 
 
+@XBlock.needs("i18n")
 @XBlock.needs('user')
 class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
-    loader = ResourceLoader(__name__)
     """
     An XBlock that allows learners to download their activity after they finish their course.
     """
+
+    loader = ResourceLoader(__name__)
 
     display_name = String(
         display_name=_("Title (display name)"),
@@ -237,6 +239,9 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         return fragment
 
     def get_translation_content(self):
+        """
+        prepares url for the js of the selected language translation
+        """
         try:
             return self.runtime.local_resource_url(self, 'public/js/translations/{lang}/textjs.js'.format(
                 lang=utils.translation.to_locale(utils.translation.get_language()),
