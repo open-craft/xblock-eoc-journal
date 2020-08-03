@@ -48,7 +48,7 @@ class NotConnectedToOpenEdX(Exception):
     pass
 
 
-class DummyTranslationService:
+class DummyTranslationService(object):
     """
     Dummy drop-in replacement for i18n XBlock service
     """

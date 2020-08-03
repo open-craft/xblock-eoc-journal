@@ -222,7 +222,9 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
 
         fragment = Fragment()
         fragment.add_content(
-            self.loader.render_django_template('templates/eoc_journal.html', context, i18n_service=self.i18n_service)
+            self.loader.render_django_template('templates/eoc_journal.html',
+                                               context=context,
+                                               i18n_service=self.i18n_service)
         )
         fragment.add_css_url(
             self.runtime.local_resource_url(self, "public/css/eoc_journal.css")
