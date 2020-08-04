@@ -38,6 +38,7 @@ try:
 except ImportError:
     User = None  # pylint: disable=C0103
 
+
 loader = ResourceLoader(__name__)
 
 
@@ -240,7 +241,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
 
     def get_translation_content(self):
         """
-        prepares url for the js of the selected language translation
+        Returns URL containing translations for user's language.
         """
         try:
             return self.runtime.local_resource_url(self, 'public/js/translations/{lang}/textjs.js'.format(
