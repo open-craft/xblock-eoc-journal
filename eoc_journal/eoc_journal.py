@@ -8,6 +8,7 @@ from urlparse import urljoin
 
 import webob
 from django.conf import settings
+from django import utils
 
 from lxml import html
 from lxml.etree import XMLSyntaxError, ParserError
@@ -30,7 +31,7 @@ from .api_client import ApiClient
 from .completion_api import CompletionApiClient
 from .course_blocks_api import CourseBlocksApiClient
 from .pdf_generator import get_style_sheet
-from .utils import _, normalize_id
+from .utils import _, normalize_id, DummyTranslationService
 
 try:
     from django.contrib.auth.models import User
@@ -61,6 +62,7 @@ def provide_pb_answer_list(xblock_instance):
     return result
 
 
+@XBlock.needs("i18n")
 @XBlock.needs('user')
 class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
     """
@@ -158,6 +160,11 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         'custom_font',
     )
 
+    @property
+    def i18n_service(self):
+        """ Obtains translation service """
+        return self.runtime.service(self, "i18n") or DummyTranslationService()
+
     def student_view_data(self, context=None):
         """
         JSON representation of data shown to students.
@@ -218,16 +225,30 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
 
         fragment = Fragment()
         fragment.add_content(
-            loader.render_template("templates/eoc_journal.html", context)
+            loader.render_django_template('templates/eoc_journal.html',
+                                          context=context,
+                                          i18n_service=self.i18n_service)
         )
         fragment.add_css_url(
             self.runtime.local_resource_url(self, "public/css/eoc_journal.css")
         )
+        fragment.add_javascript_url(self.get_translation_content())
         fragment.add_javascript_url(
             self.runtime.local_resource_url(self, "public/js/eoc_journal.js")
         )
         fragment.initialize_js("EOCJournalXBlock")
         return fragment
+
+    def get_translation_content(self):
+        """
+        Returns URL containing translations for user's language.
+        """
+        try:
+            return self.runtime.local_resource_url(self, 'public/js/translations/{lang}/textjs.js'.format(
+                lang=utils.translation.to_locale(utils.translation.get_language()),
+            ))
+        except IOError:
+            return self.runtime.local_resource_url(self, 'public/js/translations/en/textjs.js')
 
     @XBlock.handler
     def serve_pdf(self, request, _suffix):

@@ -33,8 +33,25 @@ def build_jwt_edx_client(url, scopes, user, expires_in, append_slash=True):
     return EdxRestApiClient(url, append_slash=append_slash, jwt=jwt)
 
 
+def ngettext_fallback(text_singular, text_plural, number):
+    """ Dummy `ngettext` replacement to make string extraction tools scrape strings marked for translation """
+    if number == 1:
+        return text_singular
+    else:
+        return text_plural
+
+
 class NotConnectedToOpenEdX(Exception):
     """
     Exception to raise when not connected to OpenEdX.
     """
     pass
+
+
+class DummyTranslationService(object):  # pylint: disable=too-few-public-methods
+    """
+    Dummy drop-in replacement for i18n XBlock service
+    """
+    _catalog = {}
+    gettext = _
+    ngettext = ngettext_fallback
