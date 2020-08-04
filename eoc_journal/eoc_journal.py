@@ -38,6 +38,8 @@ try:
 except ImportError:
     User = None  # pylint: disable=C0103
 
+loader = ResourceLoader(__name__)
+
 
 def provide_pb_answer_list(xblock_instance):
     """
@@ -65,8 +67,6 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
     """
     An XBlock that allows learners to download their activity after they finish their course.
     """
-
-    loader = ResourceLoader(__name__)
 
     display_name = String(
         display_name=_("Title (display name)"),
@@ -224,9 +224,9 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
 
         fragment = Fragment()
         fragment.add_content(
-            self.loader.render_django_template('templates/eoc_journal.html',
-                                               context=context,
-                                               i18n_service=self.i18n_service)
+            loader.render_django_template('templates/eoc_journal.html',
+                                          context=context,
+                                          i18n_service=self.i18n_service)
         )
         fragment.add_css_url(
             self.runtime.local_resource_url(self, "public/css/eoc_journal.css")
