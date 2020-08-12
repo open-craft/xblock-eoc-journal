@@ -6,6 +6,7 @@ from collections import OrderedDict
 from io import BytesIO
 from urlparse import urljoin
 
+import pkg_resources
 import webob
 from django.conf import settings
 from django import utils
@@ -232,23 +233,29 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         fragment.add_css_url(
             self.runtime.local_resource_url(self, "public/css/eoc_journal.css")
         )
-        fragment.add_javascript_url(self.get_translation_content())
+        fragment.add_javascript(self.get_translation_content())
         fragment.add_javascript_url(
             self.runtime.local_resource_url(self, "public/js/eoc_journal.js")
         )
         fragment.initialize_js("EOCJournalXBlock")
         return fragment
 
+    @staticmethod
+    def resource_string(path):
+        """Handy helper for getting resources."""
+        data = pkg_resources.resource_string(__name__, path)
+        return data.decode("utf8")
+
     def get_translation_content(self):
         """
-        Returns URL containing translations for user's language.
+        Returns JS content containing translations for user's language.
         """
         try:
-            return self.runtime.local_resource_url(self, 'public/js/translations/{lang}/textjs.js'.format(
+            return self.resource_string('public/js/translations/{lang}/textjs.js'.format(
                 lang=utils.translation.to_locale(utils.translation.get_language()),
             ))
         except IOError:
-            return self.runtime.local_resource_url(self, 'public/js/translations/en/textjs.js')
+            return self.resource_string('public/js/translations/en/textjs.js')
 
     @XBlock.handler
     def serve_pdf(self, request, _suffix):
