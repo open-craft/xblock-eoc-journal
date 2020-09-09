@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build-2.7: &test-template
     docker:
       - image: circleci/python:2.7.14-browsers
     steps:
@@ -28,3 +28,11 @@ jobs:
             pycodestyle eoc_journal --max-line-length=120
             pylint eoc_journal
             python run_tests.py
+  build-3.5:
+    <<: *test-template
+    docker:
+      - image: circleci/python:3.5.6-browsers
+  build-3.8:
+    <<: *test-template
+    docker:
+      - image: circleci/python:3.8.5-browsers
