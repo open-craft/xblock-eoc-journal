@@ -1,19 +1,23 @@
-Django>=1.8, <1.9
+Django~=1.11; python_version == '2.7'
+Django~=2.2; python_version > '2.7'
 
 -r requirements.txt
--e git+https://github.com/edx/xblock-sdk.git@c40b5dc3e9a2ded54119e922edf486d3ccec6c35#egg=xblock-sdk
+-e 'git+https://github.com/edx/xblock-sdk.git@c40b5dc3e9a2ded54119e922edf486d3ccec6c35#egg=xblock-sdk ; python_version == "2.7"'
+-e 'git://github.com/edx/xblock-sdk.git@0.2.2#egg=xblock-sdk==v0.2.2 ; python_version > "2.7"'
 
 -e git+https://github.com/edx/django-pyfs.git@1.0.3#egg=django-pyfs==1.0.3
 bok-choy==0.7.1
 django_nose==1.4.1
 selenium==2.53.6
-setuptools==34.1.1
+setuptools==34.1.1; python_version == '2.7'
+setuptools==50.3.0; python_version > '2.7'
 
 fs
 lxml
 mako
 markupsafe
-pdfminer==20140328
+pdfminer==20140328; python_version == '2.7'
+pdfminer==20191010; python_version > '2.7'
 pycodestyle
 pylint
 python-dateutil
@@ -30,5 +34,5 @@ edx-opaque-keys==0.4.4
 django-appconf==1.0.3
 django-statici18n==1.8.2
 transifex-client==0.12.1
-edx-i18n-tools==0.4.7
+edx-i18n-tools==0.5.3
 django-babel-underscore==0.5.2
