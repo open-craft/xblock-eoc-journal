@@ -1,14 +1,16 @@
 """
 A wrapper around the Edx API.
 """
-from urllib import urlencode
+from urllib.parse import urlencode
 
 import requests
-
 from django.conf import settings
 from edx_rest_api_client.exceptions import HttpClientError
+from future import standard_library
 
 from .base_api_client import BaseApiClient
+
+standard_library.install_aliases()
 
 
 class ApiClient(BaseApiClient):

@@ -1,6 +1,7 @@
 """
 A base client for API integrations.
 """
+from builtins import object
 from django.conf import settings
 
 from .utils import build_jwt_edx_client

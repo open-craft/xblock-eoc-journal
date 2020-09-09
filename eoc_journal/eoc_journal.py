@@ -2,37 +2,39 @@
 An XBlock that allows learners to download their activity after they finish their course.
 """
 import json
+from builtins import str
 from collections import OrderedDict
 from io import BytesIO
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 import pkg_resources
 import webob
-from django.conf import settings
 from django import utils
-
+from django.conf import settings
+from future import standard_library
 from lxml import html
-from lxml.etree import XMLSyntaxError, ParserError
+from lxml.etree import ParserError, XMLSyntaxError
 from lxml.html.clean import clean_html
-
+from opaque_keys.edx.keys import CourseKey, UsageKey
+from problem_builder.models import Answer
 from reportlab.lib import pagesizes
 from reportlab.lib.colors import Color
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-
-from problem_builder.models import Answer
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 from reportlab.platypus.flowables import HRFlowable
 from xblock.core import XBlock
-from xblock.fields import Boolean, Scope, String, List
+from xblock.fields import Boolean, List, Scope, String
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.studio_editable import StudioEditableXBlockMixin
-from opaque_keys.edx.keys import UsageKey, CourseKey
 
 from .api_client import ApiClient
 from .completion_api import CompletionApiClient
 from .course_blocks_api import CourseBlocksApiClient
 from .pdf_generator import get_style_sheet
-from .utils import _, normalize_id, DummyTranslationService
+from .utils import DummyTranslationService, _, normalize_id
+
+standard_library.install_aliases()
+
 
 try:
     from django.contrib.auth.models import User
@@ -337,7 +339,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             # Make list of sections-answers
             return [
                 {'name': key, 'questions': value}
-                for key, value in answers.items()
+                for key, value in list(answers.items())
             ]
         else:
             return None
@@ -393,7 +395,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         Returns the course id (string) corresponding to the current course.
         """
         course_id = getattr(self.runtime, 'course_id', 'course_id')
-        course_id = unicode(normalize_id(course_id))
+        course_id = str(normalize_id(course_id))
         return course_id
 
     def _get_current_user(self):
@@ -524,7 +526,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         """
         user = self._get_current_user()
         course_id = getattr(self.runtime, 'course_id', 'course_id')
-        course_id = unicode(normalize_id(course_id))
+        course_id = str(normalize_id(course_id))
 
         client = CourseBlocksApiClient(user, course_id)
         response = client.get_blocks(
@@ -583,7 +585,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         if not course_id:
             return block
 
-        course_id = unicode(normalize_id(course_id))
+        course_id = str(normalize_id(course_id))
         course_key = CourseKey.from_string(course_id)
 
         transformed_block_ids = []
@@ -593,7 +595,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
                 transformed_block_ids.append(selected)
             else:
                 mapped = usage_key.map_into_course(course_key)
-                transformed_block_ids.append(unicode(mapped))
+                transformed_block_ids.append(str(mapped))
 
         block.selected_pb_answer_blocks = transformed_block_ids
         return block
