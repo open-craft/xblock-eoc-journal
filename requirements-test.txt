@@ -2,7 +2,7 @@ Django~=1.11; python_version == '2.7'
 Django~=2.2; python_version > '2.7'
 
 -r requirements.txt
--e 'git+https://github.com/edx/xblock-sdk.git@c40b5dc3e9a2ded54119e922edf486d3ccec6c35#egg=xblock-sdk ; python_version == "2.7"'
+-e 'git+https://github.com/edx/xblock-sdk.git@v0.1.6#egg=xblock-sdk ; python_version == "2.7"'
 -e 'git://github.com/edx/xblock-sdk.git@0.2.2#egg=xblock-sdk==v0.2.2 ; python_version > "2.7"'
 
 -e git+https://github.com/edx/django-pyfs.git@1.0.3#egg=django-pyfs==1.0.3
