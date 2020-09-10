@@ -1,6 +1,9 @@
 """
 An XBlock that allows learners to download their activity after they finish their course.
 """
+from future import standard_library
+standard_library.install_aliases()
+
 import json
 from builtins import str
 from collections import OrderedDict
@@ -11,7 +14,6 @@ import pkg_resources
 import webob
 from django import utils
 from django.conf import settings
-from future import standard_library
 from lxml import html
 from lxml.etree import ParserError, XMLSyntaxError
 from lxml.html.clean import clean_html
@@ -32,8 +34,6 @@ from .completion_api import CompletionApiClient
 from .course_blocks_api import CourseBlocksApiClient
 from .pdf_generator import get_style_sheet
 from .utils import DummyTranslationService, _, normalize_id
-
-standard_library.install_aliases()
 
 
 try:
