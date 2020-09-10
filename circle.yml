@@ -26,11 +26,15 @@ jobs:
           paths:
             - "venv"
       - run:
-          name: Run tests
+          name: Run lints
           command: |
             . venv/bin/activate
             pycodestyle eoc_journal --max-line-length=120
             pylint eoc_journal
+      - run:
+          name: Run tests
+          command: |
+            . venv/bin/activate
             python run_tests.py
 
 workflows:
