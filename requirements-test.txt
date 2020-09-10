@@ -16,8 +16,8 @@ fs
 lxml
 mako
 markupsafe
-pdfminer==20140328; python_version == '2.7'
-pdfminer==20191010; python_version > '2.7'
+pdfminer.six==20191110; python_version == '2.7'
+pdfminer.six==20200726; python_version > '2.7'
 pycodestyle
 pylint
 python-dateutil
