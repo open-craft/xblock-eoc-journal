@@ -1,8 +1,8 @@
 """
 A wrapper around the Edx API.
 """
-from future import standard_library
-standard_library.install_aliases()
+from future import standard_library  # noqa
+standard_library.install_aliases()  # noqa
 
 from urllib.parse import urlencode
 

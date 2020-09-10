@@ -1,8 +1,8 @@
 """
 An XBlock that allows learners to download their activity after they finish their course.
 """
-from future import standard_library
-standard_library.install_aliases()
+from future import standard_library  # noqa
+standard_library.install_aliases()  # noqa
 
 import json
 from builtins import str
