@@ -1,7 +1,7 @@
 """
 An XBlock that allows learners to download their activity after they finish their course.
 """
-# pylint: disable=E402,C0413,C0411
+# pylint: disable=C0413,C0411,E0611
 from future import standard_library  # noqa
 standard_library.install_aliases()  # noqa
 
@@ -38,7 +38,7 @@ from .utils import DummyTranslationService, _, normalize_id
 
 
 try:
-    from django.contrib.auth.models import User
+    from django.contrib.auth.models import User  # pylint: disable=C0415,C0412
 except ImportError:
     User = None  # pylint: disable=C0103
 
@@ -342,8 +342,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
                 {'name': key, 'questions': value}
                 for key, value in list(answers.items())
             ]
-        else:
-            return None
+        return None
 
     @staticmethod
     def _iter_pb_answers(response):
@@ -500,21 +499,21 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
 
         if not user_engagement:
             return None
-        else:
-            cohort_score = user_engagement['course_avg']
-            cohort_score_rounded = int(round(cohort_score))
-            if cohort_score_rounded < 1 and cohort_score > 0:
-                cohort_score_rounded = 1
-            metrics = user_engagement['stats']
-            return {
-                'user_score': user_engagement['score'],
-                'cohort_score': cohort_score_rounded,
-                'new_posts': metrics.get('num_threads', 0),
-                'total_replies': metrics.get('num_replies', 0) + metrics.get('num_comments', 0),
-                'upvotes': metrics.get('num_upvotes', 0),
-                'comments_generated': metrics.get('num_comments_generated', 0),
-                'posts_followed': metrics.get('num_thread_followers', 0),
-            }
+
+        cohort_score = user_engagement['course_avg']
+        cohort_score_rounded = int(round(cohort_score))
+        if cohort_score_rounded < 1 and cohort_score > 0:
+            cohort_score_rounded = 1
+        metrics = user_engagement['stats']
+        return {
+            'user_score': user_engagement['score'],
+            'cohort_score': cohort_score_rounded,
+            'new_posts': metrics.get('num_threads', 0),
+            'total_replies': metrics.get('num_replies', 0) + metrics.get('num_comments', 0),
+            'upvotes': metrics.get('num_upvotes', 0),
+            'comments_generated': metrics.get('num_comments_generated', 0),
+            'posts_followed': metrics.get('num_thread_followers', 0),
+        }
 
     def _fetch_pb_answer_blocks(self, all_blocks=False):
         """
@@ -553,7 +552,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             # edX Studio uses a different runtime for 'studio_view' than 'student_view',
             # and the 'studio_view' runtime doesn't provide the replace_urls API.
             try:
-                from static_replace import replace_static_urls  # pylint: disable=import-error
+                from static_replace import replace_static_urls  # pylint: disable=import-error,C0415
                 url = replace_static_urls('"{}"'.format(url), None, course_id=self.runtime.course_id)[1:-1]
             except ImportError:
                 pass

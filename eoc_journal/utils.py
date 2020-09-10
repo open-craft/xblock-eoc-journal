@@ -40,18 +40,16 @@ def ngettext_fallback(text_singular, text_plural, number):
     """ Dummy `ngettext` replacement to make string extraction tools scrape strings marked for translation """
     if number == 1:
         return text_singular
-    else:
-        return text_plural
+    return text_plural
 
 
 class NotConnectedToOpenEdX(Exception):
     """
     Exception to raise when not connected to OpenEdX.
     """
-    pass
 
 
-class DummyTranslationService(object):  # pylint: disable=too-few-public-methods
+class DummyTranslationService(object):  # pylint: disable=too-few-public-methods,R0205
     """
     Dummy drop-in replacement for i18n XBlock service
     """
