@@ -1,6 +1,7 @@
 """
 An XBlock that allows learners to download their activity after they finish their course.
 """
+# pylint: disable=E402,C0413,C0411
 from future import standard_library  # noqa
 standard_library.install_aliases()  # noqa
 
