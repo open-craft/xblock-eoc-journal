@@ -217,6 +217,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         """
         return webob.Response(
             body=json.dumps(self._get_user_state()),
+            charset='UTF-8',
             content_type='application/json',
         )
 
