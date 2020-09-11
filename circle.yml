@@ -4,9 +4,15 @@ jobs:
   build:
     docker:
       - image: <<parameters.docker_image>>
+      - image: circleci/mysql:5.6
+        command: mysqld --character-set-server=latin1 --collation-server=latin1_swedish_ci
+        environment:
+          MYSQL_ROOT_PASSWORD: rootpw
     parameters:
       docker_image:
         type: string
+    environment:
+      WORKBENCH_DATABASES: '{"default": {"ENGINE": "django.db.backends.mysql", "NAME": "db", "USER": "root", "PASSWORD": "rootpw", "HOST": "127.0.0.1", "OPTIONS": {"charset": "utf8mb4"}}}'
     steps:
       - checkout
       - restore_cache:
