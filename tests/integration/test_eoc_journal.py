@@ -226,7 +226,7 @@ class TestEOCJournal(StudioEditableBaseTest):
 
     def select_option_in_boolean_field(self, field_name, value=True):
         control = self.get_element_for_field(field_name)
-        select = Select(control.find_element_by_id("xb-field-edit-{}".format(field_name)))
+        select = Select(control)
         selected_value = "1" if value else "0"
         select.select_by_value(selected_value)
 
