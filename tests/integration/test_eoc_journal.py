@@ -634,7 +634,7 @@ class TestEOCJournal(StudioEditableBaseTest):
         )
         block = self.load_root_xblock()
         response = block.handle('student_view_user_state', None)
-        data = json.loads(response.body)
+        data = json.loads(response.body.decode('UTF-8'))
         self.assertEqual(data, {
             'answer_sections': [{
                 'name': u'Second Section',
@@ -662,7 +662,7 @@ class TestEOCJournal(StudioEditableBaseTest):
     def assert_in_student_view_user_state(self, key, value=None):
         block = self.load_root_xblock()
         response = block.handle('student_view_user_state', None)
-        data = json.loads(response.body)
+        data = json.loads(response.body.decode('UTF-8'))
         if value:
             self.assertEqual(data[key], value)
         else:
@@ -671,7 +671,7 @@ class TestEOCJournal(StudioEditableBaseTest):
     def assert_not_in_student_view_user_state(self, key):
         block = self.load_root_xblock()
         response = block.handle('student_view_user_state', None)
-        data = json.loads(response.body)
+        data = json.loads(response.body.decode('UTF-8'))
         self.assertNotIn(key, data)
 
     def assert_not_in_student_view_data(self, key):
