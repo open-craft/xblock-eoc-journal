@@ -20,14 +20,10 @@ if __name__ == "__main__":
     sys.path.append(xblock_sdk_dir)
 
     # Use the workbench settings file:
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "workbench.settings")
-    # Configure a range of ports in case the default port of 8081 is in use
-    # os.environ.setdefault("DJANGO_LIVE_TEST_SERVER_ADDRESS", "localhost:8081-8099")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "eoc_journal.workbench_settings")
 
     # Silence too verbose Django logging
     logging.disable(logging.DEBUG)
-
-    settings.INSTALLED_APPS.append('problem_builder')
 
     try:
         os.mkdir('var')
