@@ -1,6 +1,36 @@
 version: 2.1
 
 jobs:
+  quality:
+    docker:
+      - image: <<parameters.docker_image>>
+    parameters:
+      docker_image:
+        type: string
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependencies-{{ checksum "circle.yml" }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-test.txt" }}
+      - run:
+          name: Install Python deps in a venv
+          command: |
+            virtualenv venv
+            . venv/bin/activate
+            pip install -U pip wheel
+            pip install -r requirements-test.txt
+            pip install -r venv/src/xblock-sdk/requirements/base.txt
+            pip install -r venv/src/xblock-sdk/requirements/test.txt
+            mkdir var
+      - save_cache:
+          key: dependencies-{{ checksum "circle.yml" }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-test.txt" }}
+          paths:
+            - "venv"
+      - run:
+          name: Run quality checks
+          command: |
+            . venv/bin/activate
+            pycodestyle eoc_journal --max-line-length=120
+            pylint eoc_journal
   build:
     docker:
       - image: <<parameters.docker_image>>
@@ -32,12 +62,6 @@ jobs:
           paths:
             - "venv"
       - run:
-          name: Run lints
-          command: |
-            . venv/bin/activate
-            pycodestyle eoc_journal --max-line-length=120
-            pylint eoc_journal
-      - run:
           name: Run tests
           command: |
             . venv/bin/activate
@@ -47,6 +71,9 @@ workflows:
   version: 2
   build:
     jobs:
+      - quality:
+          name: "Quality Check Python 3.8, Django 2.2"
+          docker_image: circleci/python:3.8-browsers
       - build:
           name: "Ironwood: Python 2.7, Django 1.11"
           docker_image: circleci/python:2.7-browsers
