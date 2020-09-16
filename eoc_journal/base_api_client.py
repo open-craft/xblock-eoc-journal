@@ -7,7 +7,7 @@ from django.conf import settings
 from .utils import build_jwt_edx_client
 
 
-# pylint: disable=R0903,R0205
+# pylint: disable=too-few-public-methods,useless-object-inheritance
 class BaseApiClient(object):
     """
     Base API client abstract class.

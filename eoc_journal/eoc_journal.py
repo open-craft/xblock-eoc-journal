@@ -1,7 +1,7 @@
 """
 An XBlock that allows learners to download their activity after they finish their course.
 """
-# pylint: disable=C0413,C0411,E0611
+# pylint: disable=wrong-import-position,wrong-import-order,no-name-in-module
 from future import standard_library  # noqa
 standard_library.install_aliases()  # noqa
 
@@ -341,7 +341,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             # Make list of sections-answers
             return [
                 {'name': key, 'questions': value}
-                for key, value in list(answers.items())
+                for key, value in answers.items()
             ]
         return None
 

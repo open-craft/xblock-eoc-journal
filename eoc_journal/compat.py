@@ -10,6 +10,6 @@ def create_jwt_for_user(user):
     """
     # test env does not have edx-platform installed. because of this, all edx-platform imports must be
     # kept inside this function so that the test code does not break when importing the module
-    # pylint: disable=C0415
+    # pylint: disable=import-outside-toplevel
     from openedx.core.djangoapps.oauth_dispatch.jwt import create_jwt_for_user as openedx_create_jwt_for_user
     return openedx_create_jwt_for_user(user)

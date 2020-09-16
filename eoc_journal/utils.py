@@ -49,7 +49,7 @@ class NotConnectedToOpenEdX(Exception):
     """
 
 
-class DummyTranslationService(object):  # pylint: disable=too-few-public-methods,R0205
+class DummyTranslationService(object):  # pylint: disable=too-few-public-methods,useless-object-inheritance
     """
     Dummy drop-in replacement for i18n XBlock service
     """

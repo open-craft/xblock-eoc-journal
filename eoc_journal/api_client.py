@@ -1,7 +1,7 @@
 """
 A wrapper around the Edx API.
 """
-# pylint: disable=C0413,C0411
+# pylint: disable=wrong-import-position,wrong-import-order
 from future import standard_library  # noqa
 standard_library.install_aliases()  # noqa
 

@@ -487,7 +487,7 @@ class TestEOCJournal(StudioEditableBaseTest):
 
         element = self.get_element_for_course_engagement()
 
-        for key, value in list(default_engagement_metrics.items()):
+        for key, value in default_engagement_metrics.items():
             if key == 'user_score':
                 tag = 'span[data-engagement-name="user"]'
             elif key == 'cohort_score':
