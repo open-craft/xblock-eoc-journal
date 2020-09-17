@@ -11,7 +11,6 @@ import os
 import sys
 import workbench
 
-from django.conf import settings
 
 if __name__ == "__main__":
     # Find the location of the XBlock SDK. Note: it must be installed in development mode.
