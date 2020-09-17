@@ -445,7 +445,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         lms_base = settings.ENV_TOKENS.get('LMS_BASE')
         scheme = 'https' if settings.HTTPS == 'on' else 'http'
         lms_base = '{}://{}'.format(scheme, lms_base)
-        return urljoin(lms_base, url)
+        return urljoin(str(lms_base), str(url))
 
     def get_progress_metrics(self):
         """
