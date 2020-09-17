@@ -9,8 +9,6 @@ Django~=2.2; python_version > '2.7'
 bok-choy==0.7.1
 django_nose==1.4.1
 selenium==2.53.6
-setuptools==34.1.1; python_version == '2.7'
-setuptools==50.3.0; python_version > '2.7'
 
 fs
 lxml
