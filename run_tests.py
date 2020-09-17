@@ -20,7 +20,7 @@ if __name__ == "__main__":
     sys.path.append(xblock_sdk_dir)
 
     # Use the workbench settings file:
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "workbench_settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "eoc_journal_settings")
 
     # Silence too verbose Django logging
     logging.disable(logging.DEBUG)
