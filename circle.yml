@@ -3,10 +3,7 @@ version: 2.1
 jobs:
   quality:
     docker:
-      - image: <<parameters.docker_image>>
-    parameters:
-      docker_image:
-        type: string
+      - image: circleci/python:3.8
     steps:
       - checkout
       - restore_cache:
@@ -73,7 +70,6 @@ workflows:
     jobs:
       - quality:
           name: "Quality Check Python 3.8, Django 2.2"
-          docker_image: circleci/python:3.8-browsers
       - build:
           name: "Ironwood: Python 2.7, Django 1.11"
           docker_image: circleci/python:2.7-browsers
