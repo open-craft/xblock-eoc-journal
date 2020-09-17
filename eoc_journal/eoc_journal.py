@@ -38,7 +38,7 @@ from .utils import DummyTranslationService, _, normalize_id
 
 
 try:
-    from django.contrib.auth.models import User  # pylint: disable=C0415,C0412
+    from django.contrib.auth.models import User  # pylint: disable=import-outside-toplevel,ungrouped-imports
 except ImportError:
     User = None  # pylint: disable=C0103
 
@@ -553,7 +553,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             # edX Studio uses a different runtime for 'studio_view' than 'student_view',
             # and the 'studio_view' runtime doesn't provide the replace_urls API.
             try:
-                from static_replace import replace_static_urls  # pylint: disable=import-error,C0415
+                from static_replace import replace_static_urls  # pylint: disable=import-error,import-outside-toplevel
                 url = replace_static_urls('"{}"'.format(url), None, course_id=self.runtime.course_id)[1:-1]
             except ImportError:
                 pass
