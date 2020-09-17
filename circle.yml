@@ -38,12 +38,14 @@ jobs:
     parameters:
       docker_image:
         type: string
+      cache_key:
+        type: string
     environment:
       WORKBENCH_DATABASES: '{"default": {"ENGINE": "django.db.backends.mysql", "NAME": "db", "USER": "root", "PASSWORD": "rootpw", "HOST": "127.0.0.1", "OPTIONS": {"charset": "utf8mb4"}}}'
     steps:
       - checkout
       - restore_cache:
-          key: dependencies-{{ checksum "circle.yml" }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-test.txt" }}
+          key: dependencies-{{ checksum "circle.yml" }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-test.txt" }}-<<parameters.cache_key>>
       - run:
           name: Install Python deps in a venv
           command: |
@@ -73,9 +75,12 @@ workflows:
       - build:
           name: "Ironwood: Python 2.7, Django 1.11"
           docker_image: circleci/python:2.7-browsers
+          cache_key: "python27"
       - build:
           name: "Juniper: Python 3.5, Django 2.2"
           docker_image: circleci/python:3.5-browsers
+          cache_key: "python35"
       - build:
           name: "Koa: Python 3.8, Django 2.2"
           docker_image: circleci/python:3.8-browsers
+          cache_key: "python37"
