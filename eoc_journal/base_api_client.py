@@ -30,9 +30,4 @@ class BaseApiClient(object):
         """
         Connect to the REST API, authenticating with a JWT for the current user.
         """
-        scopes = ['profile', 'email']
-
-        self.client = build_jwt_edx_client(
-            self.api_url, scopes, self.user,
-            self.expires_in, append_slash=True
-        )
+        self.client = build_jwt_edx_client(self.user)

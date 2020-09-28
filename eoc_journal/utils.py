@@ -1,6 +1,7 @@
 """EOC Journal XBlock - Utils"""
 
-from edx_rest_api_client.client import EdxRestApiClient
+from edx_rest_api_client.auth import SuppliedJwtAuth
+from requests import Session
 
 from .compat import create_jwt_for_user
 
@@ -24,13 +25,15 @@ def _(text):
     return text
 
 
-def build_jwt_edx_client(url, scopes, user, expires_in, append_slash=True):
+def build_jwt_edx_client(user):
     """
     Returns an edx API client authorized using JWT.
     """
 
     jwt = create_jwt_for_user(user)
-    return EdxRestApiClient(url, append_slash=append_slash, jwt=jwt)
+    session = Session()
+    session.auth = SuppliedJwtAuth(jwt)
+    return session
 
 
 def ngettext_fallback(text_singular, text_plural, number):

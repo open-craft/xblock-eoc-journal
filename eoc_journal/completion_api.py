@@ -16,9 +16,12 @@ class CompletionApiClient(BaseApiClient):
         """
         Fetches and returns the progress percentage for the current user.
         """
-        course_api = self.client.course(self.course_id)
+        url = "{base_url}/course/{course_id}".format(
+            base_url=self.api_url,
+            course_id=self.course_id,
+        )
         try:
-            data = course_api.get(username=self.user.username, **kwargs)
+            data = self.client.get(url, params=dict(username=self.user.username, **kwargs)).json()
             return data['results'][0]['completion']['percent'] * 100
         except (HttpClientError, IndexError):
             return None
