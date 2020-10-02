@@ -1,0 +1,243 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-03 09:09+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: eoc_journal.py:74
+msgid "Title (display name)"
+msgstr "Titel (Anzeigename)"
+
+#: eoc_journal.py:75
+msgid "Title to display"
+msgstr "Titel zum Anzeigen"
+
+#: eoc_journal.py:76
+msgid "Course Journal"
+msgstr "Kursjournal"
+
+#: eoc_journal.py:81
+msgid "Key Takeaways PDF handle"
+msgstr "Wichtige Schlussfolgerungen PDF-Stiel"
+
+#: eoc_journal.py:83
+msgid ""
+"URL handle of the Key Takeaways PDF file that was uploaded to Studio Files & "
+"Uploads section. Should start with '/static/'. Example: /static/KeyTakeaways."
+"pdf"
+msgstr "URL-Stiel der PDF-Datei mit wichtigen Schlussfolgerungen, die in den Abschnitt Studio Files & Uploads hochgeladen wurde. Sollte mit '/static/' beginnen. Beispiel: /static/KeyTakeaways.pdf"
+
+#: eoc_journal.py:91
+msgid "Problem Builder Freeform Answers"
+msgstr "Problem Builder Freie Antworten"
+
+#: eoc_journal.py:92
+msgid ""
+"Select Problem Builder Freeform Answer components which you want to include "
+"in the report."
+msgstr "Komponenten aus Problem Builder Freie Antworten auswählen, die im Bericht enthalten sein sollen."
+
+#: eoc_journal.py:100
+msgid "PDF Title"
+msgstr "PDF-Titel"
+
+#: eoc_journal.py:101
+msgid "Title of the PDF report. Leave blank to use the course title."
+msgstr "Titel des PDF-Berichts. Zur Verwendung des Kurstitels frei lassen."
+
+#: eoc_journal.py:107
+msgid "PDF Report Link heading"
+msgstr "Überschrift zum Link des PDF-Berichts"
+
+#: eoc_journal.py:108
+msgid ""
+"The heading text to display above the link for downloading the PDF Report."
+msgstr "Der über dem Link zum Herunterladen des PDF-Berichts anzuzeigende Überschriftstext"
+
+#: eoc_journal.py:109
+msgid "PDF Report"
+msgstr "PDF-Bericht"
+
+#: eoc_journal.py:114
+msgid "PDF Report Link text"
+msgstr "Text des Links zum PDF-Bericht"
+
+#: eoc_journal.py:115
+msgid "The text to display in the link for downloading the PDF Report."
+msgstr "Der im Link zum Herunterladen des PDF-Berichts anzuzeigende Text."
+
+#: eoc_journal.py:116
+msgid "Download PDF"
+msgstr "PDF-Datei herunterladen"
+
+#: eoc_journal.py:121
+msgid "Display User Metrics"
+msgstr "Nutzermetriken anzeigen"
+
+#: eoc_journal.py:122
+msgid ""
+"Would you like to display progress, proficiency and engagement metrics in "
+"the XBlock view in LMS?"
+msgstr "Möchten Sie Metriken zu Fortschritt, Kompetenzen und Engagement in der XBlock-Ansicht in LMS anzeigen?"
+
+#: eoc_journal.py:128
+msgid "Display Key Takeaways section"
+msgstr "Abschnitt wichtige Schlussfolgerungen anzeigen"
+
+#: eoc_journal.py:129
+msgid ""
+"Would you like to display Key Takeaways section in the XBlock view in LMS?"
+msgstr "Möchten Sie den Abschnitt wichtige Schlussfolgerungen in der XBlock-Ansicht in LMS anzeigen?"
+
+#: eoc_journal.py:135
+msgid "Display answers"
+msgstr "Antworten anzeigen"
+
+#: eoc_journal.py:136
+msgid "Would you like to display free text answers in the XBlock view in LMS?"
+msgstr "Möchten Sie den freie Textantworten in der XBlock-Ansicht in LMS anzeigen?"
+
+#: eoc_journal.py:142
+msgid "Default Font"
+msgstr "Standardschriftart"
+
+#: eoc_journal.py:143
+msgid ""
+"Studio static URL to a custom font file to be used for PDF report. Example: "
+"\"/static/myfont.ttf\". Leave empty to use default fonts. You can upload "
+"custom TTF font files from the Content - Files & Uploads page."
+msgstr "Für den PDF-Bericht ist eine statische Studio-URL zu einer benutzerdefinierten Schriftartendatei zu verwenden. Beispiel: \"/static/myfont.ttf\". Zur Verwendung von Standardschriftarten frei lassen. Sie können benutzerdefinierte TTF-Schriftartendateien von der Seite Content - Files & Uploads herunterladen."
+
+#: eoc_journal.py:333
+msgid "Not answered yet."
+msgstr "Noch nicht beantwortet."
+
+#: templates/eoc_journal.html:10
+msgid "Progress"
+msgstr "Fortschritt"
+
+#: templates/eoc_journal.html:15
+#, python-format
+msgid ""
+"\n"
+"      You are %(tag_start)s%(percentage)s%(tag_end)s%% of the way through\n"
+"      the course based on completion of modules within lessons.\n"
+"      "
+msgstr "\n"
+"Sie haben basierend auf den Lektionen in abgeschlossenen Modulen  %(tag_start)s%(percentage)s%(tag_end)s%% des Kurses absolviert:"
+
+#: templates/eoc_journal.html:20
+#, python-format
+msgid "The cohort average is %(tag_start)s%(percentage)s%(tag_end)s%%."
+msgstr " Der Jahrgangsdurchschnitt liegt bei  %(tag_start)s%(percentage)s%(tag_end)s%%."
+
+#: templates/eoc_journal.html:25
+msgid "Progress data is not available."
+msgstr "Keine Fortschrittsdaten verfügbar."
+
+#: templates/eoc_journal.html:33
+msgid "Proficiency"
+msgstr "Kompetenzen"
+
+#: templates/eoc_journal.html:38
+#, python-format
+msgid ""
+"\n"
+"      Your current proficiency score is %(tag_start)s%(proficiency)s"
+"%(tag_end)s%% following completion of graded\n"
+"      items in this course.\n"
+"      "
+msgstr "\n"
+"            Ihre derzeitige Kompetenzbewertung für diesen Kurs ist %(tag_start)s%(proficiency)s%(tag_end)s%% nach Abschluss der benoteten Aufgaben. \n"
+"          "
+
+#: templates/eoc_journal.html:43
+#, python-format
+msgid "The cohort average is %(tag_start)s%(proficiency)s%(tag_end)s%%."
+msgstr " Der Jahrgangsdurchschnitt liegt bei  %(tag_start)s%(proficiency)s%(tag_end)s%%."
+
+#: templates/eoc_journal.html:48
+msgid "Proficiency data is not available."
+msgstr "Keine Kompetenzdaten verfügbar."
+
+#: templates/eoc_journal.html:56
+msgid "Engagement"
+msgstr "Engagement"
+
+#: templates/eoc_journal.html:61
+#, python-format
+msgid ""
+"\n"
+"      Your current engagement score is %(tag_start)s%(score)s%(tag_end)s\n"
+"      based on your engagement interactions with other participants in your "
+"cohort in the discussion forums.\n"
+"      "
+msgstr "\n"
+"            Ihre aktuelle Engagement-Note ist %(tag_start)s%(score)s%(tag_end)s. Sie basiert auf Ihrem Engagement mit anderen Teilnehmern Ihres Jahrgangs in den Diskussionsforen.\n"
+"             "
+
+#: templates/eoc_journal.html:66
+#, python-format
+msgid "The cohort average is %(tag_start)s%(score)s%(tag_end)s."
+msgstr " Der Jahrgangsdurchschnitt liegt bei  %(tag_start)s%(score)s%(tag_end)s."
+
+#: templates/eoc_journal.html:73
+msgid "Measured engagement"
+msgstr "Gemessenes Engagement"
+
+#: templates/eoc_journal.html:74
+msgid "Stats"
+msgstr "Statistiken"
+
+#: templates/eoc_journal.html:80
+msgid "Number of New Posts you created"
+msgstr "Anzahl der von Ihnen verfassten neuen Beiträge"
+
+#: templates/eoc_journal.html:85
+msgid "Number of Replies you made to other posts"
+msgstr "Anzahl Ihrer Antworten auf andere Beiträge "
+
+#: templates/eoc_journal.html:90
+msgid "Number of Comments Generated by your posts"
+msgstr "Anzahl der durch Ihre Beiträge erzeugten Kommentare"
+
+#: templates/eoc_journal.html:95
+msgid "Number of Upvotes your posts have received"
+msgstr "Anzahl der zu Ihren Beiträgen erzielten positiven Bewertungen"
+
+#: templates/eoc_journal.html:100
+msgid "Number of your posts being Followed"
+msgstr "Anzahl Ihrer Beiträge, denen aktuell gefolgt wird "
+
+#: templates/eoc_journal.html:106
+msgid "Engagement data is not available."
+msgstr "Keine Engagementdaten verfügbar."
+
+#: templates/eoc_journal.html:150 templates/eoc_journal.html:158
+msgid "Key Takeaways"
+msgstr "Wichtige Schlussfolgerungen"
+
+#: templates/eoc_journal.html:162
+msgid "Key Takeaways PDF not available at this time."
+msgstr "PDF mit wichtigen Schlussfolgerungen ist zur Zeit nicht verfügbar."
+
+#: templates/eoc_journal_edit.html:31
+msgid "Save"
+msgstr "Speichern"
+
+#: templates/eoc_journal_edit.html:35
+msgid "Cancel"
+msgstr "Abbrechen"
