@@ -1,0 +1,242 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-03 09:09+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: eoc_journal.py:74
+msgid "Title (display name)"
+msgstr "العنوان (اسم العرض)"
+
+#: eoc_journal.py:75
+msgid "Title to display"
+msgstr "العنوان المطلوب عرضه"
+
+#: eoc_journal.py:76
+msgid "Course Journal"
+msgstr "مجلة الدورة التدريبية"
+
+#: eoc_journal.py:81
+msgid "Key Takeaways PDF handle"
+msgstr "الدروس المستفادة الرئيسية (PDF)"
+
+#: eoc_journal.py:83
+msgid ""
+"URL handle of the Key Takeaways PDF file that was uploaded to Studio Files & "
+"Uploads section. Should start with '/static/'. Example: /static/KeyTakeaways."
+"pdf"
+msgstr "عنوان URL لملف الدروس المستفادة الرئيسية (PDF) الذي تم تحميله إلى قسم تحميل ملفات "
+"الاستوديو والتحميلات. يجب أن تبدأ بـ \"/static/\". مثال /static/KeyTakeaways.pdf"
+
+#: eoc_journal.py:91
+msgid "Problem Builder Freeform Answers"
+msgstr "حل المشكلات الإجابات الحرة لمنشئ المشكلات"
+
+#: eoc_journal.py:92
+msgid ""
+"Select Problem Builder Freeform Answer components which you want to include "
+"in the report."
+msgstr "حدد مكونات الحل الحر لمنشئ المشاكل التي تريد تضمينها في التقرير."
+
+#: eoc_journal.py:100
+msgid "PDF Title"
+msgstr "عنوان PDF"
+
+#: eoc_journal.py:101
+msgid "Title of the PDF report. Leave blank to use the course title."
+msgstr "عنوان تقرير PDF. اترك الحقل فارغاً لاستخدام عنوان الدورة التعليمية."
+
+#: eoc_journal.py:107
+msgid "PDF Report Link heading"
+msgstr "عنوان ارتباط تقرير PDF"
+
+#: eoc_journal.py:108
+msgid ""
+"The heading text to display above the link for downloading the PDF Report."
+msgstr "نص العنوان الذي سيتم عرضه أعلى الارتباط لتنزيل تقرير PDF."
+
+#: eoc_journal.py:109
+msgid "PDF Report"
+msgstr "تقرير PDF "
+
+#: eoc_journal.py:114
+msgid "PDF Report Link text"
+msgstr "نص رابط تقرير PDF"
+
+#: eoc_journal.py:115
+msgid "The text to display in the link for downloading the PDF Report."
+msgstr "النص الذي سيتم عرضه في الارتباط لتنزيل تقرير PDF."
+
+#: eoc_journal.py:116
+msgid "Download PDF"
+msgstr "تنزيل PDF"
+
+#: eoc_journal.py:121
+msgid "Display User Metrics"
+msgstr "عرض مقاييس المستخدم"
+
+#: eoc_journal.py:122
+msgid ""
+"Would you like to display progress, proficiency and engagement metrics in "
+"the XBlock view in LMS?"
+msgstr "هل ترغب في عرض مقاييس التقدم والكفاءة والمشاركة في عرض XBlock في نظام إدارة التعلم (LMS)؟"
+
+#: eoc_journal.py:128
+msgid "Display Key Takeaways section"
+msgstr "عرض قسم الدروس المستفادة"
+
+#: eoc_journal.py:129
+msgid ""
+"Would you like to display Key Takeaways section in the XBlock view in LMS?"
+msgstr "هل ترغب في عرض قسم \"الدروس المستفادة الرئيسية\" في عرض XBlock في نظام إدارة التعلم (LMS)؟"
+
+#: eoc_journal.py:135
+msgid "Display answers"
+msgstr "عرض الإجابات"
+
+#: eoc_journal.py:136
+msgid "Would you like to display free text answers in the XBlock view in LMS?"
+msgstr "هل ترغب في عرض إجابات نصية حرة في عرض XBlock في نظام إدارة التعلم (LMS)؟"
+
+#: eoc_journal.py:142
+msgid "Default Font"
+msgstr "الخط الافتراضي"
+
+#: eoc_journal.py:143
+msgid ""
+"Studio static URL to a custom font file to be used for PDF report. Example: "
+"\"/static/myfont.ttf\". Leave empty to use default fonts. You can upload "
+"custom TTF font files from the Content - Files & Uploads page."
+msgstr "عنوان URL لستوديو ثابت إلى ملف خط مخصص لاستخدامه لتقرير PDF. مثال 'static/myfont.ttf/'. اتركه فارغاً لاستخدام الخطوط الافتراضية. يمكنك تحميل ملفات الخط TTF مخصصة من صفحة المحتوى - الملفات والتحميلات."
+
+#: eoc_journal.py:333
+msgid "Not answered yet."
+msgstr "لم تتم الإجابة بعد."
+
+#: templates/eoc_journal.html:10
+msgid "Progress"
+msgstr "التقدم المحرز"
+
+#: templates/eoc_journal.html:15
+#, python-format
+msgid ""
+"\n"
+"      You are %(tag_start)s%(percentage)s%(tag_end)s%% of the way through\n"
+"      the course based on completion of modules within lessons.\n"
+"      "
+msgstr "\n"
+"لقد أكملت %(tag_start)s%(percentage)s%(tag_end)s%% من الدورة التدريبية بناءً على إكمال الوحدات بالدروس."
+
+#: templates/eoc_journal.html:20
+#, python-format
+msgid "The cohort average is %(tag_start)s%(percentage)s%(tag_end)s%%."
+msgstr "متوسط المجموعة هو %(tag_start)s%(percentage)s%(tag_end)s%%."
+
+#: templates/eoc_journal.html:25
+msgid "Progress data is not available."
+msgstr "بيانات التقدم المحرز غير متوفرة."
+
+#: templates/eoc_journal.html:33
+msgid "Proficiency"
+msgstr "الكفاءة"
+
+#: templates/eoc_journal.html:38
+#, python-format
+msgid ""
+"\n"
+"      Your current proficiency score is %(tag_start)s%(proficiency)s"
+"%(tag_end)s%% following completion of graded\n"
+"      items in this course.\n"
+"      "
+msgstr "\n"
+"            درجة كفائتك الحالية هي %(tag_start)s%(proficiency)s%(tag_end)s%%بعد إكمال من العناصر المدرجة في هذه الدورة التدريبية."
+
+#: templates/eoc_journal.html:43
+#, python-format
+msgid "The cohort average is %(tag_start)s%(proficiency)s%(tag_end)s%%."
+msgstr "متوسط المجموعة هو %(tag_start)s%(proficiency)s%(tag_end)s%%."
+
+#: templates/eoc_journal.html:48
+msgid "Proficiency data is not available."
+msgstr "بيانات الكفاءة غير متوفرة."
+
+#: templates/eoc_journal.html:56
+msgid "Engagement"
+msgstr "المشاركة"
+
+#: templates/eoc_journal.html:61
+#, python-format
+msgid ""
+"\n"
+"      Your current engagement score is %(tag_start)s%(score)s%(tag_end)s\n"
+"      based on your engagement interactions with other participants in your "
+"cohort in the discussion forums.\n"
+"      "
+msgstr "\n"
+"            تعتمد نتيجة مشاركتك الحالية %(tag_start)s%(score)s%(tag_end)sعلى تفاعلاتك الاجتماعية مع المشاركين الآخرين في مجموعتك في مناقشات المنتديات."
+
+#: templates/eoc_journal.html:66
+#, python-format
+msgid "The cohort average is %(tag_start)s%(score)s%(tag_end)s."
+msgstr "متوسط المجموعة هو %(tag_start)s%(score)s%(tag_end)s."
+
+#: templates/eoc_journal.html:73
+msgid "Measured engagement"
+msgstr "المشاركة المقاسة"
+
+#: templates/eoc_journal.html:74
+msgid "Stats"
+msgstr "الإحصائيات"
+
+#: templates/eoc_journal.html:80
+msgid "Number of New Posts you created"
+msgstr "عدد المنشورات الجديدة التي قمت بإنشائها"
+
+#: templates/eoc_journal.html:85
+msgid "Number of Replies you made to other posts"
+msgstr "عدد الردود التي أجريتها على المنشورات الأخرى"
+
+#: templates/eoc_journal.html:90
+msgid "Number of Comments Generated by your posts"
+msgstr "عدد التعليقات التي تم إنشاؤها بواسطة منشوراتك"
+
+#: templates/eoc_journal.html:95
+msgid "Number of Upvotes your posts have received"
+msgstr "عدد التأييدات التي تلقتها منشوراتك"
+
+#: templates/eoc_journal.html:100
+msgid "Number of your posts being Followed"
+msgstr "عدد منشوراتك التي تتم متابعتها"
+
+#: templates/eoc_journal.html:106
+msgid "Engagement data is not available."
+msgstr "بيانات المشاركة غير متوفرة."
+
+#: templates/eoc_journal.html:150 templates/eoc_journal.html:158
+msgid "Key Takeaways"
+msgstr "الدروس المستفادة الرئيسية (PDF)"
+
+#: templates/eoc_journal.html:162
+msgid "Key Takeaways PDF not available at this time."
+msgstr "الدروس المستفادة الرئيسية (PDF) غير متوفرة في الوقت الحالي."
+
+#: templates/eoc_journal_edit.html:31
+msgid "Save"
+msgstr "حفظ"
+
+#: templates/eoc_journal_edit.html:35
+msgid "Cancel"
+msgstr "إلغاء"
