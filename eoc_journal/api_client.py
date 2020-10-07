@@ -63,7 +63,7 @@ class ApiClient(BaseApiClient):
         the current course.
         """
         try:
-            course = self.client.courses(id=self.course_id).get(depth=5)
+            course = self.client.get(self.api_url + '/courses', params={"depth": 5}).json()
         except HttpClientError:
             return None
 

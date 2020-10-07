@@ -16,4 +16,7 @@ class CourseBlocksApiClient(BaseApiClient):
         """
         Fetches and returns blocks from the Course API.
         """
-        return self.client.blocks.get(course_id=self.course_id, **kwargs)
+        return self.client.get(
+            self.api_url + '/blocks',
+            params=dict(course_id=self.course_id, **kwargs)
+        ).json()
