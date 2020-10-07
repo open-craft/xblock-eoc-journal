@@ -1,6 +1,6 @@
 xblock-utils==1.2.2
-git+https://github.com/open-craft/problem-builder@v3.5.5#egg=xblock-problem-builder ; python_version < "3"
-git+https://github.com/open-craft/problem-builder@v4.1.5#egg=xblock-problem-builder ; python_version >= "3"
+-e git+https://github.com/open-craft/problem-builder@v3.5.5#egg=xblock-problem-builder ; python_version < "3"
+-e git+https://github.com/open-craft/problem-builder@v4.1.5#egg=xblock-problem-builder ; python_version >= "3"
 edx-rest-api-client==1.6.0
 reportlab==3.1.44
 future==0.18.2
