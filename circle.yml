@@ -57,7 +57,7 @@ jobs:
             pip install -r venv/src/xblock-sdk/requirements/test.txt
             mkdir var
       - save_cache:
-          key: dependencies-{{ checksum "circle.yml" }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-test.txt" }}
+          key: dependencies-{{ checksum "circle.yml" }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-test.txt" }}-<<parameters.cache_key>>
           paths:
             - "venv"
       - run:
