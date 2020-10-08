@@ -396,7 +396,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         Returns the course id (string) corresponding to the current course.
         """
         course_id = getattr(self.runtime, 'course_id', 'course_id')
-        course_id = str(normalize_id(course_id))
+        course_id = unicode(normalize_id(course_id))
         return course_id
 
     def _get_current_user(self):
@@ -527,7 +527,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         """
         user = self._get_current_user()
         course_id = getattr(self.runtime, 'course_id', 'course_id')
-        course_id = str(normalize_id(course_id))
+        course_id = unicode(normalize_id(course_id))
 
         client = CourseBlocksApiClient(user, course_id)
         response = client.get_blocks(
@@ -586,7 +586,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         if not course_id:
             return block
 
-        course_id = str(normalize_id(course_id))
+        course_id = unicode(normalize_id(course_id))
         course_key = CourseKey.from_string(course_id)
 
         transformed_block_ids = []
