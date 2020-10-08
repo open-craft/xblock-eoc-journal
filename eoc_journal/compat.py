@@ -1,6 +1,7 @@
 """
 edx-platform dependent code
 """
+from __future__ import unicode_literals
 # pylint: disable=import-error
 
 

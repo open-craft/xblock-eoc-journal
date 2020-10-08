@@ -1,5 +1,7 @@
 """EOC Journal XBlock - Utils"""
+from __future__ import unicode_literals
 
+from builtins import object
 from edx_rest_api_client.auth import SuppliedJwtAuth
 from requests import Session
 

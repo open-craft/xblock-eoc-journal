@@ -1,6 +1,7 @@
 """
 A client for completion API for downloading course completion data.
 """
+from __future__ import unicode_literals
 from edx_rest_api_client.exceptions import HttpClientError
 from .base_api_client import BaseApiClient
 

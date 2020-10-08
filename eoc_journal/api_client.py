@@ -1,6 +1,7 @@
 """
 A wrapper around the Edx API.
 """
+from __future__ import unicode_literals
 # pylint: disable=wrong-import-position,wrong-import-order
 from future import standard_library  # noqa
 standard_library.install_aliases()  # noqa

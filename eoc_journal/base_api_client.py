@@ -1,6 +1,7 @@
 """
 A base client for API integrations.
 """
+from __future__ import unicode_literals
 from builtins import object
 from django.conf import settings
 

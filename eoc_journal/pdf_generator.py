@@ -1,6 +1,7 @@
 """
 Utils around Reportlab customizations
 """
+from __future__ import unicode_literals
 import logging
 
 from reportlab.lib.enums import TA_CENTER

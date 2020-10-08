@@ -1,12 +1,14 @@
 """
 An XBlock that allows learners to download their activity after they finish their course.
 """
+from __future__ import unicode_literals
 # pylint: disable=wrong-import-position,wrong-import-order,no-name-in-module
 from future import standard_library  # noqa
 standard_library.install_aliases()  # noqa
 
 import json
-from builtins import str
+import six
+
 from collections import OrderedDict
 from io import BytesIO
 from urllib.parse import urljoin
@@ -396,7 +398,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         Returns the course id (string) corresponding to the current course.
         """
         course_id = getattr(self.runtime, 'course_id', 'course_id')
-        course_id = unicode(normalize_id(course_id))
+        course_id = six.text_type(normalize_id(course_id))
         return course_id
 
     def _get_current_user(self):
@@ -526,8 +528,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         Only staff users can request `all_blocks`.
         """
         user = self._get_current_user()
-        course_id = getattr(self.runtime, 'course_id', 'course_id')
-        course_id = unicode(normalize_id(course_id))
+        course_id = self._get_course_id()
 
         client = CourseBlocksApiClient(user, course_id)
         response = client.get_blocks(
@@ -586,7 +587,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         if not course_id:
             return block
 
-        course_id = unicode(normalize_id(course_id))
+        course_id = six.text_type(normalize_id(course_id))
         course_key = CourseKey.from_string(course_id)
 
         transformed_block_ids = []

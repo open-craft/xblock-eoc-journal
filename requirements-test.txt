@@ -22,7 +22,6 @@ python-dateutil
 pytz
 pyyaml
 simplejson
-six
 web-fragments==0.3.1
 webob
 XBlock==1.2.9
