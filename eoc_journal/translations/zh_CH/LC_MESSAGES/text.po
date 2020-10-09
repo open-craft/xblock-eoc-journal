@@ -1,0 +1,262 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-03 09:09+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: eoc_journal.py:74
+msgid "Title (display name)"
+msgstr "标题（显示名称）"
+
+#: eoc_journal.py:75
+msgid "Title to display"
+msgstr "要显示的标题"
+
+#: eoc_journal.py:76
+msgid "Course Journal"
+msgstr "课程日志"
+
+#: eoc_journal.py:81
+msgid "Key Takeaways PDF handle"
+msgstr "“重要心得”PDF 句柄"
+
+#: eoc_journal.py:83
+msgid ""
+"URL handle of the Key Takeaways PDF file that was uploaded to Studio Files & "
+"Uploads section. Should start with '/static/'. Example: /static/KeyTakeaways."
+"pdf"
+msgstr "已上传到“Studio 文件和上传”部分的“重要心得”PDF 文件 URL 句柄。应以“/static/”开头，例：/static/KeyTakeaways.pdf"
+
+#: eoc_journal.py:91
+msgid "Problem Builder Freeform Answers"
+msgstr "问题构建程序 Freeform Answer"
+
+#: eoc_journal.py:92
+msgid ""
+"Select Problem Builder Freeform Answer components which you want to include "
+"in the report."
+msgstr "选择希望嵌入报告中的问题构建程序 Freeform Answer 组件。"
+
+#: eoc_journal.py:100
+msgid "PDF Title"
+msgstr "PDF 标题"
+
+#: eoc_journal.py:101
+msgid "Title of the PDF report. Leave blank to use the course title."
+msgstr "PDF 报告的标题。请留空以使用课程标题。"
+
+#: eoc_journal.py:107
+msgid "PDF Report Link heading"
+msgstr "PDF 报告链接标题"
+
+#: eoc_journal.py:108
+msgid ""
+"The heading text to display above the link for downloading the PDF Report."
+msgstr "将显示在 PDF 报告下载链接上方的标题文本。"
+
+#: eoc_journal.py:109
+msgid "PDF Report"
+msgstr "PDF 报告"
+
+#: eoc_journal.py:114
+msgid "PDF Report Link text"
+msgstr "PDF 报告链接文本"
+
+#: eoc_journal.py:115
+msgid "The text to display in the link for downloading the PDF Report."
+msgstr "将显示在 PDF 报告下载链接中的文本。"
+
+#: eoc_journal.py:116
+msgid "Download PDF"
+msgstr "下载 PDF"
+
+#: eoc_journal.py:121
+msgid "Display User Metrics"
+msgstr "显示用户指标"
+
+#: eoc_journal.py:122
+msgid ""
+"Would you like to display progress, proficiency and engagement metrics in "
+"the XBlock view in LMS?"
+msgstr "您是否希望在 LMS 的 XBlock 视图中显示进度、熟练程度和参与度指标？"
+
+#: eoc_journal.py:128
+msgid "Display Key Takeaways section"
+msgstr "显示“重要心得”部分"
+
+#: eoc_journal.py:129
+msgid ""
+"Would you like to display Key Takeaways section in the XBlock view in LMS?"
+msgstr "您是否希望在 LMS 的 XBlock 视图中显示“重要心得”部分？"
+
+#: eoc_journal.py:135
+msgid "Display answers"
+msgstr "显示答案"
+
+#: eoc_journal.py:136
+msgid "Would you like to display free text answers in the XBlock view in LMS?"
+msgstr "您是否希望在 LMS 的 XBlock 视图中显示自由文本答案？"
+
+#: eoc_journal.py:142
+msgid "Default Font"
+msgstr "默认字体"
+
+#: eoc_journal.py:143
+msgid ""
+"Studio static URL to a custom font file to be used for PDF report. Example: "
+"\"/static/myfont.ttf\". Leave empty to use default fonts. You can upload "
+"custom TTF font files from the Content - Files & Uploads page."
+msgstr "将用于 PDF 报告的自定义字体文件的 Studio 静态 URL。例：“/static/myfont.ttf”。请留空以使用默认字体。您可以在“内容”-“文件和上传”页面中上传自定义 TTF 字体文件。"
+
+#: eoc_journal.py:333
+msgid "Not answered yet."
+msgstr "尚无答案。"
+
+#: templates/eoc_journal.html:10
+msgid "Progress"
+msgstr "进度"
+
+#: templates/eoc_journal.html:15
+#, python-format
+msgid ""
+"\n"
+"      You are %(tag_start)s%(percentage)s%(tag_end)s%% of the way through\n"
+"      the course based on completion of modules within lessons.\n"
+"      "
+msgstr "\n"
+"      根据课程中模块的完成情况，\n"
+"      您的课程进度为 %(tag_start)s%(percentage)s%(tag_end)s%%。\n"
+"      "
+
+#: templates/eoc_journal.html:20
+#, python-format
+msgid ""
+"\n"
+"      The cohort average is %(tag_start)s%(percentage)s%(tag_end)s%%.\n"
+"      "
+msgstr "\n"
+"      群组平均值为 %(tag_start)s%(percentage)s%(tag_end)s%%。\n"
+"      "
+
+#: templates/eoc_journal.html:25
+msgid "Progress data is not available."
+msgstr "进度数据无法访问。"
+
+#: templates/eoc_journal.html:33
+msgid "Proficiency"
+msgstr "熟练程度"
+
+#: templates/eoc_journal.html:38
+#, python-format
+msgid ""
+"\n"
+"      Your current proficiency score is %(tag_start)s%(proficiency)s"
+"%(tag_end)s%% following completion of graded\n"
+"      items in this course.\n"
+"      "
+msgstr "\n"
+"      在完成本课程中的已评分项目后，\n"
+"      您当前的熟练程度分数为 %(tag_start)s%(proficiency)s%(tag_end)s%%。\n"
+"      "
+
+#: templates/eoc_journal.html:43
+#, python-format
+msgid ""
+"\n"
+"      The cohort average is %(tag_start)s%(proficiency)s%(tag_end)s%%.\n"
+"      "
+msgstr "\n"
+"      群组平均值为 %(tag_start)s%(proficiency)s%(tag_end)s%%。\n"
+"      "
+
+#: templates/eoc_journal.html:48
+msgid "Proficiency data is not available."
+msgstr "熟练程度数据无法访问。"
+
+#: templates/eoc_journal.html:56
+msgid "Engagement"
+msgstr "参与度"
+
+#: templates/eoc_journal.html:61
+#, python-format
+msgid ""
+"\n"
+"      Your current engagement score is %(tag_start)s%(score)s%(tag_end)s\n"
+"      based on your engagement interactions with other participants in your "
+"cohort in the discussion forums.\n"
+"      "
+msgstr "\n"
+"      根据您与群组中的其他参与者在论坛中的参与互动情况，\n"
+"      您当前的参与度分数为 %(tag_start)s%(score)s%(tag_end)s。\n"
+"      "
+
+#: templates/eoc_journal.html:66
+#, python-format
+msgid ""
+"\n"
+"      The cohort average is %(tag_start)s%(score)s%(tag_end)s.\n"
+"      "
+msgstr "\n"
+"      群组平均值为 %(tag_start)s%(score)s%(tag_end)s。\n"
+"      "
+
+#: templates/eoc_journal.html:73
+msgid "Measured engagement"
+msgstr "总体参与度"
+
+#: templates/eoc_journal.html:74
+msgid "Stats"
+msgstr "统计数据"
+
+#: templates/eoc_journal.html:80
+msgid "Number of New Posts you created"
+msgstr "创建的新帖子数量"
+
+#: templates/eoc_journal.html:85
+msgid "Number of Replies you made to other posts"
+msgstr "对其他帖子的回复数量"
+
+#: templates/eoc_journal.html:90
+msgid "Number of Comments Generated by your posts"
+msgstr "帖子的评论数量"
+
+#: templates/eoc_journal.html:95
+msgid "Number of Upvotes your posts have received"
+msgstr "帖子的点赞数量"
+
+#: templates/eoc_journal.html:100
+msgid "Number of your posts being Followed"
+msgstr "当前有关注者的帖子数量"
+
+#: templates/eoc_journal.html:106
+msgid "Engagement data is not available."
+msgstr "参与度数据无法访问。"
+
+#: templates/eoc_journal.html:150 templates/eoc_journal.html:158
+msgid "Key Takeaways"
+msgstr "重要心得"
+
+#: templates/eoc_journal.html:162
+msgid "Key Takeaways PDF not available at this time."
+msgstr "“重要心得”PDF 目前无法访问。"
+
+#: templates/eoc_journal_edit.html:31
+msgid "Save"
+msgstr "保存"
+
+#: templates/eoc_journal_edit.html:35
+msgid "Cancel"
+msgstr "取消"

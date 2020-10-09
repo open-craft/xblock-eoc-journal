@@ -1,0 +1,262 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-09-03 09:09+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: eoc_journal.py:74
+msgid "Title (display name)"
+msgstr "Título (exibir nome)"
+
+#: eoc_journal.py:75
+msgid "Title to display"
+msgstr "Título para exibição"
+
+#: eoc_journal.py:76
+msgid "Course Journal"
+msgstr "Diário do Curso"
+
+#: eoc_journal.py:81
+msgid "Key Takeaways PDF handle"
+msgstr "Identificador do PDF com os Tópicos Principais"
+
+#: eoc_journal.py:83
+msgid ""
+"URL handle of the Key Takeaways PDF file that was uploaded to Studio Files & "
+"Uploads section. Should start with '/static/'. Example: /static/KeyTakeaways."
+"pdf"
+msgstr "Identificador de URL do arquivo em PDF Tópicos Principais que foi carregado para a seção Arquivos e uploads do Studio. Deve começar com \"/static/\". Exemplo: /static/KeyTakeaways.pdf"
+
+#: eoc_journal.py:91
+msgid "Problem Builder Freeform Answers"
+msgstr "Respostas em texto livre do Construtor de Problemas"
+
+#: eoc_journal.py:92
+msgid ""
+"Select Problem Builder Freeform Answer components which you want to include "
+"in the report."
+msgstr "Selecione os componentes de resposta em texto livre do Construtor de Problemas que deseja incluir no relatório."
+
+#: eoc_journal.py:100
+msgid "PDF Title"
+msgstr "Título do PDF"
+
+#: eoc_journal.py:101
+msgid "Title of the PDF report. Leave blank to use the course title."
+msgstr "Título do relatório em PDF. Deixe em branco para usar o título do curso."
+
+#: eoc_journal.py:107
+msgid "PDF Report Link heading"
+msgstr "Título do link do relatório em PDF"
+
+#: eoc_journal.py:108
+msgid ""
+"The heading text to display above the link for downloading the PDF Report."
+msgstr "O texto do título a ser exibido acima do link para fazer download do Relatório em PDF."
+
+#: eoc_journal.py:109
+msgid "PDF Report"
+msgstr "Relatório em PDF"
+
+#: eoc_journal.py:114
+msgid "PDF Report Link text"
+msgstr "Texto do link do relatório em PDF"
+
+#: eoc_journal.py:115
+msgid "The text to display in the link for downloading the PDF Report."
+msgstr "O texto a ser exibido no link para fazer download do Relatório em PDF."
+
+#: eoc_journal.py:116
+msgid "Download PDF"
+msgstr "Fazer download do PDF"
+
+#: eoc_journal.py:121
+msgid "Display User Metrics"
+msgstr "Exibir métricas do usuário"
+
+#: eoc_journal.py:122
+msgid ""
+"Would you like to display progress, proficiency and engagement metrics in "
+"the XBlock view in LMS?"
+msgstr "Você gostaria de exibir métricas de progresso, proficiência e engajamento na visualização XBlock no LMS?"
+
+#: eoc_journal.py:128
+msgid "Display Key Takeaways section"
+msgstr "Exibir seção Tópicos Principais"
+
+#: eoc_journal.py:129
+msgid ""
+"Would you like to display Key Takeaways section in the XBlock view in LMS?"
+msgstr "Você gostaria de exibir a seção Tópicos Principais na visualização XBlock no LMS?"
+
+#: eoc_journal.py:135
+msgid "Display answers"
+msgstr "Exibir respostas"
+
+#: eoc_journal.py:136
+msgid "Would you like to display free text answers in the XBlock view in LMS?"
+msgstr "Você gostaria de exibir as respostas em texto livre na visualização XBlock no LMS?"
+
+#: eoc_journal.py:142
+msgid "Default Font"
+msgstr "Fonte padrão"
+
+#: eoc_journal.py:143
+msgid ""
+"Studio static URL to a custom font file to be used for PDF report. Example: "
+"\"/static/myfont.ttf\". Leave empty to use default fonts. You can upload "
+"custom TTF font files from the Content - Files & Uploads page."
+msgstr "URL estático do Studio para um arquivo de fonte personalizado a ser usado para o relatório em PDF. Exemplo: \"/static/myfont.ttf\". Deixe em branco para usar fontes padrão. Você pode fazer o upload de arquivos de fonte TTF personalizados na página Conteúdo - Arquivos e uploads."
+
+#: eoc_journal.py:333
+msgid "Not answered yet."
+msgstr "Não respondido ainda."
+
+#: templates/eoc_journal.html:10
+msgid "Progress"
+msgstr "Progresso"
+
+#: templates/eoc_journal.html:15
+#, python-format
+msgid ""
+"\n"
+"      You are %(tag_start)s%(percentage)s%(tag_end)s%% of the way through\n"
+"      the course based on completion of modules within lessons.\n"
+"      "
+msgstr "\n"
+"      Você já percorreu %(tag_start)s%(percentage)s%(tag_end)s%% do\n"
+"      curso com base na conclusão dos módulos nas lições.\n"
+"      "
+
+#: templates/eoc_journal.html:20
+#, python-format
+msgid ""
+"\n"
+"      The cohort average is %(tag_start)s%(percentage)s%(tag_end)s%%.\n"
+"      "
+msgstr "\n"
+"      A média do grupo é %(tag_start)s%(percentage)s%(tag_end)s%%.\n"
+"      "
+
+#: templates/eoc_journal.html:25
+msgid "Progress data is not available."
+msgstr "Os dados de progresso não estão disponíveis."
+
+#: templates/eoc_journal.html:33
+msgid "Proficiency"
+msgstr "Proficiência"
+
+#: templates/eoc_journal.html:38
+#, python-format
+msgid ""
+"\n"
+"      Your current proficiency score is %(tag_start)s%(proficiency)s"
+"%(tag_end)s%% following completion of graded\n"
+"      items in this course.\n"
+"      "
+msgstr "\n"
+"      Sua pontuação atual de proficiência é %(tag_start)s%(proficiency)s%(tag_end)s%% após a conclusão de\n"
+"      itens pontuados neste curso.\n"
+"      "
+
+#: templates/eoc_journal.html:43
+#, python-format
+msgid ""
+"\n"
+"      The cohort average is %(tag_start)s%(proficiency)s%(tag_end)s%%.\n"
+"      "
+msgstr "\n"
+"      A média do grupo é %(tag_start)s%(proficiency)s%(tag_end)s%%.\n"
+"      "
+
+#: templates/eoc_journal.html:48
+msgid "Proficiency data is not available."
+msgstr "Os dados de proficiência não estão disponíveis."
+
+#: templates/eoc_journal.html:56
+msgid "Engagement"
+msgstr "Engajamento"
+
+#: templates/eoc_journal.html:61
+#, python-format
+msgid ""
+"\n"
+"      Your current engagement score is %(tag_start)s%(score)s%(tag_end)s\n"
+"      based on your engagement interactions with other participants in your "
+"cohort in the discussion forums.\n"
+"      "
+msgstr "\n"
+"      Sua pontuação atual de engajamento é %(tag_start)s%(score)s%(tag_end)s\n"
+"      com base nas suas interações de engajamento com outros participantes no seu grupo nos fóruns de discussão.\n"
+"      "
+
+#: templates/eoc_journal.html:66
+#, python-format
+msgid ""
+"\n"
+"      The cohort average is %(tag_start)s%(score)s%(tag_end)s.\n"
+"      "
+msgstr "\n"
+"      A média do grupo é %(tag_start)s%(score)s%(tag_end)s.\n"
+"      "
+
+#: templates/eoc_journal.html:73
+msgid "Measured engagement"
+msgstr "Engajamento medido"
+
+#: templates/eoc_journal.html:74
+msgid "Stats"
+msgstr "Estatísticas"
+
+#: templates/eoc_journal.html:80
+msgid "Number of New Posts you created"
+msgstr "Número de novas publicações que você criou"
+
+#: templates/eoc_journal.html:85
+msgid "Number of Replies you made to other posts"
+msgstr "Número de Respostas que você deu em outras publicações"
+
+#: templates/eoc_journal.html:90
+msgid "Number of Comments Generated by your posts"
+msgstr "Número de Comentários Gerados pelas suas publicações"
+
+#: templates/eoc_journal.html:95
+msgid "Number of Upvotes your posts have received"
+msgstr "Número de Votos positivos que as suas publicações receberam"
+
+#: templates/eoc_journal.html:100
+msgid "Number of your posts being Followed"
+msgstr "Número de publicações suas que estão sendo Seguidas"
+
+#: templates/eoc_journal.html:106
+msgid "Engagement data is not available."
+msgstr "Os dados de engajamento não estão disponíveis."
+
+#: templates/eoc_journal.html:150 templates/eoc_journal.html:158
+msgid "Key Takeaways"
+msgstr "Tópicos Principais"
+
+#: templates/eoc_journal.html:162
+msgid "Key Takeaways PDF not available at this time."
+msgstr "O PDF com os Tópicos Principais não está disponível neste momento."
+
+#: templates/eoc_journal_edit.html:31
+msgid "Save"
+msgstr "Salvar"
+
+#: templates/eoc_journal_edit.html:35
+msgid "Cancel"
+msgstr "Cancelar"
