@@ -1,41 +1,46 @@
 """
 An XBlock that allows learners to download their activity after they finish their course.
 """
+from __future__ import unicode_literals
+# pylint: disable=wrong-import-position,wrong-import-order,no-name-in-module
+from future import standard_library  # noqa
+standard_library.install_aliases()  # noqa
+
 import json
+import six
+
 from collections import OrderedDict
 from io import BytesIO
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 import pkg_resources
 import webob
-from django.conf import settings
 from django import utils
-
+from django.conf import settings
 from lxml import html
-from lxml.etree import XMLSyntaxError, ParserError
+from lxml.etree import ParserError, XMLSyntaxError
 from lxml.html.clean import clean_html
-
+from opaque_keys.edx.keys import CourseKey, UsageKey
+from problem_builder.models import Answer
 from reportlab.lib import pagesizes
 from reportlab.lib.colors import Color
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-
-from problem_builder.models import Answer
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 from reportlab.platypus.flowables import HRFlowable
 from xblock.core import XBlock
-from xblock.fields import Boolean, Scope, String, List
+from xblock.fields import Boolean, List, Scope, String
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from xblockutils.studio_editable import StudioEditableXBlockMixin
-from opaque_keys.edx.keys import UsageKey, CourseKey
 
 from .api_client import ApiClient
 from .completion_api import CompletionApiClient
 from .course_blocks_api import CourseBlocksApiClient
 from .pdf_generator import get_style_sheet
-from .utils import _, normalize_id, DummyTranslationService
+from .utils import DummyTranslationService, _, normalize_id
+
 
 try:
-    from django.contrib.auth.models import User
+    from django.contrib.auth.models import User  # pylint: disable=import-outside-toplevel,ungrouped-imports
 except ImportError:
     User = None  # pylint: disable=C0103
 
@@ -214,6 +219,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         """
         return webob.Response(
             body=json.dumps(self._get_user_state()),
+            charset='UTF-8',
             content_type='application/json',
         )
 
@@ -339,8 +345,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
                 {'name': key, 'questions': value}
                 for key, value in answers.items()
             ]
-        else:
-            return None
+        return None
 
     @staticmethod
     def _iter_pb_answers(response):
@@ -393,7 +398,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         Returns the course id (string) corresponding to the current course.
         """
         course_id = getattr(self.runtime, 'course_id', 'course_id')
-        course_id = unicode(normalize_id(course_id))
+        course_id = six.text_type(normalize_id(course_id))
         return course_id
 
     def _get_current_user(self):
@@ -442,7 +447,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         lms_base = settings.ENV_TOKENS.get('LMS_BASE')
         scheme = 'https' if settings.HTTPS == 'on' else 'http'
         lms_base = '{}://{}'.format(scheme, lms_base)
-        return urljoin(lms_base, url)
+        return urljoin(str(lms_base), str(url))
 
     def get_progress_metrics(self):
         """
@@ -497,21 +502,21 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
 
         if not user_engagement:
             return None
-        else:
-            cohort_score = user_engagement['course_avg']
-            cohort_score_rounded = int(round(cohort_score))
-            if cohort_score_rounded < 1 and cohort_score > 0:
-                cohort_score_rounded = 1
-            metrics = user_engagement['stats']
-            return {
-                'user_score': user_engagement['score'],
-                'cohort_score': cohort_score_rounded,
-                'new_posts': metrics.get('num_threads', 0),
-                'total_replies': metrics.get('num_replies', 0) + metrics.get('num_comments', 0),
-                'upvotes': metrics.get('num_upvotes', 0),
-                'comments_generated': metrics.get('num_comments_generated', 0),
-                'posts_followed': metrics.get('num_thread_followers', 0),
-            }
+
+        cohort_score = user_engagement['course_avg']
+        cohort_score_rounded = int(round(cohort_score))
+        if cohort_score_rounded < 1 and cohort_score > 0:
+            cohort_score_rounded = 1
+        metrics = user_engagement['stats']
+        return {
+            'user_score': user_engagement['score'],
+            'cohort_score': cohort_score_rounded,
+            'new_posts': metrics.get('num_threads', 0),
+            'total_replies': metrics.get('num_replies', 0) + metrics.get('num_comments', 0),
+            'upvotes': metrics.get('num_upvotes', 0),
+            'comments_generated': metrics.get('num_comments_generated', 0),
+            'posts_followed': metrics.get('num_thread_followers', 0),
+        }
 
     def _fetch_pb_answer_blocks(self, all_blocks=False):
         """
@@ -523,8 +528,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         Only staff users can request `all_blocks`.
         """
         user = self._get_current_user()
-        course_id = getattr(self.runtime, 'course_id', 'course_id')
-        course_id = unicode(normalize_id(course_id))
+        course_id = self._get_course_id()
 
         client = CourseBlocksApiClient(user, course_id)
         response = client.get_blocks(
@@ -550,7 +554,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
             # edX Studio uses a different runtime for 'studio_view' than 'student_view',
             # and the 'studio_view' runtime doesn't provide the replace_urls API.
             try:
-                from static_replace import replace_static_urls  # pylint: disable=import-error
+                from static_replace import replace_static_urls  # pylint: disable=import-error,import-outside-toplevel
                 url = replace_static_urls('"{}"'.format(url), None, course_id=self.runtime.course_id)[1:-1]
             except ImportError:
                 pass
@@ -583,7 +587,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
         if not course_id:
             return block
 
-        course_id = unicode(normalize_id(course_id))
+        course_id = six.text_type(normalize_id(course_id))
         course_key = CourseKey.from_string(course_id)
 
         transformed_block_ids = []
@@ -593,7 +597,7 @@ class EOCJournalXBlock(StudioEditableXBlockMixin, XBlock):
                 transformed_block_ids.append(selected)
             else:
                 mapped = usage_key.map_into_course(course_key)
-                transformed_block_ids.append(unicode(mapped))
+                transformed_block_ids.append(str(mapped))
 
         block.selected_pb_answer_blocks = transformed_block_ids
         return block

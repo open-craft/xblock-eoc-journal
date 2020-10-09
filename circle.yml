@@ -1,8 +1,9 @@
-version: 2
+version: 2.1
+
 jobs:
-  build:
+  quality:
     docker:
-      - image: circleci/python:2.7.14-browsers
+      - image: circleci/python:3.8
     steps:
       - checkout
       - restore_cache:
@@ -22,9 +23,64 @@ jobs:
           paths:
             - "venv"
       - run:
-          name: Run tests
+          name: Run quality checks
           command: |
             . venv/bin/activate
             pycodestyle eoc_journal --max-line-length=120
             pylint eoc_journal
+  build:
+    docker:
+      - image: <<parameters.docker_image>>
+      - image: circleci/mysql:5.6
+        command: mysqld --character-set-server=latin1 --collation-server=latin1_swedish_ci
+        environment:
+          MYSQL_ROOT_PASSWORD: rootpw
+    parameters:
+      docker_image:
+        type: string
+      cache_key:
+        type: string
+    environment:
+      WORKBENCH_DATABASES: '{"default": {"ENGINE": "django.db.backends.mysql", "NAME": "db", "USER": "root", "PASSWORD": "rootpw", "HOST": "127.0.0.1", "OPTIONS": {"charset": "utf8mb4"}}}'
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependencies-{{ checksum "circle.yml" }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-test.txt" }}-<<parameters.cache_key>>
+      - run:
+          name: Install Python deps in a venv
+          command: |
+            virtualenv venv
+            . venv/bin/activate
+            pip install -U pip wheel
+            pip install -r requirements-test.txt --exists-action w
+            pip install -r venv/src/xblock-sdk/requirements/base.txt --exists-action w
+            pip install -r venv/src/xblock-sdk/requirements/test.txt --exists-action w
+            mkdir var
+      - save_cache:
+          key: dependencies-{{ checksum "circle.yml" }}-{{ checksum "requirements.txt" }}-{{ checksum "requirements-test.txt" }}-<<parameters.cache_key>>
+          paths:
+            - "venv"
+      - run:
+          name: Run tests
+          command: |
+            . venv/bin/activate
             python run_tests.py
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - quality:
+          name: "Quality Check Python 3.8, Django 2.2"
+      - build:
+          name: "Ironwood: Python 2.7, Django 1.11"
+          docker_image: circleci/python:2.7-browsers
+          cache_key: "python27"
+      - build:
+          name: "Juniper: Python 3.5, Django 2.2"
+          docker_image: circleci/python:3.5-browsers
+          cache_key: "python35"
+      - build:
+          name: "Koa: Python 3.8, Django 2.2"
+          docker_image: circleci/python:3.8-browsers
+          cache_key: "python37"

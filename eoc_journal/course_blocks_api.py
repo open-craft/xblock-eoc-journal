@@ -1,6 +1,7 @@
 """
 An XBlock that allows learners to download their activity after they finish their course.
 """
+from __future__ import unicode_literals
 
 from .base_api_client import BaseApiClient
 

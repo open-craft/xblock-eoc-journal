@@ -1,10 +1,14 @@
 """
 A wrapper around the Edx API.
 """
-from urllib import urlencode
+from __future__ import unicode_literals
+# pylint: disable=wrong-import-position,wrong-import-order
+from future import standard_library  # noqa
+standard_library.install_aliases()  # noqa
+
+from urllib.parse import urlencode
 
 import requests
-
 from django.conf import settings
 from edx_rest_api_client.exceptions import HttpClientError
 

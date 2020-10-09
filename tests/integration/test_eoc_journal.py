@@ -2,6 +2,8 @@
 Basic integration tests for the EOC Journal XBlock.
 """
 
+from builtins import zip
+from builtins import object
 import json
 import unittest
 
@@ -224,7 +226,7 @@ class TestEOCJournal(StudioEditableBaseTest):
 
     def select_option_in_boolean_field(self, field_name, value=True):
         control = self.get_element_for_field(field_name)
-        select = Select(control.find_element_by_id("xb-field-edit-{}".format(field_name)))
+        select = Select(control)
         selected_value = "1" if value else "0"
         select.select_by_value(selected_value)
 
@@ -485,7 +487,7 @@ class TestEOCJournal(StudioEditableBaseTest):
 
         element = self.get_element_for_course_engagement()
 
-        for key, value in default_engagement_metrics.iteritems():
+        for key, value in default_engagement_metrics.items():
             if key == 'user_score':
                 tag = 'span[data-engagement-name="user"]'
             elif key == 'cohort_score':
@@ -632,7 +634,7 @@ class TestEOCJournal(StudioEditableBaseTest):
         )
         block = self.load_root_xblock()
         response = block.handle('student_view_user_state', None)
-        data = json.loads(response.body)
+        data = json.loads(response.body.decode('UTF-8'))
         self.assertEqual(data, {
             'answer_sections': [{
                 'name': u'Second Section',
@@ -660,7 +662,7 @@ class TestEOCJournal(StudioEditableBaseTest):
     def assert_in_student_view_user_state(self, key, value=None):
         block = self.load_root_xblock()
         response = block.handle('student_view_user_state', None)
-        data = json.loads(response.body)
+        data = json.loads(response.body.decode('UTF-8'))
         if value:
             self.assertEqual(data[key], value)
         else:
@@ -669,7 +671,7 @@ class TestEOCJournal(StudioEditableBaseTest):
     def assert_not_in_student_view_user_state(self, key):
         block = self.load_root_xblock()
         response = block.handle('student_view_user_state', None)
-        data = json.loads(response.body)
+        data = json.loads(response.body.decode('UTF-8'))
         self.assertNotIn(key, data)
 
     def assert_not_in_student_view_data(self, key):
