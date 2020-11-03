@@ -140,10 +140,16 @@ msgid ""
 msgstr "\n"
 "لقد أكملت %(tag_start)s%(percentage)s%(tag_end)s%% من الدورة التدريبية بناءً على إكمال الوحدات بالدروس."
 
-#: templates/eoc_journal.html:20
+#: templates/eoc_journal.html:43
 #, python-format
-msgid "The cohort average is %(tag_start)s%(percentage)s%(tag_end)s%%."
-msgstr "متوسط المجموعة هو %(tag_start)s%(percentage)s%(tag_end)s%%."
+msgid ""
+"\n"
+"      The cohort average is %(tag_start)s%(percentage)s%(tag_end)s%%.\n"
+"      "
+msgstr "\n"
+"      متوسط المجموعة هو %(tag_start)s%(percentage)s%(tag_end)s%%.\n"
+"      "
+
 
 #: templates/eoc_journal.html:25
 msgid "Progress data is not available."
@@ -166,8 +172,13 @@ msgstr "\n"
 
 #: templates/eoc_journal.html:43
 #, python-format
-msgid "The cohort average is %(tag_start)s%(proficiency)s%(tag_end)s%%."
-msgstr "متوسط المجموعة هو %(tag_start)s%(proficiency)s%(tag_end)s%%."
+msgid ""
+"\n"
+"      The cohort average is %(tag_start)s%(proficiency)s%(tag_end)s%%.\n"
+"      "
+msgstr "\n"
+"      متوسط المجموعة هو %(tag_start)s%(proficiency)s%(tag_end)s%%.\n"
+"      "
 
 #: templates/eoc_journal.html:48
 msgid "Proficiency data is not available."
@@ -190,8 +201,15 @@ msgstr "\n"
 
 #: templates/eoc_journal.html:66
 #, python-format
-msgid "The cohort average is %(tag_start)s%(score)s%(tag_end)s."
-msgstr "متوسط المجموعة هو %(tag_start)s%(score)s%(tag_end)s."
+#: templates/eoc_journal.html:66
+#, python-format
+msgid ""
+"\n"
+"      The cohort average is %(tag_start)s%(score)s%(tag_end)s.\n"
+"      "
+msgstr "\n"
+"      متوسط المجموعة هو %(tag_start)s%(score)s%(tag_end)s.\n"
+"      "
 
 #: templates/eoc_journal.html:73
 msgid "Measured engagement"
