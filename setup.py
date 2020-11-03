@@ -32,7 +32,7 @@ setup(
         'xblock-utils==1.2.2',
         'edx-rest-api-client==1.6.0',
         'reportlab==3.1.44',
-        'future==0.18.2',
+        'future',
         'six'
     ],
     extras_require={
