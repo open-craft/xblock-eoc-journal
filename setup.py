@@ -31,10 +31,18 @@ setup(
         'XBlock',
         'xblock-utils',
         'edx-rest-api-client',
-        'reportlab',
-        'xblock-problem-builder',
-        'six',
+        'reportlab==3.1.44',
+        'future',
+        'six'
     ],
+    extras_require={
+        ":python_version<'3'": [
+            "xblock-problem-builder<4"
+        ],
+        ":python_version>='3'": [
+            "xblock-problem-builder>=4.1.5"
+        ]
+    },
     entry_points={
         'xblock.v1': [
             'eoc-journal = eoc_journal:EOCJournalXBlock',
