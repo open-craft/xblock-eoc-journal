@@ -29,18 +29,18 @@ setup(
     ],
     install_requires=[
         'XBlock',
-        'xblock-utils==1.2.2',
-        'edx-rest-api-client==1.6.0',
+        'xblock-utils',
+        'edx-rest-api-client',
         'reportlab==3.1.44',
         'future',
         'six'
     ],
     extras_require={
         ":python_version<'3'": [
-            "xblock-problem-builder==3.5.5"
+            "xblock-problem-builder<4"
         ],
         ":python_version>='3'": [
-            "xblock-problem-builder==4.1.5"
+            "xblock-problem-builder>=4.1.5"
         ]
     },
     entry_points={
