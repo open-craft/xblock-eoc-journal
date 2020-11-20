@@ -137,7 +137,7 @@ msgid ""
 "      the course based on completion of modules within lessons.\n"
 "      "
 msgstr "\n"
-"          Jesteś w %(tag_start)s%(percentage)s%(tag_end)s%% drogi do ukończenia kursu, biorąc pod uwagę ukończone przez Ciebie moduły w lekcjach:"
+"Jesteś w %(tag_start)s%(percentage)s%(tag_end)s%% drogi do ukończenia kursu (na podstawie dotychczas ukończonych modułów w ramach lekcji)."
 
 #: templates/eoc_journal.html:20
 #, python-format
@@ -166,7 +166,7 @@ msgid ""
 "      items in this course.\n"
 "      "
 msgstr "\n"
-"            Punktacja wyrażająca Twoją biegłość wynosi %(tag_start)s%(proficiency)s%(tag_end)s%% po ukończeniu zadań na ocenę w tym kursie.        "
+"Ocena Twojej biegłości to %(tag_start)s%(proficiency)s%(tag_end)s%% (na podstawie zadań na ocenę wykonanych w ramach tego kursu)."
 
 #: templates/eoc_journal.html:43
 #, python-format

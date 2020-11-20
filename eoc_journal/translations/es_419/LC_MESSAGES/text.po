@@ -137,7 +137,7 @@ msgid ""
 "      the course based on completion of modules within lessons.\n"
 "      "
 msgstr "\n"
-"      Usted ha completado %(tag_start)s%(percentage)s%(tag_end)s%% del curso en base al número de módulos finalizados de las lecciones.\n"
+"Usted ha completado el %(tag_start)s%(percentage)s%(tag_end)s%% del curso con base en el número de módulos finalizados de las lecciones."
 "      "
 
 #: templates/eoc_journal.html:20
@@ -198,8 +198,8 @@ msgid ""
 "cohort in the discussion forums.\n"
 "      "
 msgstr "\n"
-"      Su puntaje de participación en el curso actual es %(tag_start)s%(score)s%(tag_end)s\n"
-"      con base en sus interacciones de participación con otros participantes en su grupo en los foros de debate.\n"
+"Su puntaje de participación en el curso actual es %(tag_start)s%(score)s%(tag_end)s "
+"con base en sus interacciones de participación en los foros de debate con otros participantes en su grupo."
 "      "
 
 #: templates/eoc_journal.html:66

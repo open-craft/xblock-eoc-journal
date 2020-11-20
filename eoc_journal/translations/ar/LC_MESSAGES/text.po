@@ -168,7 +168,7 @@ msgid ""
 "      items in this course.\n"
 "      "
 msgstr "\n"
-"            درجة كفائتك الحالية هي %(tag_start)s%(proficiency)s%(tag_end)s%%بعد إكمال من العناصر المدرجة في هذه الدورة التدريبية."
+"            درجة كفائتك ⁧%(tag_start)s%(proficiency)s%(tag_end)s%%⁩بعد إكمال العناصر المدرجة في هذه الدورة التدريبية."
 
 #: templates/eoc_journal.html:43
 #, python-format
@@ -197,7 +197,7 @@ msgid ""
 "cohort in the discussion forums.\n"
 "      "
 msgstr "\n"
-"            تعتمد نتيجة مشاركتك الحالية %(tag_start)s%(score)s%(tag_end)sعلى تفاعلاتك الاجتماعية مع المشاركين الآخرين في مجموعتك في مناقشات المنتديات."
+"            نتيجة مشاركتك الحالية ⁧%(tag_start)s%(score)s%(tag_end)s⁩ بناءً على تفاعلاتك الاجتماعية مع المشاركين الآخرين في مجموعتك في مناقشات المنتديات."
 
 #: templates/eoc_journal.html:66
 #, python-format
