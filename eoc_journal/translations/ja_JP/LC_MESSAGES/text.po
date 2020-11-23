@@ -195,7 +195,7 @@ msgid ""
 "cohort in the discussion forums.\n"
 "      "
 msgstr "\n"
-"             ディスカッションフォーラムでコホートの他の参加者とエンゲージメントのあった交流に基づいた、あなたの現在のエンゲージメントスコアは%(tag_start)s%(score)s%(tag_end)sです。"
+"ディスカッションフォーラムにおけるコホートの他の参加者との交流に基づいた、あなたの現在のエンゲージメントスコアは%(tag_start)s%(score)s%(tag_end)sです。"
 
 #: templates/eoc_journal.html:66
 #, python-format
