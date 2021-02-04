@@ -21,6 +21,7 @@ class CompletionApiClient(BaseApiClient):
             base_url=self.api_url,
             course_id=self.course_id,
         )
+
         try:
             data = self.client.get(url, params=dict(username=self.user.username, **kwargs)).json()
             return data['results'][0]['completion']['percent'] * 100
