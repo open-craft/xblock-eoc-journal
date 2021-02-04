@@ -30,7 +30,7 @@ setup(
     install_requires=[
         'XBlock',
         'xblock-utils',
-        'edx-rest-api-client',
+        'edx-rest-api-client==1.6.0',
         'reportlab==3.1.44',
         'future',
         'six'
