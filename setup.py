@@ -22,7 +22,7 @@ def package_data(pkg, roots):
 
 setup(
     name='xblock-eoc-journal',
-    version='0.9.4',
+    version='0.10.0',
     description='End of Course Journal XBlock',
     packages=[
         'eoc_journal',
@@ -30,7 +30,7 @@ setup(
     install_requires=[
         'XBlock',
         'xblock-utils',
-        'edx-rest-api-client',
+        'edx-rest-api-client==1.9.2',
         'reportlab==3.1.44',
         'future',
         'six'

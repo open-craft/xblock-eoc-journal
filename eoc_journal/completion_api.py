@@ -24,5 +24,5 @@ class CompletionApiClient(BaseApiClient):
         try:
             data = self.client.get(url, params=dict(username=self.user.username, **kwargs)).json()
             return data['results'][0]['completion']['percent'] * 100
-        except (HttpClientError, IndexError):
+        except (HttpClientError, IndexError, KeyError):
             return None

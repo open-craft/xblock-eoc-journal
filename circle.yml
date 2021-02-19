@@ -73,10 +73,6 @@ workflows:
       - quality:
           name: "Quality Check Python 3.8, Django 2.2"
       - build:
-          name: "Ironwood: Python 2.7, Django 1.11"
-          docker_image: circleci/python:2.7-browsers
-          cache_key: "python27"
-      - build:
           name: "Juniper: Python 3.5, Django 2.2"
           docker_image: circleci/python:3.5-browsers
           cache_key: "python35"
