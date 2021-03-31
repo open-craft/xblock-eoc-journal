@@ -26,6 +26,7 @@ web-fragments==0.3.1
 webob
 XBlock==1.2.9
 edx-opaque-keys==0.4.4
+edx-django-utils==3.13.0
 
 # Latest version(1.0.4) of django-appconf do not support python 2
 django-appconf==1.0.3
