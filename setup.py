@@ -31,7 +31,7 @@ setup(
         'XBlock',
         'xblock-utils',
         'edx-rest-api-client>=5.2.1,<5.3.0',
-        'reportlab==3.1.44',
+        'reportlab==3.6.13',
         'future',
         'six'
     ],
